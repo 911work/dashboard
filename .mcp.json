@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "googlesheets": {
+      "type": "http",
+      "url": "https://server.smithery.ai/@SmartManoj/google-sheets-mcp"
+    }
+  }
+}
