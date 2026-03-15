@@ -3,7 +3,10 @@
 import logging
 from abc import ABC, abstractmethod
 
+import litellm
 from litellm import completion
+
+litellm.drop_params = True
 
 logger = logging.getLogger(__name__)
 
