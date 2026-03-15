@@ -56,8 +56,10 @@ git checkout claude/setup-aidebator-ZkIMS
 - Оценками судьи по раундам
 - Сравнительным анализом моделей
 
-**Просмотр:** открыть локально в браузере или через:
-`https://htmlpreview.github.io/?https://github.com/911work/dashboard/blob/claude/setup-aidebator-ZkIMS/AIDebator/debate_report.html`
+**Просмотр:**
+- Локально: открыть `AIDebator/debate_report.html` в браузере
+- GitHub Pages: `https://911work.github.io/dashboard/AIDebator/debate_report.html`
+- Альтернатива: `https://raw.githack.com/911work/dashboard/gh-pages/AIDebator/debate_report.html`
 
 ### 4. GitHub Pages
 
