@@ -52,9 +52,11 @@ class Participant(ABC):
             kwargs = {
                 "model": self.model,
                 "messages": [{"role": "user", "content": prompt}],
-                "max_tokens": max_tokens,
-                "temperature": temperature
             }
+            # GPT-5+ reasoning models don't support max_tokens or temperature
+            if not self.model.startswith("gpt-5"):
+                kwargs["max_tokens"] = max_tokens
+                kwargs["temperature"] = temperature
             
             if response_format:
                 try:
