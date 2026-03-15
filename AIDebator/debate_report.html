@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Исследование: Аффилейт-платформа для мигрантов</title>
+<style>
+  :root {
+    --dark-blue: #1a1a2e;
+    --mid-blue: #16213e;
+    --teal: #16a085;
+    --teal-light: #1abc9c;
+    --teal-dark: #0e8c73;
+    --accent-orange: #e67e22;
+    --accent-red: #e74c3c;
+    --accent-green: #27ae60;
+    --gray-50: #f8f9fa;
+    --gray-100: #f1f3f5;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --gray-500: #adb5bd;
+    --gray-700: #495057;
+    --gray-800: #343a40;
+    --gray-900: #212529;
+    --white: #ffffff;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+    --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: var(--gray-100);
+    color: var(--gray-800);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--dark-blue) 0%, #0f3460 50%, var(--mid-blue) 100%);
+    color: var(--white);
+    padding: 60px 40px 50px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(22,160,133,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -5%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(22,160,133,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .header-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .header-label {
+    display: inline-block;
+    background: rgba(22,160,133,0.2);
+    border: 1px solid rgba(22,160,133,0.4);
+    color: var(--teal-light);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .header h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+  }
+  .header .subtitle {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.7);
+    max-width: 700px;
+    line-height: 1.5;
+  }
+  .header-meta {
+    display: flex;
+    gap: 30px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .header-meta-item {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.5);
+  }
+  .header-meta-item span {
+    color: rgba(255,255,255,0.85);
+    font-weight: 600;
+  }
+
+  /* Layout */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 32px;
+  }
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--dark-blue);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-title .icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .section-subtitle {
+    color: var(--gray-500);
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    margin-left: 48px;
+  }
+
+  /* Card */
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    padding: 32px;
+    margin-bottom: 20px;
+  }
+  .card-sm {
+    padding: 24px;
+  }
+
+  /* Executive Summary */
+  .exec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .exec-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    padding: 24px;
+    border-top: 3px solid var(--teal);
+    text-align: center;
+  }
+  .exec-card .value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--dark-blue);
+    margin-bottom: 4px;
+  }
+  .exec-card .label {
+    font-size: 0.85rem;
+    color: var(--gray-500);
+    font-weight: 500;
+  }
+  .exec-highlight {
+    background: linear-gradient(135deg, #e8f8f5, #d1f2eb);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    border-left: 4px solid var(--teal);
+  }
+  .exec-highlight p {
+    color: var(--gray-700);
+    line-height: 1.7;
+  }
+  .exec-highlight strong {
+    color: var(--dark-blue);
+  }
+
+  /* Market Size Chart */
+  .market-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .market-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .market-bar-label {
+    min-width: 200px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    text-align: right;
+  }
+  .market-bar-track {
+    flex: 1;
+    height: 40px;
+    background: var(--gray-100);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+  .market-bar-fill {
+    height: 100%;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: white;
+    transition: width 1s ease;
+    min-width: 80px;
+  }
+  .bar-edu { background: linear-gradient(90deg, #0f3460, #1a5276); width: 86%; }
+  .bar-recruit { background: linear-gradient(90deg, var(--teal-dark), var(--teal)); width: 100%; }
+  .bar-reloc { background: linear-gradient(90deg, #2980b9, #3498db); width: 3.7%; min-width: 100px; }
+  .bar-immig { background: linear-gradient(90deg, #8e44ad, #9b59b6); width: 0.42%; min-width: 100px; }
+
+  /* Pipeline */
+  .pipeline {
+    display: flex;
+    gap: 2px;
+    overflow-x: auto;
+    padding: 10px 0;
+  }
+  .pipeline-stage {
+    flex: 1;
+    min-width: 130px;
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    padding: 18px 14px;
+    text-align: center;
+    position: relative;
+    border: 1px solid var(--gray-200);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .pipeline-stage:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+  .pipeline-stage .stage-num {
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin: 0 auto 10px;
+  }
+  .pipeline-stage .stage-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--dark-blue);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .pipeline-stage .stage-commission {
+    font-size: 0.75rem;
+    color: var(--teal);
+    font-weight: 600;
+    background: #e8f8f5;
+    padding: 3px 8px;
+    border-radius: 12px;
+    display: inline-block;
+  }
+  .pipeline-stage .stage-detail {
+    font-size: 0.7rem;
+    color: var(--gray-500);
+    margin-top: 6px;
+    line-height: 1.3;
+  }
+  .pipeline-arrow {
+    display: flex;
+    align-items: center;
+    color: var(--teal);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  /* Unit Economics */
+  .ue-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .ue-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    padding: 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .ue-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+  }
+  .ue-card:nth-child(1)::before { background: linear-gradient(90deg, var(--teal), #1abc9c); }
+  .ue-card:nth-child(2)::before { background: linear-gradient(90deg, #e67e22, #f39c12); }
+  .ue-card:nth-child(3)::before { background: linear-gradient(90deg, #27ae60, #2ecc71); }
+  .ue-card .ue-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gray-500);
+    margin-bottom: 8px;
+  }
+  .ue-card .ue-value {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--dark-blue);
+    margin-bottom: 4px;
+  }
+  .ue-card .ue-desc {
+    font-size: 0.85rem;
+    color: var(--gray-500);
+  }
+  .ue-bar-section {
+    margin-top: 24px;
+  }
+  .ue-comparison {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .ue-comp-label {
+    min-width: 60px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    text-align: right;
+  }
+  .ue-comp-bar {
+    flex: 1;
+    height: 28px;
+    background: var(--gray-100);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .ue-comp-fill {
+    height: 100%;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    padding-left: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+  }
+
+  /* Services Table */
+  .services-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.9rem;
+  }
+  .services-table thead th {
+    background: var(--dark-blue);
+    color: white;
+    padding: 14px 16px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: left;
+  }
+  .services-table thead th:first-child { border-radius: 8px 0 0 0; }
+  .services-table thead th:last-child { border-radius: 0 8px 0 0; }
+  .services-table tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--gray-200);
+    vertical-align: top;
+  }
+  .services-table tbody tr:hover {
+    background: #f8fffe;
+  }
+  .services-table tbody tr:last-child td:first-child { border-radius: 0 0 0 8px; }
+  .services-table tbody tr:last-child td:last-child { border-radius: 0 0 8px 0; }
+  .commission-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #e8f8f5, #d5f5e3);
+    color: var(--teal-dark);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+
+  /* Debate Scores */
+  .debate-scores {
+    display: grid;
+    grid-template-columns: 1fr 120px 1fr;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  .score-panel {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    padding: 28px;
+    text-align: center;
+  }
+  .score-panel.winner {
+    border: 2px solid var(--teal);
+    position: relative;
+  }
+  .score-panel.winner::after {
+    content: 'ПОБЕДИТЕЛЬ';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--teal);
+    color: white;
+    padding: 3px 14px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .score-role {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gray-500);
+    margin-bottom: 8px;
+  }
+  .score-value {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .score-value.supporter-color { color: var(--teal); }
+  .score-value.opposer-color { color: var(--accent-orange); }
+  .score-vs {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--gray-300);
+    text-align: center;
+  }
+  .score-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 16px;
+    text-align: left;
+  }
+  .score-detail-item {
+    font-size: 0.8rem;
+    color: var(--gray-700);
+  }
+  .score-detail-item span {
+    font-weight: 700;
+    color: var(--dark-blue);
+  }
+
+  /* Round Summary */
+  .round-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 24px;
+    margin-bottom: 14px;
+    border-left: 4px solid var(--gray-300);
+  }
+  .round-card.supporter-round { border-left-color: var(--teal); }
+  .round-card.opposer-round { border-left-color: var(--accent-orange); }
+  .round-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .round-number {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gray-500);
+  }
+  .round-role-badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge-supporter { background: #e8f8f5; color: var(--teal-dark); }
+  .badge-opposer { background: #fef5e7; color: #d35400; }
+  .round-content {
+    font-size: 0.88rem;
+    color: var(--gray-700);
+    line-height: 1.6;
+  }
+  .round-content ul {
+    margin-left: 18px;
+    margin-top: 6px;
+  }
+  .round-content li {
+    margin-bottom: 4px;
+  }
+
+  /* Risk cards */
+  .risk-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  .risk-card {
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+    padding: 20px;
+    border-left: 4px solid var(--accent-red);
+  }
+  .risk-card.medium { border-left-color: var(--accent-orange); }
+  .risk-card.low { border-left-color: #f1c40f; }
+  .risk-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--dark-blue);
+    margin-bottom: 6px;
+  }
+  .risk-severity {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+  }
+  .severity-high { background: #fdecea; color: var(--accent-red); }
+  .severity-medium { background: #fef5e7; color: var(--accent-orange); }
+  .severity-low { background: #fef9e7; color: #d4ac0d; }
+  .risk-desc {
+    font-size: 0.85rem;
+    color: var(--gray-700);
+    line-height: 1.5;
+  }
+
+  /* AI Automation */
+  .auto-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  .auto-item {
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+    padding: 18px 20px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .auto-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #e8f8f5, #d1f2eb);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.1rem;
+  }
+  .auto-text .auto-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--dark-blue);
+    margin-bottom: 2px;
+  }
+  .auto-text .auto-desc {
+    font-size: 0.8rem;
+    color: var(--gray-500);
+    line-height: 1.4;
+  }
+  .auto-pct {
+    margin-top: 6px;
+    height: 6px;
+    background: var(--gray-100);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .auto-pct-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), var(--teal-light));
+    border-radius: 3px;
+  }
+
+  /* Competitors */
+  .comp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+  }
+  .comp-card {
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+    padding: 20px;
+  }
+  .comp-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--dark-blue);
+    margin-bottom: 4px;
+  }
+  .comp-val {
+    font-size: 0.85rem;
+    color: var(--teal);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .comp-desc {
+    font-size: 0.8rem;
+    color: var(--gray-500);
+    line-height: 1.4;
+  }
+
+  /* MVP Roadmap */
+  .roadmap {
+    position: relative;
+    padding-left: 30px;
+  }
+  .roadmap::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--teal), var(--teal-light), var(--gray-200));
+  }
+  .roadmap-item {
+    position: relative;
+    margin-bottom: 24px;
+    padding-left: 30px;
+  }
+  .roadmap-item::before {
+    content: '';
+    position: absolute;
+    left: -19px;
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    background: var(--teal);
+    border-radius: 50%;
+    border: 3px solid var(--white);
+    box-shadow: 0 0 0 2px var(--teal);
+  }
+  .roadmap-phase {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--teal);
+    margin-bottom: 4px;
+  }
+  .roadmap-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--dark-blue);
+    margin-bottom: 6px;
+  }
+  .roadmap-desc {
+    font-size: 0.88rem;
+    color: var(--gray-700);
+    line-height: 1.5;
+  }
+
+  /* Conclusion */
+  .conclusion-card {
+    background: linear-gradient(135deg, var(--dark-blue) 0%, #0f3460 100%);
+    color: var(--white);
+    border-radius: var(--radius);
+    padding: 36px;
+    box-shadow: var(--shadow-lg);
+  }
+  .conclusion-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+    color: var(--teal-light);
+  }
+  .conclusion-card p {
+    color: rgba(255,255,255,0.8);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+  .conclusion-card strong {
+    color: white;
+  }
+  .conclusion-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .conclusion-col h4 {
+    color: var(--teal-light);
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+  }
+  .conclusion-col ul {
+    list-style: none;
+    padding: 0;
+  }
+  .conclusion-col li {
+    padding: 6px 0;
+    padding-left: 18px;
+    position: relative;
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.75);
+  }
+  .conclusion-col li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 13px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .pros li::before { background: var(--accent-green); }
+  .cons li::before { background: var(--accent-orange); }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--gray-500);
+    font-size: 0.8rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .header { padding: 40px 20px 30px; }
+    .header h1 { font-size: 1.6rem; }
+    .container { padding: 20px 14px; }
+    .ue-grid { grid-template-columns: 1fr; }
+    .debate-scores { grid-template-columns: 1fr; }
+    .score-vs { display: none; }
+    .pipeline { flex-direction: column; }
+    .pipeline-arrow { transform: rotate(90deg); justify-content: center; }
+    .market-bar-label { min-width: 100px; font-size: 0.75rem; }
+    .conclusion-grid { grid-template-columns: 1fr; }
+    .header-meta { flex-direction: column; gap: 8px; }
+    .exec-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* Collapsible rounds */
+  .rounds-toggle {
+    display: none;
+  }
+  .rounds-toggle-label {
+    display: inline-block;
+    cursor: pointer;
+    background: var(--teal);
+    color: white;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    transition: background 0.2s;
+  }
+  .rounds-toggle-label:hover {
+    background: var(--teal-dark);
+  }
+  .rounds-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+  }
+  .rounds-toggle:checked ~ .rounds-content {
+    max-height: 10000px;
+  }
+  .rounds-toggle:checked ~ .rounds-toggle-label .toggle-text-show { display: none; }
+  .rounds-toggle:checked ~ .rounds-toggle-label .toggle-text-hide { display: inline; }
+  .toggle-text-hide { display: none; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-content">
+    <div class="header-label">AI-Debator Research Report</div>
+    <h1>Исследование: Аффилейт-платформа<br>для мигрантов</h1>
+    <p class="subtitle">Единая платформа-агрегатор услуг для студенческой и рабочей миграции по модели Travelpayouts/ApplyBoard. Результаты структурированных AI-дебатов.</p>
+    <div class="header-meta">
+      <div class="header-meta-item">Дата: <span>15 марта 2026</span></div>
+      <div class="header-meta-item">Раундов: <span>5</span></div>
+      <div class="header-meta-item">Победитель: <span>Supporter (8.6 vs 8.0)</span></div>
+      <div class="header-meta-item">Формат: <span>Structured AI Debate</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="section">
+    <div class="section-title">
+      <div class="icon">01</div>
+      Резюме для руководства
+    </div>
+    <p class="section-subtitle">Ключевые выводы исследования</p>
+
+    <div class="exec-grid">
+      <div class="exec-card">
+        <div class="value">$950B+</div>
+        <div class="label">Совокупный адресуемый рынок (TAM)</div>
+      </div>
+      <div class="exec-card">
+        <div class="value">280M+</div>
+        <div class="label">Международных мигрантов (ООН)</div>
+      </div>
+      <div class="exec-card">
+        <div class="value">6.4M</div>
+        <div class="label">Студентов за рубежом (UNESCO)</div>
+      </div>
+      <div class="exec-card">
+        <div class="value">8.6 / 8.0</div>
+        <div class="label">Итог дебатов (За / Против)</div>
+      </div>
+    </div>
+
+    <div class="exec-highlight">
+      <p>
+        AI-дебаты выявили, что модель аффилейт-платформы для мигрантов <strong>жизнеспособна при коридор-специфичном подходе</strong>. Ключевые преимущества: высокий LTV ($1,200-4,500), низкий CAC ($50-150) и множественные точки монетизации через 7 этапов миграционного пути. Основные риски: <strong>регуляторная фрагментация, сложности масштабирования и конкуренция с нативными игроками</strong>. Рекомендуется стратегия corridor-specific MVP с фокусом на B2B2C-модели (Shopify для миграционных агентов).
+      </p>
+    </div>
+  </div>
+
+  <!-- MARKET SIZE -->
+  <div class="section">
+    <div class="section-title">
+      <div class="icon">02</div>
+      Размер рынка (TAM)
+    </div>
+    <p class="section-subtitle">Глобальный адресуемый рынок по сегментам</p>
+
+    <div class="card">
+      <div class="market-bars">
+        <div class="market-bar-row">
+          <div class="market-bar-label">Рекрутинг</div>
+          <div class="market-bar-track">
+            <div class="market-bar-fill bar-recruit">$500B+</div>
+          </div>
+        </div>
+        <div class="market-bar-row">
+          <div class="market-bar-label">Международное образование</div>
+          <div class="market-bar-track">
+            <div class="market-bar-fill bar-edu">$433B</div>
+          </div>
+        </div>
+        <div class="market-bar-row">
+          <div class="market-bar-label">Relocation-сервисы</div>
+          <div class="market-bar-track">
+            <div class="market-bar-fill bar-reloc">$18.5B</div>
+          </div>
+        </div>
+        <div class="market-bar-row">
+          <div class="market-bar-label">Иммиграционные услуги</div>
+          <div class="market-bar-track">
+            <div class="market-bar-fill bar-immig">$2.1B</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:20px; padding: 14px 18px; background: var(--gray-50); border-radius: 8px; font-size: 0.82rem; color: var(--gray-500);">
+        Источники: HolonIQ (2023), Allied Market Research (2022), IBISWorld (2023), UNESCO (2024). К 2030 г.
+      </div>
+    </div>
+  </div>
+
+  <!-- VALUE CHAIN -->
+  <div class="section">
+    <div class="section-title">
+      <div class="icon">03</div>
+      Цепочка создания ценности
+    </div>
+    <p class="section-subtitle">7 этапов миграционного пути с комиссионными диапазонами</p>
+
+    <div class="card" style="overflow-x: auto;">
+      <div class="pipeline">
+        <div class="pipeline-stage">
+          <div class="stage-num">1</div>
+          <div class="stage-title">Оценка профиля и подбор</div>
+          <div class="stage-commission">$200 - $500</div>
+          <div class="stage-detail">AI-скоринг совместимости с программами</div>
+        </div>
+        <div class="pipeline-arrow">&rarr;</div>
+        <div class="pipeline-stage">
+          <div class="stage-num">2</div>
+          <div class="stage-title">Подача в вузы</div>
+          <div class="stage-commission">$3,000 - $8,000</div>
+          <div class="stage-detail">15-25% от первого года обучения</div>
+        </div>
+        <div class="pipeline-arrow">&rarr;</div>
+        <div class="pipeline-stage">
+          <div class="stage-num">3</div>
+          <div class="stage-title">Визовая поддержка</div>
+          <div class="stage-commission">$150 - $600</div>
+          <div class="stage-detail">Реферальная комиссия 10-20%</div>
+        </div>
+        <div class="pipeline-arrow">&rarr;</div>
+        <div class="pipeline-stage">
+          <div class="stage-num">4</div>
+          <div class="stage-title">Страхование</div>
+          <div class="stage-commission">$50 - $200</div>
+          <div class="stage-detail">Комиссия 15-30%</div>
+        </div>
+        <div class="pipeline-arrow">&rarr;</div>
+        <div class="pipeline-stage">
+          <div class="stage-num">5</div>
+          <div class="stage-title">Жильё</div>
+          <div class="stage-commission">$100 - $300</div>
+          <div class="stage-detail">Партнёры типа HousingAnywhere</div>
+        </div>
+        <div class="pipeline-arrow">&rarr;</div>
+        <div class="pipeline-stage">
+          <div class="stage-num">6</div>
+          <div class="stage-title">Банкинг и переводы</div>
+          <div class="stage-commission">$10 - $50</div>
+          <div class="stage-detail">CPA по модели Wise Affiliate</div>
+        </div>
+        <div class="pipeline-arrow">&rarr;</div>
+        <div class="pipeline-stage">
+          <div class="stage-num">7</div>
+          <div class="stage-title">Трудоустройство</div>
+          <div class="stage-commission">8-15% з/п</div>
+          <div class="stage-detail">Рекрутинг через партнёров</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UNIT ECONOMICS -->
+  <div class="section">
+    <div class="section-title">
+      <div class="icon">04</div>
+      Unit-экономика
+    </div>
+    <p class="section-subtitle">Ключевые метрики на одного клиента</p>
+
+    <div class="ue-grid">
+      <div class="ue-card">
+        <div class="ue-label">LTV (Lifetime Value)</div>
+        <div class="ue-value" style="color: var(--teal);">$1,200 - $4,500</div>
+        <div class="ue-desc">Сумма комиссий по всей цепочке из 7 этапов</div>
+      </div>
+      <div class="ue-card">
+        <div class="ue-label">CAC (Customer Acquisition Cost)</div>
+        <div class="ue-value" style="color: var(--accent-orange);">$50 - $150</div>
+        <div class="ue-desc">Контент-маркетинг, SEO, партнёрские каналы</div>
+      </div>
+      <div class="ue-card">
+        <div class="ue-label">LTV / CAC Ratio</div>
+        <div class="ue-value" style="color: var(--accent-green);">8x - 30x</div>
+        <div class="ue-desc">Значительно выше отраслевого порога 3x</div>
+      </div>
+    </div>
+
+    <div class="card card-sm ue-bar-section">
+      <h4 style="font-size: 0.9rem; color: var(--gray-700); margin-bottom: 14px;">Сравнение LTV/CAC с аналогами</h4>
+      <div class="ue-comparison">
+        <div class="ue-comp-label">Наша платформа</div>
+        <div class="ue-comp-bar">
+          <div class="ue-comp-fill" style="width: 100%; background: linear-gradient(90deg, var(--teal), var(--teal-light));">8-30x</div>
+        </div>
+      </div>
+      <div class="ue-comparison">
+        <div class="ue-comp-label">ApplyBoard</div>
+        <div class="ue-comp-bar">
+          <div class="ue-comp-fill" style="width: 60%; background: linear-gradient(90deg, #2980b9, #3498db);">~18x</div>
+        </div>
+      </div>
+      <div class="ue-comparison">
+        <div class="ue-comp-label">Travelpayouts</div>
+        <div class="ue-comp-bar">
+          <div class="ue-comp-fill" style="width: 40%; background: linear-gradient(90deg, #8e44ad, #9b59b6);">~12x</div>
+        </div>
+      </div>
+      <div class="ue-comparison">
+        <div class="ue-comp-label">SaaS benchmark</div>
+        <div class="ue-comp-bar">
+          <div class="ue-comp-fill" style="width: 10%; background: linear-gradient(90deg, var(--gray-500), var(--gray-700));">3x</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICES CATALOG -->
+  <div class="section">
+    <div class="section-title">
+      <div class="icon">05</div>
+      Каталог услуг платформы
+    </div>
+    <p class="section-subtitle">Предлагаемые сервисы с моделью монетизации</p>
+
+    <div class="card" style="padding: 0; overflow: hidden;">
+      <table class="services-table">
+        <thead>
+          <tr>
+            <th>Услуга</th>
+            <th>Модель монетизации</th>
+            <th>Комиссия</th>
+            <th>Аналог</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Подбор учебных заведений</strong></td>
+            <td>Реферальная комиссия от вузов</td>
+            <td><span class="commission-badge">15-25% / $3,000-8,000</span></td>
+            <td>ApplyBoard</td>
+          </tr>
+          <tr>
+            <td><strong>Визовая поддержка</strong></td>
+            <td>Реферальная комиссия от юрфирм</td>
+            <td><span class="commission-badge">10-20% / $150-600</span></td>
+            <td>Visabot</td>
+          </tr>
+          <tr>
+            <td><strong>Страхование</strong></td>
+            <td>Аффилейтная комиссия</td>
+            <td><span class="commission-badge">15-30% / $50-200</span></td>
+            <td>Insubuy</td>
+          </tr>
+          <tr>
+            <td><strong>Поиск жилья</strong></td>
+            <td>Лидогенерация для партнёров</td>
+            <td><span class="commission-badge">$100-300 за сделку</span></td>
+            <td>HousingAnywhere</td>
+          </tr>
+          <tr>
+            <td><strong>Банкинг и переводы</strong></td>
+            <td>CPA / Revenue share</td>
+            <td><span class="commission-badge">$10-50 CPA</span></td>
+            <td>Wise</td>
+          </tr>
+          <tr>
+            <td><strong>Международные платежи</strong></td>
+            <td>Embedded finance (% от транзакции)</td>
+            <td><span class="commission-badge">2.5-3.5% / $625-875</span></td>
+            <td>Flywire</td>
+          </tr>
+          <tr>
+            <td><strong>Трудоустройство</strong></td>
+            <td>Рекрутинговая комиссия</td>
+            <td><span class="commission-badge">8-15% от годовой з/п</span></td>
+            <td>LinkedIn</td>
+          </tr>
+          <tr>
+            <td><strong>Верификация документов</strong></td>
+            <td>Verification fee</td>
+            <td><span class="commission-badge">$0.50-2.00 за проверку</span></td>
+            <td>Sumsub</td>
+          </tr>
+          <tr>
+            <td><strong>AI-профилирование</strong></td>
+            <td>Комиссия от учебного заведения</td>
+            <td><span class="commission-badge">$200-500</span></td>
+            <td>Duolingo Test</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- DEBATE RESULTS -->
+  <div class="section">
+    <div class="section-title">
+      <div class="icon">06</div>
+      Результаты дебатов
+    </div>
+    <p class="section-subtitle">Оценки и аргументация по раундам</p>
+
+    <div class="debate-scores">
+      <div class="score-panel winner">
+        <div class="score-role">Supporter (За)</div>
+        <div class="score-value supporter-color">8.6</div>
+        <div class="score-details">
+          <div class="score-detail-item">Качество аргументов: <span>8.0</span></div>
+          <div class="score-detail-item">Качество доказательств: <span>8.0</span></div>
+          <div class="score-detail-item">Логическая связность: <span>8.0</span></div>
+          <div class="score-detail-item">Реагирование на пробелы: <span>8.0</span></div>
+        </div>
+        <div style="margin-top: 12px; font-size: 0.78rem; color: var(--teal);">
+          +1.8 за признанные аргументы | -1.2 за выявленные слабости
+        </div>
+      </div>
+      <div class="score-vs">VS</div>
+      <div class="score-panel">
+        <div class="score-role">Opposer (Против)</div>
+        <div class="score-value opposer-color">8.0</div>
+        <div class="score-details">
+          <div class="score-detail-item">Качество аргументов: <span>8.0</span></div>
+          <div class="score-detail-item">Качество доказательств: <span>8.0</span></div>
+          <div class="score-detail-item">Логическая связность: <span>8.0</span></div>
+          <div class="score-detail-item">Реагирование на пробелы: <span>8.0</span></div>
+        </div>
+        <div style="margin-top: 12px; font-size: 0.78rem; color: var(--gray-500);">
+          Неопровержимых аргументов: 4 | Фактов: 5
+        </div>
+      </div>
+    </div>
+
+    <!-- Round by Round -->
+    <input type="checkbox" class="rounds-toggle" id="rounds-toggle">
+    <label class="rounds-toggle-label" for="rounds-toggle">
+      <span class="toggle-text-show">&#9660; Показать аргументы по раундам</span>
+      <span class="toggle-text-hide">&#9650; Скрыть аргументы по раундам</span>
+    </label>
+    <div class="rounds-content">
+
+      <!-- Round 1 -->
+      <div class="round-card supporter-round">
+        <div class="round-header">
+          <div class="round-number">Раунд 1</div>
+          <span class="round-role-badge badge-supporter">Supporter</span>
+        </div>
+        <div class="round-content">
+          <strong>Обоснование бизнес-модели:</strong>
+          <ul>
+            <li>TAM $433B (образование) + $500B+ (рекрутинг) + $18.5B (relocation) + $2.1B (иммиграция)</li>
+            <li>7 этапов монетизации миграционного пути с LTV $1,200-4,500</li>
+            <li>ApplyBoard как доказательство модели: оценка $4B, 600,000+ заявок, 1,700+ вузов</li>
+            <li>CAC $50-150 через контент-маркетинг, LTV/CAC = 8-30x</li>
+          </ul>
+        </div>
+      </div>
+      <div class="round-card opposer-round">
+        <div class="round-header">
+          <div class="round-number">Раунд 1</div>
+          <span class="round-role-badge badge-opposer">Opposer</span>
+        </div>
+        <div class="round-content">
+          <strong>Системные риски:</strong>
+          <ul>
+            <li>Регуляторные барьеры: GDPR, фрагментация юрисдикций, расследования против StudyPortals</li>
+            <li>Chicken-and-egg проблема двусторонних маркетплейсов</li>
+            <li>Комиссии завышены: реальные 5-10%, высокая конкуренция за лиды</li>
+            <li>Крупные игроки инвестируют в собственные каналы, ограниченность AI</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Round 2 -->
+      <div class="round-card supporter-round">
+        <div class="round-header">
+          <div class="round-number">Раунд 2</div>
+          <span class="round-role-badge badge-supporter">Supporter</span>
+        </div>
+        <div class="round-content">
+          <strong>Ребаттл и новые аргументы:</strong>
+          <ul>
+            <li>Аффилейт-платформа = информационный посредник (EU Directive 2000/31/EC, Section 230)</li>
+            <li>Комиссии 15-20% подтверждены ICEF Monitor (2024) и British Council</li>
+            <li>Embedded finance (Flywire, $2.4B) добавляет $625-875 на студента</li>
+            <li>AI-автоматизация: Visabot, Sumsub (верификация за $0.50-2.00)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="round-card opposer-round">
+        <div class="round-header">
+          <div class="round-number">Раунд 2</div>
+          <span class="round-role-badge badge-opposer">Opposer</span>
+        </div>
+        <div class="round-content">
+          <strong>Контраргументы:</strong>
+          <ul>
+            <li>DSA (2024) вводит прямую ответственность для агрегаторов</li>
+            <li>Embedded finance увеличивает KYC/AML нагрузку на 25-40%</li>
+            <li>15% фродовых заявок (OECD) = репутационные и юридические риски</li>
+            <li>Мультисервисные агрегаторы (Adventus.io, UniAgents) не выходят на прибыльность</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Round 3 -->
+      <div class="round-card supporter-round">
+        <div class="round-header">
+          <div class="round-number">Раунд 3</div>
+          <span class="round-role-badge badge-supporter">Supporter</span>
+        </div>
+        <div class="round-content">
+          <strong>Системное опровержение:</strong>
+          <ul>
+            <li>DSA = one-stop-shop, снижает compliance-затраты на 15-20% (Oxford Internet Institute)</li>
+            <li>Фрод = монетизируемый сервис (Proctorio, Turnitin: $500M+ бизнес)</li>
+            <li>Government-as-a-Platform: Express Entry API, SkillSelect API, X-Road</li>
+            <li>Adventus.io привлёк $53M, работает успешно с retention 78%</li>
+          </ul>
+        </div>
+      </div>
+      <div class="round-card opposer-round">
+        <div class="round-header">
+          <div class="round-number">Раунд 3</div>
+          <span class="round-role-badge badge-opposer">Opposer</span>
+        </div>
+        <div class="round-content">
+          <strong>Новые эмпирические данные:</strong>
+          <ul>
+            <li>EDPN (2024): compliance-издержки выросли на 28% после DSA</li>
+            <li>Yocket: массовые иски из-за ошибок автоматической верификации (+18% оперзатрат)</li>
+            <li>Госинтеграции требуют аккредитации, в большинстве стран API недоступны</li>
+            <li>Winner-takes-most: IDP + Navitas + ApplyBoard = 75% рынка</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Round 4 -->
+      <div class="round-card supporter-round">
+        <div class="round-header">
+          <div class="round-number">Раунд 4</div>
+          <span class="round-role-badge badge-supporter">Supporter</span>
+        </div>
+        <div class="round-content">
+          <strong>Новые системные аргументы:</strong>
+          <ul>
+            <li>66% рынка фрагментировано между 25,000+ мелкими агентами (Parthenon-EY 2024)</li>
+            <li>Compliance-as-a-Service: Vanta ($2.45B), ComplyAdvantage снижают затраты на 60-70%</li>
+            <li>B2B2C стратегия: платформа для агентов (модель Shopify), а не их замена</li>
+            <li>Leap Finance ($75M Series D) как доказательство концепции</li>
+          </ul>
+        </div>
+      </div>
+      <div class="round-card opposer-round">
+        <div class="round-header">
+          <div class="round-number">Раунд 4</div>
+          <span class="round-role-badge badge-opposer">Opposer</span>
+        </div>
+        <div class="round-content">
+          <strong>Структурные слабости:</strong>
+          <ul>
+            <li>73% малых агентов отказываются интегрироваться с глобальными платформами (ICEF 2023)</li>
+            <li>RegTech не устраняет fixed costs локальных аудитов (KPMG 2024)</li>
+            <li>B2B2C: агенты опасаются дезинтермедиации, NPS падает на 24%, retention &lt;35% (BCG 2023)</li>
+            <li>Зависимость от внешних API: блокировки Stripe для миграционных платформ</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Round 5 -->
+      <div class="round-card supporter-round">
+        <div class="round-header">
+          <div class="round-number">Раунд 5</div>
+          <span class="round-role-badge badge-supporter">Supporter</span>
+        </div>
+        <div class="round-content">
+          <strong>Финальные аргументы:</strong>
+          <ul>
+            <li>Модель Shopify для агентов (не Amazon): Adventus.io 78% retention</li>
+            <li>Corridor-specific MVP: 85% мобильности в 10 коридорах (UNESCO)</li>
+            <li>Leverage Edu ($22M Series C), Prodigy Finance ($1.7B) — доказательства</li>
+            <li>Data network effects: каждая заявка улучшает предиктивную модель</li>
+          </ul>
+        </div>
+      </div>
+      <div class="round-card opposer-round">
+        <div class="round-header">
+          <div class="round-number">Раунд 5</div>
+          <span class="round-role-badge badge-opposer">Opposer</span>
+        </div>
+        <div class="round-content">
+          <strong>Финальная критика:</strong>
+          <ul>
+            <li>Внутри коридоров: 68% студентов через локальных агентов, &lt;12% используют bundled-сервисы</li>
+            <li>Co-liability: платформа несёт ответственность за ошибки агентов (UK Court of Appeal 2022)</li>
+            <li>Data moat обесценивается регуляторными шоками (Harvard Kennedy School 2023)</li>
+            <li>Regulatory capture при 20%+ доле рынка (European Migration Network 2024)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RISK ANALYSIS -->
+  <div class="section">
+    <div class="section-title">
+      <div class="icon">07</div>
+      Анализ рисков
+    </div>
+    <p class="section-subtitle">Ключевые риски, выявленные в ходе дебатов</p>
+
+    <div class="risk-grid">
+      <div class="risk-card">
+        <span class="risk-severity severity-high">Высокий</span>
+        <div class="risk-title">Регуляторная фрагментация</div>
+        <div class="risk-desc">Каждая юрисдикция имеет уникальные требования к миграционным сервисам. DSA, GDPR, ESOS вводят прямую ответственность агрегаторов. Compliance-затраты растут на 25-40% при масштабировании.</div>
+      </div>
+      <div class="risk-card">
+        <span class="risk-severity severity-high">Высокий</span>
+        <div class="risk-title">Юридическая co-liability</div>
+        <div class="risk-desc">Платформа несёт вторичную ответственность за ошибки партнёров-агентов. Коллективные иски (ApplyBoard, Ontario 2021). Страховые и юридические издержки до 22% от GMV.</div>
+      </div>
+      <div class="risk-card medium">
+        <span class="risk-severity severity-medium">Средний</span>
+        <div class="risk-title">Конкуренция и lock-in</div>
+        <div class="risk-desc">IDP + Navitas + ApplyBoard контролируют 75% рынка. Вузы и провайдеры интегрированы с существующими платформами. Высокие транзакционные издержки переключения.</div>
+      </div>
+      <div class="risk-card medium">
+        <span class="risk-severity severity-medium">Средний</span>
+        <div class="risk-title">Фрод и верификация</div>
+        <div class="risk-desc">До 15% заявок через агентов содержат недостоверные данные (OECD). Ошибки автоверификации ведут к искам (кейс Yocket). Рост оперзатрат на 18%.</div>
+      </div>
+      <div class="risk-card medium">
+        <span class="risk-severity severity-medium">Средний</span>
+        <div class="risk-title">Сопротивление агентов</div>
+        <div class="risk-desc">73% малых агентов не интегрируются с глобальными платформами (ICEF 2023). Страх дезинтермедиации. NPS платформ среди агентов падает на 24%.</div>
+      </div>
+      <div class="risk-card low">
+        <span class="risk-severity severity-low">Низкий</span>
+        <div class="risk-title">Зависимость от внешних API</div>
+        <div class="risk-desc">Изменения политик RegTech/KYC-вендоров и госсистем. Блокировки счетов (Remitly в Индии). Ограниченность госинтеграций в большинстве стран.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI AUTOMATION -->
+  <div class="section">
+    <div class="section-title">
+      <div class="icon">08</div>
+      Возможности AI-автоматизации
+    </div>
+    <p class="section-subtitle">Потенциал автоматизации до 70% операционных процессов</p>
+
+    <div class="auto-list">
+      <div class="auto-item">
+        <div class="auto-icon">&#128300;</div>
+        <div class="auto-text">
+          <div class="auto-title">AI-скоринг профиля</div>
+          <div class="auto-desc">Автоматический подбор программ и вузов по профилю кандидата</div>
+          <div class="auto-pct"><div class="auto-pct-fill" style="width: 90%;"></div></div>
+        </div>
+      </div>
+      <div class="auto-item">
+        <div class="auto-icon">&#128196;</div>
+        <div class="auto-text">
+          <div class="auto-title">Верификация документов</div>
+          <div class="auto-desc">Sumsub API: проверка из 220 стран, точность 97.3%, $0.50-2.00</div>
+          <div class="auto-pct"><div class="auto-pct-fill" style="width: 85%;"></div></div>
+        </div>
+      </div>
+      <div class="auto-item">
+        <div class="auto-icon">&#128172;</div>
+        <div class="auto-text">
+          <div class="auto-title">Чат-бот поддержки</div>
+          <div class="auto-desc">Консультации по визам и документам (модель Visabot)</div>
+          <div class="auto-pct"><div class="auto-pct-fill" style="width: 75%;"></div></div>
+        </div>
+      </div>
+      <div class="auto-item">
+        <div class="auto-icon">&#128202;</div>
+        <div class="auto-text">
+          <div class="auto-title">Предиктивная аналитика</div>
+          <div class="auto-desc">Прогноз вероятности зачисления, времени обработки визы</div>
+          <div class="auto-pct"><div class="auto-pct-fill" style="width: 70%;"></div></div>
+        </div>
+      </div>
+      <div class="auto-item">
+        <div class="auto-icon">&#128176;</div>
+        <div class="auto-text">
+          <div class="auto-title">KYC/AML Compliance</div>
+          <div class="auto-desc">ComplyAdvantage API: автоскрининг $0.10-0.50 за проверку</div>
+          <div class="auto-pct"><div class="auto-pct-fill" style="width: 80%;"></div></div>
+        </div>
+      </div>
+      <div class="auto-item">
+        <div class="auto-icon">&#127919;</div>
+        <div class="auto-text">
+          <div class="auto-title">Антифрод система</div>
+          <div class="auto-desc">Выявление поддельных документов и мошеннических заявок</div>
+          <div class="auto-pct"><div class="auto-pct-fill" style="width: 65%;"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card card-sm" style="margin-top: 16px; background: #fef9e7; border-left: 4px solid #f1c40f;">
+      <p style="font-size: 0.88rem; color: var(--gray-700);">
+        <strong style="color: var(--accent-orange);">Ограничение:</strong> По данным McKinsey (2023), большинство миграционных решений по-прежнему требует ручной проверки документов и экспертизы по миграционному законодательству. Полная автоматизация невозможна из-за высокой ответственности и вариативности случаев.
+      </p>
+    </div>
+  </div>
+
+  <!-- COMPETITIVE LANDSCAPE -->
+  <div class="section">
+    <div class="section-title">
+      <div class="icon">09</div>
+      Конкурентный ландшафт
+    </div>
+    <p class="section-subtitle">Ключевые игроки и их позиционирование</p>
+
+    <div class="comp-grid">
+      <div class="comp-card">
+        <div class="comp-name">ApplyBoard</div>
+        <div class="comp-val">Оценка $4B | 1,700+ вузов</div>
+        <div class="comp-desc">Канадский единорог. Агрегатор поступления в вузы. 600,000+ обработанных заявок. Revenue per application $2,800-3,500.</div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-name">IDP Education</div>
+        <div class="comp-val">Публичная компания (ASX)</div>
+        <div class="comp-desc">Один из трёх крупнейших игроков. Офлайн-рекрутер, трансформирующийся в digital. Совладелец IELTS.</div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-name">Navitas</div>
+        <div class="comp-val">Часть тройки лидеров</div>
+        <div class="comp-desc">Образовательный провайдер и рекрутер. Pathway-программы. Контроль значительной доли рынка.</div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-name">Flywire</div>
+        <div class="comp-val">IPO 2021 | MCap $2.4B</div>
+        <div class="comp-desc">Международные студенческие платежи. Маржа 2.5-3.5% от транзакции. Embedded finance для образования.</div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-name">Leverage Edu</div>
+        <div class="comp-val">Series C $22M (DST Global)</div>
+        <div class="comp-desc">Индия -> 5 стран. 350,000+ студентов. Фокус на corridor-specific стратегии (3 коридора).</div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-name">Adventus.io</div>
+        <div class="comp-val">$53M привлечено</div>
+        <div class="comp-desc">B2B2C маркетплейс для агентов. CRM/workflow-tools. Retention rate агентов 78%. Без дезинтермедиации.</div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-name">Prodigy Finance</div>
+        <div class="comp-val">$1.7B выдано (2024)</div>
+        <div class="comp-desc">Студенческое кредитование. Начал с коридора Индия->UK, масштабировался на 150 стран.</div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-name">Wise (TransferWise)</div>
+        <div class="comp-val">80+ юрисдикций</div>
+        <div class="comp-desc">Аффилейт-программа для денежных переводов. Мигранты как core-аудитория. Proof of concept регуляторного масштабирования.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MVP ROADMAP -->
+  <div class="section">
+    <div class="section-title">
+      <div class="icon">10</div>
+      MVP Roadmap
+    </div>
+    <p class="section-subtitle">Corridor-specific стратегия запуска</p>
+
+    <div class="card">
+      <div class="roadmap">
+        <div class="roadmap-item">
+          <div class="roadmap-phase">Фаза 0 | Месяцы 1-2</div>
+          <div class="roadmap-title">Выбор коридора и валидация</div>
+          <div class="roadmap-desc">Выбор 1 коридора из топ-10 (например, Индия &rarr; Канада). Customer discovery с 50+ мигрантами и 20+ агентами. Валидация готовности агентов к B2B2C-модели. 85% мобильности концентрируется в 10 коридорах (UNESCO 2024).</div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-phase">Фаза 1 | Месяцы 3-6</div>
+          <div class="roadmap-title">MVP: Образовательный вертикаль</div>
+          <div class="roadmap-desc">White-label SaaS для агентов с CRM и affiliate-трекингом. Подключение 10-20 вузов-партнёров. AI-скоринг совместимости (базовая версия). Интеграция с 2-3 вузами для автоматизации подачи документов. Целевой revenue: $200-500 за заявку.</div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-phase">Фаза 2 | Месяцы 6-12</div>
+          <div class="roadmap-title">Расширение цепочки услуг</div>
+          <div class="roadmap-desc">Добавление страхования, жилья, банкинга (Wise affiliate). Интеграция Sumsub для верификации документов. Embedded finance через Flywire или аналог. LTV на клиента: $1,200+. Подключение 50+ агентов-дистрибьюторов.</div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-phase">Фаза 3 | Месяцы 12-18</div>
+          <div class="roadmap-title">Масштабирование на 2-3 коридора</div>
+          <div class="roadmap-desc">Запуск в коридорах Китай &rarr; Австралия и Нигерия &rarr; UK. RegTech-интеграция (Vanta, ComplyAdvantage) для автоматизации compliance. Построение data moat через предиктивную аналитику. B2B2C-модель: 200+ агентов.</div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-phase">Фаза 4 | Месяцы 18-24</div>
+          <div class="roadmap-title">Полная мультисервисная платформа</div>
+          <div class="roadmap-desc">Трудоустройство и рекрутинг. Government API интеграции (где доступно). Data network effects: улучшение моделей с каждой заявкой. Целевой LTV: $3,000-4,500. Выход на операционную прибыльность.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONCLUSION -->
+  <div class="section">
+    <div class="section-title">
+      <div class="icon">11</div>
+      Заключение
+    </div>
+    <p class="section-subtitle">Сбалансированный взгляд на перспективы проекта</p>
+
+    <div class="conclusion-card">
+      <h3>Вердикт: Условно положительный (8.6 vs 8.0)</h3>
+      <p>
+        AI-дебаты показали, что бизнес-модель аффилейт-платформы для мигрантов <strong>жизнеспособна, но требует дисциплинированного подхода</strong> к запуску и масштабированию. Supporter убедительно доказал наличие крупного рынка ($950B+ TAM), привлекательной unit-экономики (LTV/CAC 8-30x) и работающих аналогов (ApplyBoard, Flywire, Prodigy Finance).
+      </p>
+      <p>
+        Opposer обоснованно указал на <strong>серьёзные регуляторные барьеры, сложности масштабирования и риски co-liability</strong>. Ни один из этих рисков не является фатальным, но их совокупность требует поэтапного corridor-specific подхода вместо попытки построить глобальную платформу сразу.
+      </p>
+
+      <div class="conclusion-grid">
+        <div class="conclusion-col pros">
+          <h4>Аргументы ЗА</h4>
+          <ul>
+            <li>Подтверждённый рынок $950B+ с растущей мобильностью</li>
+            <li>Высокий LTV/CAC = 8-30x (выше отраслевого порога)</li>
+            <li>Успешные прецеденты: ApplyBoard ($4B), Flywire ($2.4B)</li>
+            <li>B2B2C-модель (Shopify для агентов) снимает cold-start</li>
+            <li>AI/RegTech снижают операционные затраты на 60-70%</li>
+            <li>Data network effects создают долгосрочный moat</li>
+          </ul>
+        </div>
+        <div class="conclusion-col cons">
+          <h4>Аргументы ПРОТИВ</h4>
+          <ul>
+            <li>Регуляторная фрагментация: 18 мес. на новый рынок (KPMG)</li>
+            <li>75% рынка контролируют 3 игрока (winner-takes-most)</li>
+            <li>Co-liability и compliance-затраты до 22% от GMV</li>
+            <li>73% малых агентов не хотят интегрироваться</li>
+            <li>&lt;12% клиентов используют bundled-сервисы</li>
+            <li>Data moat уязвим к регуляторным шокам</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  AI-Debator Research Report &bull; Сгенерировано 15 марта 2026 &bull; 5 раундов дебатов &bull; Supporter 8.6 | Opposer 8.0
+</div>
+
+</body>
+</html>
