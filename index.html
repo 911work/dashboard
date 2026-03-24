@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Анализ кандидата — Нарима Джамбекова</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --surface: #111114;
+    --surface-2: #18181c;
+    --border: #2a2a30;
+    --text: #e8e6e3;
+    --text-muted: #8a8890;
+    --accent: #c9a44a;
+    --accent-dim: #8a7233;
+    --user-bg: #1a1a2e;
+    --user-border: #2a2a4e;
+    --ai-bg: #0f1210;
+    --ai-border: #1a2a1e;
+    --green: #4ade80;
+    --red: #f87171;
+    --orange: #fbbf24;
+    --blue: #60a5fa;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .noise {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* HEADER */
+  header {
+    padding: 80px 0 60px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(201,164,74,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-dim);
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .header-meta {
+    font-size: 14px;
+    color: var(--text-muted);
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .header-meta span::before {
+    content: '→ ';
+    color: var(--accent-dim);
+  }
+
+  /* CONVERSATION */
+  .conversation {
+    padding: 48px 0;
+  }
+
+  .exchange {
+    margin-bottom: 56px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .exchange:nth-child(1) { animation-delay: 0.1s; }
+  .exchange:nth-child(2) { animation-delay: 0.2s; }
+  .exchange:nth-child(3) { animation-delay: 0.3s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* USER MESSAGE */
+  .user-msg {
+    background: var(--user-bg);
+    border: 1px solid var(--user-border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .user-msg::before {
+    content: 'ВОПРОС';
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--blue);
+    position: absolute;
+    top: -22px;
+    left: 0;
+  }
+
+  .user-msg p {
+    color: #b8b6d0;
+    font-size: 15px;
+  }
+
+  /* AI RESPONSE */
+  .ai-msg {
+    background: var(--ai-bg);
+    border: 1px solid var(--ai-border);
+    border-radius: 12px;
+    padding: 28px 28px;
+    position: relative;
+  }
+
+  .ai-msg::before {
+    content: 'JARVIS';
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--accent-dim);
+    position: absolute;
+    top: -22px;
+    left: 0;
+  }
+
+  .ai-msg h3 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--accent);
+    margin: 28px 0 12px;
+  }
+
+  .ai-msg h3:first-child {
+    margin-top: 0;
+  }
+
+  .ai-msg p {
+    margin-bottom: 12px;
+    color: var(--text);
+    font-size: 15px;
+  }
+
+  .ai-msg p:last-child {
+    margin-bottom: 0;
+  }
+
+  .ai-msg strong {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .ai-msg em {
+    font-style: italic;
+    color: var(--text-muted);
+  }
+
+  /* TAGS */
+  .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin: 2px 4px 2px 0;
+  }
+
+  .tag--green { background: rgba(74,222,128,0.1); color: var(--green); border: 1px solid rgba(74,222,128,0.2); }
+  .tag--red { background: rgba(248,113,113,0.1); color: var(--red); border: 1px solid rgba(248,113,113,0.2); }
+  .tag--orange { background: rgba(251,191,36,0.1); color: var(--orange); border: 1px solid rgba(251,191,36,0.2); }
+  .tag--blue { background: rgba(96,165,250,0.1); color: var(--blue); border: 1px solid rgba(96,165,250,0.2); }
+
+  /* CLIFTON CHART */
+  .clifton-grid {
+    display: grid;
+    gap: 6px;
+    margin: 16px 0;
+  }
+
+  .clifton-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 50px;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+  }
+
+  .clifton-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: right;
+  }
+
+  .clifton-bar-track {
+    height: 6px;
+    background: var(--surface-2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .clifton-bar {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 1s ease;
+  }
+
+  .clifton-rank {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* VERDICT BOX */
+  .verdict {
+    background: linear-gradient(135deg, rgba(201,164,74,0.06) 0%, rgba(201,164,74,0.02) 100%);
+    border: 1px solid rgba(201,164,74,0.2);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-top: 20px;
+  }
+
+  .verdict-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  /* SECTION DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 48px 0;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 40px 0 60px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+
+  footer p {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    header { padding: 48px 0 40px; }
+    .conversation { padding: 32px 0; }
+    .ai-msg { padding: 20px; }
+    .user-msg { padding: 16px 20px; }
+    .clifton-row { grid-template-columns: 110px 1fr 40px; }
+    .header-meta { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+
+<div class="container">
+  <header>
+    <div class="header-label">Candidate Analysis Report</div>
+    <h1>Нарима <em>Джамбекова</em></h1>
+    <div class="header-meta">
+      <span>Marketing Project Manager</span>
+      <span>CliftonStrengths 34 + Резюме</span>
+      <span>Март 2026</span>
+    </div>
+  </header>
+
+  <div class="conversation">
+
+    <!-- EXCHANGE 1 -->
+    <div class="exchange">
+      <div class="user-msg">
+        <p>Оцени мой характер на основе переписок которые мы ведём. Вот Клифтон-тест девочки, которая хочет ко мне на ассистента по работе в компании / проджекта. Она мне подходит?</p>
+      </div>
+
+      <div class="ai-msg">
+        <h3>Что я знаю о вас</h3>
+        <p>Вы — стратег-визионер с высокой скоростью мышления, нетерпеливый к медленным процессам, ориентированный на результат и масштаб. Думаете системами, быстро переключаетесь между задачами, требуете от людей самостоятельности и не терпите, когда нужно разжёвывать очевидное. Сильный фокус на рост, слабая толерантность к рутине. Генерируете идеи быстрее, чем окружение успевает их переваривать. Вам нужен человек, который ловит контекст на лету и превращает поток мыслей в структурированные действия.</p>
+
+        <h3>Нарима — Топ-10 CliftonStrengths</h3>
+
+        <div class="clifton-grid">
+          <div class="clifton-row">
+            <span class="clifton-label">Strategic</span>
+            <div class="clifton-bar-track"><div class="clifton-bar" style="width:100%; background: var(--accent);"></div></div>
+            <span class="clifton-rank">#1</span>
+          </div>
+          <div class="clifton-row">
+            <span class="clifton-label">Arranger</span>
+            <div class="clifton-bar-track"><div class="clifton-bar" style="width:97%; background: var(--accent);"></div></div>
+            <span class="clifton-rank">#2</span>
+          </div>
+          <div class="clifton-row">
+            <span class="clifton-label">Individualization</span>
+            <div class="clifton-bar-track"><div class="clifton-bar" style="width:94%; background: var(--green);"></div></div>
+            <span class="clifton-rank">#3</span>
+          </div>
+          <div class="clifton-row">
+            <span class="clifton-label">Achiever</span>
+            <div class="clifton-bar-track"><div class="clifton-bar" style="width:91%; background: var(--green);"></div></div>
+            <span class="clifton-rank">#4</span>
+          </div>
+          <div class="clifton-row">
+            <span class="clifton-label">Ideation</span>
+            <div class="clifton-bar-track"><div class="clifton-bar" style="width:88%; background: var(--accent);"></div></div>
+            <span class="clifton-rank">#5</span>
+          </div>
+          <div class="clifton-row">
+            <span class="clifton-label">Activator</span>
+            <div class="clifton-bar-track"><div class="clifton-bar" style="width:85%; background: var(--blue);"></div></div>
+            <span class="clifton-rank">#6</span>
+          </div>
+          <div class="clifton-row">
+            <span class="clifton-label">Learner</span>
+            <div class="clifton-bar-track"><div class="clifton-bar" style="width:82%; background: var(--accent);"></div></div>
+            <span class="clifton-rank">#7</span>
+          </div>
+          <div class="clifton-row">
+            <span class="clifton-label">Communication</span>
+            <div class="clifton-bar-track"><div class="clifton-bar" style="width:79%; background: var(--blue);"></div></div>
+            <span class="clifton-rank">#8</span>
+          </div>
+          <div class="clifton-row">
+            <span class="clifton-label">Significance</span>
+            <div class="clifton-bar-track"><div class="clifton-bar" style="width:76%; background: var(--blue);"></div></div>
+            <span class="clifton-rank">#9</span>
+          </div>
+          <div class="clifton-row">
+            <span class="clifton-label">Maximizer</span>
+            <div class="clifton-bar-track"><div class="clifton-bar" style="width:73%; background: var(--blue);"></div></div>
+            <span class="clifton-rank">#10</span>
+          </div>
+        </div>
+
+        <h3>Почему подходит</h3>
+        <p><strong>Strategic + Ideation</strong> — не просто исполнитель. Будет понимать <em>почему</em> вы принимаете решения, видеть паттерны и предлагать альтернативы. Это редкость для ассистента — обычно на эту роль идут люди с Discipline, Responsibility, Consistency наверху.</p>
+        <p><strong>Arranger (#2)</strong> — ключевая операционная сила. Жонглирует людьми, ресурсами и задачами одновременно, перестраивает на ходу. Для вашего темпа — критично.</p>
+        <p><strong>Achiever (#4)</strong> — трудоголик, внутренний движок, не нужно пинать.</p>
+        <p><strong>Individualization (#3)</strong> — быстро считывает людей. Полезно для команды из 15 человек и B2B-партнёров.</p>
+        <p><strong>Activator (#6)</strong> — не будет сидеть и ждать идеальных условий, начнёт действовать.</p>
+
+        <h3>Потенциальные риски</h3>
+        <p>
+          <span class="tag tag--red">Discipline #21</span>
+          <span class="tag tag--red">Responsibility #23</span>
+          <span class="tag tag--red">Consistency #33</span>
+          <span class="tag tag--red">Deliberative #34</span>
+        </p>
+        <p>Системное ведение процессов, чеклисты, рутинный контроль, дотошная проверка деталей — <strong>не</strong> её сильная сторона. Она скорее «креативный операционщик», чем «надёжная машина процессов».</p>
+        <p>Если нужен человек для CRM-гигиены и контроля 50 мелких дедлайнов — будет напряжённо. Если нужен кто-то, кто ловит стратегический контекст, координирует людей и двигает проекты — подходит отлично.</p>
+
+        <div class="verdict">
+          <div class="verdict-label">ВЕРДИКТ</div>
+          <p>Подходит, и хорошо — при условии, что рутинный трекинг закрыт инструментами (Notion/Kommo-автоматизации) или вторым человеком. Сильна как правая рука на уровне мышления и координации, слабее — на уровне процессной дисциплины.</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- EXCHANGE 2 -->
+    <div class="exchange">
+      <div class="user-msg">
+        <p>Посмотри также её резюме и конкретные хард скиллы. Коротко распиши — есть ли там цифры/кейсы?</p>
+      </div>
+
+      <div class="ai-msg">
+        <h3>Хард скиллы</h3>
+        <p>
+          <span class="tag tag--green">Power BI</span>
+          <span class="tag tag--green">Jira / Notion / Asana</span>
+          <span class="tag tag--green">Excel</span>
+          <span class="tag tag--blue">Figma</span>
+          <span class="tag tag--blue">Sprint Planning</span>
+          <span class="tag tag--blue">KPI Tracking</span>
+          <span class="tag tag--orange">BI Analytics</span>
+        </p>
+        <p>Математическое образование (мехмат КазНУ) — мозги заточены под структуру и данные.</p>
+
+        <h3>Цифры и кейсы</h3>
+        <p>Практически нет. Резюме написано в формате «что делала», а не «чего добилась». Единственное конкретное — координация команды из 15 человек (Brave Talents) и запуск 3+ сервисных направлений (Sok Group). Нет ни одной метрики: ни роста конверсии, ни сокращения сроков, ни влияния на выручку.</p>
+
+        <h3>Что реально ценно</h3>
+        <p>2.5 года в Brave Talents координировала кросс-функциональную команду из 15 человек (дизайнеры, контент, продакшн) — прямо ваш масштаб команды в Facultét. Внедряла спринты, стендапы, таск-менеджмент — значит, процессную инфраструктуру умеет строить, даже если Discipline внизу по Клифтону. Плюс банковский аналитический бэкграунд (Power BI, модели мотивации, расчёт KPI) — не типичный PM-навык, бонус.</p>
+
+        <h3>Что настораживает</h3>
+        <p><strong>$2,000 на руки</strong> — для удалёнки из Алматы адекватно, но не дёшево для ассистента. Не готова к переезду. Нет опыта в EdTech/миграционной тематике. И главное — резюме не продаёт результат, что может говорить либо о скромности, либо о том, что сильных измеримых результатов не было.</p>
+
+        <div class="verdict">
+          <div class="verdict-label">ИТОГО</div>
+          <p>Хард скиллы для роли PM-ассистента — выше среднего. Аналитика + координация + инструменты — всё на месте. На тестовом задании стоит попросить именно кейс с цифрами, чтобы понять, есть ли за описаниями реальный импакт.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>JARVIS × FACULTÉT — CANDIDATE INTELLIGENCE — 2026</p>
+  </footer>
+</div>
+
+<script>
+  // Animate Clifton bars on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const bars = entry.target.querySelectorAll('.clifton-bar');
+        bars.forEach((bar, i) => {
+          const width = bar.style.width;
+          bar.style.width = '0%';
+          setTimeout(() => {
+            bar.style.width = width;
+          }, i * 80);
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.clifton-grid').forEach(grid => observer.observe(grid));
+</script>
+</body>
+</html>
