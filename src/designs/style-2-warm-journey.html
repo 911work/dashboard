@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Style 2: Warm Journey — Birlay Blog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sunset: #C2410C;
+    --sunset-light: #FFF7ED;
+    --sunset-muted: #EA580C;
+    --earth: #78350F;
+    --earth-light: #FFFBEB;
+    --sky: #0369A1;
+    --sky-light: #E0F2FE;
+    --green: #15803D;
+    --green-light: #F0FDF4;
+    --white: #FFFFFF;
+    --cream: #FEFCE8;
+    --warm-gray: #F5F0EB;
+    --gray-100: #F3F4F6;
+    --gray-300: #D1D5DB;
+    --gray-500: #6B7280;
+    --gray-700: #374151;
+    --gray-900: #111827;
+    --font: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --max-width: 1120px;
+    --radius: 16px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font);
+    color: var(--gray-700);
+    line-height: 1.7;
+    background: var(--warm-gray);
+  }
+
+  /* === HEADER === */
+  .header {
+    background: var(--white);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .header-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--sunset);
+    text-decoration: none;
+    letter-spacing: -1px;
+  }
+
+  .logo span { color: var(--earth); }
+
+  .nav { display: flex; align-items: center; gap: 28px; }
+  .nav a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gray-500);
+    text-decoration: none;
+  }
+  .nav a:hover { color: var(--sunset); }
+
+  .btn-primary {
+    background: var(--sunset);
+    color: var(--white);
+    padding: 10px 24px;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-primary:hover { background: var(--sunset-muted); transform: translateY(-1px); }
+
+  /* === HERO CARD === */
+  .hero-wrapper {
+    max-width: var(--max-width);
+    margin: 32px auto;
+    padding: 0 24px;
+  }
+
+  .hero-card {
+    background: linear-gradient(135deg, #FFF7ED 0%, #FEF3C7 50%, #ECFDF5 100%);
+    border-radius: var(--radius);
+    padding: 56px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(194, 65, 12, 0.06);
+  }
+
+  .hero-card::after {
+    content: '';
+    position: absolute;
+    bottom: -60px;
+    left: 30%;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: rgba(21, 128, 61, 0.04);
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--white);
+    color: var(--sunset);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  .hero-card h1 {
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--gray-900);
+    max-width: 700px;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-card .subtitle {
+    font-size: 17px;
+    color: var(--gray-500);
+    max-width: 560px;
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-number {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--sunset);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--gray-500);
+    font-weight: 500;
+  }
+
+  /* === CONTENT AREA === */
+  .content-area {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 24px 64px;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 32px;
+  }
+
+  .article-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 48px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  /* Author Row */
+  .author-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 32px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+
+  .author-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--sunset-light), var(--green-light));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--sunset);
+  }
+
+  .author-info .name { font-weight: 600; font-size: 15px; color: var(--gray-900); }
+  .author-info .desc { font-size: 13px; color: var(--gray-500); }
+
+  .meta-pills {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+  }
+
+  .pill {
+    background: var(--gray-100);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--gray-500);
+  }
+
+  /* Article Typography */
+  .article-card h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin: 40px 0 16px;
+  }
+
+  .article-card h2::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--sunset);
+    margin-bottom: 12px;
+  }
+
+  .article-card p {
+    font-size: 16px;
+    color: var(--gray-700);
+    margin-bottom: 16px;
+  }
+
+  /* Journey Answer */
+  .journey-answer {
+    background: var(--sunset-light);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin: 28px 0;
+    position: relative;
+  }
+
+  .journey-answer::before {
+    content: '💡';
+    position: absolute;
+    top: -12px;
+    left: 20px;
+    font-size: 24px;
+    background: var(--white);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  .journey-answer h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--sunset);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .journey-answer p {
+    color: var(--earth);
+    font-size: 15px;
+    margin: 0;
+  }
+
+  /* Pathway Cards */
+  .pathway-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .pathway-card {
+    border: 1px solid var(--gray-100);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .pathway-card:hover {
+    border-color: var(--sunset);
+    box-shadow: 0 4px 12px rgba(194, 65, 12, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .pathway-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  .pathway-card h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: 4px;
+  }
+
+  .pathway-card p {
+    font-size: 13px;
+    color: var(--gray-500);
+    margin: 0;
+  }
+
+  /* Journey Timeline */
+  .journey-timeline {
+    margin: 32px 0;
+    position: relative;
+  }
+
+  .timeline-item {
+    display: flex;
+    gap: 20px;
+    padding: 20px 0;
+    position: relative;
+  }
+
+  .timeline-marker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 48px;
+  }
+
+  .timeline-dot {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    z-index: 1;
+  }
+
+  .timeline-line {
+    width: 2px;
+    flex: 1;
+    background: var(--gray-100);
+    margin-top: 4px;
+  }
+
+  .timeline-item:last-child .timeline-line { display: none; }
+
+  .timeline-content h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: 4px;
+  }
+
+  .timeline-content p {
+    font-size: 14px;
+    color: var(--gray-500);
+    margin: 0;
+  }
+
+  .timeline-content .timeline-tag {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 12px;
+  }
+
+  /* Cost Cards */
+  .cost-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 24px 0;
+  }
+
+  .cost-card {
+    background: var(--gray-100);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .cost-card .amount {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--gray-900);
+    margin-bottom: 4px;
+  }
+
+  .cost-card .label {
+    font-size: 12px;
+    color: var(--gray-500);
+  }
+
+  /* CTA Section */
+  .cta-journey {
+    background: linear-gradient(135deg, var(--sunset) 0%, #7C2D12 100%);
+    border-radius: var(--radius);
+    padding: 40px;
+    text-align: center;
+    margin: 48px 0;
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-journey::before {
+    content: '✈️';
+    position: absolute;
+    top: 16px;
+    right: 24px;
+    font-size: 48px;
+    opacity: 0.2;
+  }
+
+  .cta-journey h3 {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+
+  .cta-journey p {
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 24px;
+    font-size: 15px;
+  }
+
+  .cta-journey .btn-primary {
+    background: var(--white);
+    color: var(--sunset);
+    padding: 14px 36px;
+    font-size: 15px;
+  }
+
+  /* FAQ Accordion */
+  .faq-card {
+    border: 1px solid var(--gray-100);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 12px;
+    transition: all 0.2s;
+  }
+
+  .faq-card:hover { border-color: var(--sunset); }
+
+  .faq-q {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--gray-900);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .faq-q::after {
+    content: '›';
+    font-size: 24px;
+    color: var(--sunset);
+    transition: transform 0.2s;
+  }
+
+  .faq-a {
+    font-size: 14px;
+    color: var(--gray-500);
+    margin-top: 12px;
+    line-height: 1.7;
+  }
+
+  /* === SIDEBAR === */
+  .sidebar { display: flex; flex-direction: column; gap: 24px; }
+
+  .sidebar-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .sidebar-card.sticky { position: sticky; top: 24px; }
+
+  .sidebar-card h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .toc-link {
+    display: block;
+    padding: 10px 0;
+    font-size: 14px;
+    color: var(--gray-500);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gray-100);
+    transition: color 0.2s;
+  }
+
+  .toc-link:last-child { border-bottom: none; }
+  .toc-link:hover { color: var(--sunset); }
+  .toc-link.active { color: var(--sunset); font-weight: 600; }
+
+  /* Success Story Card */
+  .story-card {
+    background: var(--green-light);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 12px;
+  }
+
+  .story-quote {
+    font-size: 14px;
+    font-style: italic;
+    color: var(--gray-700);
+    margin-bottom: 8px;
+  }
+
+  .story-author {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--green);
+  }
+
+  /* WhatsApp CTA */
+  .whatsapp-cta {
+    background: #25D366;
+    color: var(--white);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .whatsapp-cta h4 {
+    color: var(--white);
+    margin-bottom: 8px;
+    justify-content: center;
+  }
+
+  .whatsapp-cta p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 12px;
+  }
+
+  .whatsapp-cta .btn-wa {
+    display: block;
+    background: var(--white);
+    color: #25D366;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+  }
+
+  /* === FOOTER === */
+  .footer {
+    background: var(--gray-900);
+    color: rgba(255,255,255,0.6);
+    padding: 48px 24px 24px;
+    margin-top: 32px;
+  }
+
+  .footer-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-bottom: 32px;
+  }
+
+  .footer .logo { color: var(--white); font-size: 20px; display: block; margin-bottom: 8px; }
+  .footer .logo span { color: var(--sunset-light); }
+  .footer p { font-size: 13px; max-width: 280px; line-height: 1.7; }
+
+  .footer h5 { color: var(--white); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+  .footer a { display: block; color: rgba(255,255,255,0.5); text-decoration: none; font-size: 14px; padding: 3px 0; }
+  .footer a:hover { color: var(--white); }
+
+  .footer-bottom {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    font-size: 12px;
+  }
+
+  /* === MOBILE === */
+  @media (max-width: 768px) {
+    .content-area { grid-template-columns: 1fr; }
+    .hero-card { padding: 32px 24px; }
+    .hero-card h1 { font-size: 28px; }
+    .pathway-grid { grid-template-columns: 1fr; }
+    .cost-grid { grid-template-columns: 1fr; }
+    .article-card { padding: 28px; }
+    .meta-pills { display: none; }
+    .nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <a href="/" class="logo">Bir<span>lay</span></a>
+    <nav class="nav">
+      <a href="#">Courses</a>
+      <a href="#">Blog</a>
+      <a href="#">For Students</a>
+      <a href="#">For Recruiters</a>
+    </nav>
+    <a href="#" class="btn-primary">Start Your Journey</a>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero-wrapper">
+  <div class="hero-card">
+    <div class="hero-tag">🇵🇹 Legal Guide · Updated March 2026</div>
+    <h1>Your Path to Portugal: Residence Permit Through Vocational Training</h1>
+    <p class="subtitle">Everything you need to know about moving to Portugal through DGERT courses — costs, documents, timelines, and real success stories.</p>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-number">200+</span><span class="stat-label">Students Relocated</span></div>
+      <div class="stat"><span class="stat-number">93%</span><span class="stat-label">Success Rate</span></div>
+      <div class="stat"><span class="stat-number">2–4</span><span class="stat-label">Months Process</span></div>
+      <div class="stat"><span class="stat-number">€875</span><span class="stat-label">Tuition From</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Content -->
+<div class="content-area">
+  <div class="article-card">
+
+    <!-- Author -->
+    <div class="author-row">
+      <div class="author-img">AS</div>
+      <div class="author-info">
+        <div class="name">Amir Sharma</div>
+        <div class="desc">Education Consultant · 120+ students helped</div>
+      </div>
+      <div class="meta-pills">
+        <span class="pill">📅 Mar 2026</span>
+        <span class="pill">⏱ 18 min</span>
+      </div>
+    </div>
+
+    <!-- Quick Answer -->
+    <div class="journey-answer">
+      <h4>The Short Answer</h4>
+      <p><strong>Yes!</strong> Enroll in a DGERT-certified course → show €10,000 bank proof → apply under Article 92 or 91.4 → get your residence card in 2–4 months. No university degree required. Tuition starts at just €875/year.</p>
+    </div>
+
+    <h2>Two Pathways to Your Permit</h2>
+    <p>Portugal offers two legal routes depending on where you're applying from. Choose the one that fits your situation.</p>
+
+    <div class="pathway-grid">
+      <div class="pathway-card">
+        <div class="pathway-icon" style="background: var(--sky-light);">🏠</div>
+        <h4>Article 92 — In Portugal</h4>
+        <p>Apply from inside Portugal if you're already here on a tourist visa. Processing: 60–90 days. AIMA fee: €545.</p>
+      </div>
+      <div class="pathway-card">
+        <div class="pathway-icon" style="background: var(--sunset-light);">✈️</div>
+        <h4>Article 91.4 — D4 Visa</h4>
+        <p>Apply from your home country at the Portuguese consulate. Processing: 30–60 days. Fee: €108.</p>
+      </div>
+      <div class="pathway-card">
+        <div class="pathway-icon" style="background: var(--green-light);">📋</div>
+        <h4>DGERT Certification</h4>
+        <p>Only courses certified by DGERT qualify for residence permits. Always verify your school first.</p>
+      </div>
+      <div class="pathway-card">
+        <div class="pathway-icon" style="background: var(--earth-light);">💼</div>
+        <h4>Work While Studying</h4>
+        <p>Your permit allows 20hrs/week of work. Earn €600–900/month to cover living costs.</p>
+      </div>
+    </div>
+
+    <h2>Your 7-Step Journey</h2>
+
+    <div class="journey-timeline">
+      <div class="timeline-item">
+        <div class="timeline-marker">
+          <div class="timeline-dot" style="background: var(--sunset-light); color: var(--sunset);">1</div>
+          <div class="timeline-line"></div>
+        </div>
+        <div class="timeline-content">
+          <h4>Choose Your DGERT Course</h4>
+          <p>Data Science, Digital Marketing, UX/UI Design, or Project Management</p>
+          <span class="timeline-tag" style="background: var(--green-light); color: var(--green);">Week 1</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-marker">
+          <div class="timeline-dot" style="background: var(--sky-light); color: var(--sky);">2</div>
+          <div class="timeline-line"></div>
+        </div>
+        <div class="timeline-content">
+          <h4>Get Enrollment Letter</h4>
+          <p>Your school issues an official acceptance confirming DGERT certification</p>
+          <span class="timeline-tag" style="background: var(--sky-light); color: var(--sky);">Week 1–2</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-marker">
+          <div class="timeline-dot" style="background: var(--earth-light); color: var(--earth);">3</div>
+          <div class="timeline-line"></div>
+        </div>
+        <div class="timeline-content">
+          <h4>Prepare Documents & Bank Proof</h4>
+          <p>Passport, criminal record, health insurance, proof of €10,000+</p>
+          <span class="timeline-tag" style="background: var(--earth-light); color: var(--earth);">Week 2–4</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-marker">
+          <div class="timeline-dot" style="background: var(--sunset-light); color: var(--sunset);">4</div>
+          <div class="timeline-line"></div>
+        </div>
+        <div class="timeline-content">
+          <h4>Submit Application</h4>
+          <p>Apply at AIMA (inside Portugal) or your local consulate (D4 visa)</p>
+          <span class="timeline-tag" style="background: var(--sunset-light); color: var(--sunset);">Week 4–6</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-marker">
+          <div class="timeline-dot" style="background: var(--green-light); color: var(--green);">5</div>
+        </div>
+        <div class="timeline-content">
+          <h4>Receive Residence Card 🎉</h4>
+          <p>Valid for 1 year, renewable. Welcome to Portugal!</p>
+          <span class="timeline-tag" style="background: var(--green-light); color: var(--green);">Month 2–4</span>
+        </div>
+      </div>
+    </div>
+
+    <h2>What It Costs</h2>
+    <div class="cost-grid">
+      <div class="cost-card">
+        <div class="amount">€875–5K</div>
+        <div class="label">Tuition / Year</div>
+      </div>
+      <div class="cost-card">
+        <div class="amount">€10,000</div>
+        <div class="label">Bank Proof</div>
+      </div>
+      <div class="cost-card">
+        <div class="amount">€300–600</div>
+        <div class="label">Health Insurance</div>
+      </div>
+    </div>
+    <p style="text-align:center; font-size:14px; color:var(--gray-500);">Total first year: <strong style="color:var(--gray-900);">€12,500 – €18,000</strong> including accommodation</p>
+
+    <!-- CTA -->
+    <div class="cta-journey">
+      <h3>Ready to Begin Your Journey?</h3>
+      <p>Join 200+ students who successfully moved to Portugal through Birlay.</p>
+      <a href="#" class="btn-primary">Book Free Consultation →</a>
+    </div>
+
+    <h2>Common Questions</h2>
+
+    <div class="faq-card">
+      <div class="faq-q">Do I need a university degree?</div>
+      <div class="faq-a">No. DGERT vocational courses only require a high school diploma. This is one of the key advantages over traditional university routes.</div>
+    </div>
+    <div class="faq-card">
+      <div class="faq-q">Can I work while studying?</div>
+      <div class="faq-a">Yes! Your residence permit allows 20 hours/week of work, earning approximately €600–900 monthly.</div>
+    </div>
+    <div class="faq-card">
+      <div class="faq-q">Can I bring my family?</div>
+      <div class="faq-a">Yes, through family reunification once you receive your residence card. Your spouse also gets a work permit.</div>
+    </div>
+    <div class="faq-card">
+      <div class="faq-q">What happens after my course?</div>
+      <div class="faq-a">5 options: continue studying, find employment, start a business, apply for permanent residency (after 5 years), or bridge to another EU country.</div>
+    </div>
+
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-card sticky">
+      <h4>📑 On This Page</h4>
+      <a href="#" class="toc-link active">Two Pathways</a>
+      <a href="#" class="toc-link">7-Step Journey</a>
+      <a href="#" class="toc-link">What It Costs</a>
+      <a href="#" class="toc-link">FAQ</a>
+    </div>
+
+    <div class="sidebar-card">
+      <h4>🌟 Success Stories</h4>
+      <div class="story-card">
+        <div class="story-quote">"I went from a software job in Mumbai to studying Data Science in Lisbon. Best decision of my life."</div>
+        <div class="story-author">— Ravi P., India → Lisbon</div>
+      </div>
+      <div class="story-card">
+        <div class="story-quote">"The process was smoother than I expected. My permit arrived in 3 months."</div>
+        <div class="story-author">— Priya K., India → Porto</div>
+      </div>
+    </div>
+
+    <div class="whatsapp-cta">
+      <h4>💬 Need Help?</h4>
+      <p>Chat with our education consultant on WhatsApp</p>
+      <a href="#" class="btn-wa">Chat on WhatsApp</a>
+    </div>
+  </aside>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <span class="logo">Bir<span>lay</span></span>
+      <p>Your bridge to European education and residence. DGERT-certified vocational training in Portugal.</p>
+    </div>
+    <div>
+      <h5>Students</h5>
+      <a href="#">Browse Courses</a>
+      <a href="#">Study from India</a>
+      <a href="#">Cost Calculator</a>
+    </div>
+    <div>
+      <h5>Partners</h5>
+      <a href="#">Recruiter Program</a>
+      <a href="#">Schools</a>
+    </div>
+    <div>
+      <h5>Legal</h5>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Birlay.com — DGERT License #5116/2025</div>
+</footer>
+
+</body>
+</html>
