@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birlay — Midnight Horizon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-primary: #060B18;
+    --bg-secondary: #0D1424;
+    --bg-card: #111827;
+    --accent-blue: #3B82F6;
+    --accent-gold: #F59E0B;
+    --text-primary: #F8FAFC;
+    --text-secondary: #94A3B8;
+    --border: rgba(255,255,255,0.08);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(6, 11, 24, 0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .logo-text {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text-primary); }
+
+  .nav-cta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .btn-ghost {
+    padding: 8px 20px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    background: transparent;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-ghost:hover {
+    border-color: rgba(255,255,255,0.2);
+    color: var(--text-primary);
+  }
+
+  .btn-primary {
+    padding: 8px 20px;
+    background: var(--accent-blue);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover {
+    background: #2563EB;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(59,130,246,0.4);
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* STAR FIELD */
+  .stars {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--duration, 3s) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+    opacity: var(--opacity, 0.4);
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: var(--opacity, 0.4); }
+    50% { opacity: 0.1; }
+  }
+
+  /* GLOW */
+  .hero-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    background: rgba(59,130,246,0.1);
+    border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #93C5FD;
+    margin-bottom: 32px;
+    position: relative;
+  }
+
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent-blue);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .hero h1 {
+    font-size: clamp(48px, 7vw, 88px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -3px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #fff 30%, #3B82F6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero p {
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    max-width: 560px;
+    margin: 0 auto 48px;
+    font-weight: 400;
+    position: relative;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .btn-hero {
+    padding: 14px 32px;
+    background: var(--accent-blue);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-hero:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(59,130,246,0.4);
+  }
+
+  .btn-hero-ghost {
+    padding: 14px 32px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-secondary);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-hero-ghost:hover {
+    border-color: rgba(255,255,255,0.2);
+    color: var(--text-primary);
+  }
+
+  /* TRUST STRIP */
+  .trust-strip {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    margin-top: 80px;
+    padding-top: 48px;
+    border-top: 1px solid var(--border);
+    position: relative;
+  }
+
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  .trust-icon { color: var(--accent-gold); font-size: 16px; }
+
+  /* FEATURES */
+  .section {
+    padding: 100px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-blue);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .section-sub {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 480px;
+    line-height: 1.7;
+    margin-bottom: 64px;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .feature-card {
+    background: var(--bg-card);
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .feature-card:hover {
+    background: #161f33;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(59,130,246,0.5), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .feature-card:hover::before { opacity: 1; }
+
+  .feature-icon {
+    width: 44px;
+    height: 44px;
+    background: rgba(59,130,246,0.1);
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .feature-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.3px;
+  }
+
+  .feature-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* STATS */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin: 80px 0;
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px;
+    text-align: center;
+  }
+
+  .stat-number {
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: -2px;
+    background: linear-gradient(135deg, #fff, #3B82F6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  /* PROCESS */
+  .process {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 100px 48px;
+  }
+
+  .process-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 64px;
+    position: relative;
+  }
+
+  .steps::before {
+    content: '';
+    position: absolute;
+    top: 24px;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent-blue), transparent 50%, var(--accent-blue));
+    opacity: 0.3;
+  }
+
+  .step {
+    padding: 0 24px;
+    text-align: center;
+  }
+
+  .step-num {
+    width: 48px;
+    height: 48px;
+    background: var(--bg-primary);
+    border: 1px solid rgba(59,130,246,0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent-blue);
+    margin: 0 auto 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .step-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.3px;
+  }
+
+  .step-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* CTA */
+  .cta-section {
+    padding: 100px 48px;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .cta-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 80px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-card::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(59,130,246,0.3), transparent 50%);
+    z-index: -1;
+  }
+
+  .cta-glow {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);
+    top: -50px;
+    right: -50px;
+    pointer-events: none;
+  }
+
+  .cta-title {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    margin-bottom: 16px;
+  }
+
+  .cta-sub {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    line-height: 1.6;
+  }
+
+  .email-form {
+    display: flex;
+    gap: 12px;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+
+  .email-input {
+    flex: 1;
+    padding: 14px 18px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .email-input::placeholder { color: var(--text-secondary); }
+  .email-input:focus { border-color: rgba(59,130,246,0.5); }
+
+  .btn-cta {
+    padding: 14px 24px;
+    background: var(--accent-blue);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+
+  .btn-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(59,130,246,0.4);
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--text-primary); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <svg class="logo-icon" viewBox="0 0 32 32" fill="none">
+      <!-- Swallow / bird mark -->
+      <path d="M16 8 C10 12, 4 10, 2 14 C6 13, 10 15, 16 22 C22 15, 26 13, 30 14 C28 10, 22 12, 16 8Z" fill="#3B82F6"/>
+      <path d="M16 22 L13 28 M16 22 L19 28" stroke="#3B82F6" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <span class="logo-text">Birlay</span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#">How it works</a></li>
+    <li><a href="#">Destinations</a></li>
+    <li><a href="#">Pricing</a></li>
+    <li><a href="#">Blog</a></li>
+  </ul>
+
+  <div class="nav-cta">
+    <a href="#" class="btn-ghost">Sign in</a>
+    <a href="#" class="btn-primary">Get started →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="stars" id="stars"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-badge">
+    <div class="badge-dot"></div>
+    Now supporting Portugal Student Visa — D4
+  </div>
+
+  <h1>
+    <span class="gradient-text">Your migration,</span><br>
+    fully orchestrated.
+  </h1>
+
+  <p>
+    From visa application to finding your apartment — Birlay guides every step of your journey to Europe. One platform, zero confusion.
+  </p>
+
+  <div class="hero-actions">
+    <a href="#" class="btn-hero">
+      Start your journey
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+    <a href="#" class="btn-hero-ghost">See how it works</a>
+  </div>
+
+  <div class="trust-strip">
+    <div class="trust-item">
+      <span class="trust-icon">✦</span>
+      <span>4.9 rating from 2,400+ students</span>
+    </div>
+    <div class="trust-item">
+      <span class="trust-icon">✦</span>
+      <span>98% visa approval rate</span>
+    </div>
+    <div class="trust-item">
+      <span class="trust-icon">✦</span>
+      <span>Used in 14 countries</span>
+    </div>
+    <div class="trust-item">
+      <span class="trust-icon">✦</span>
+      <span>SOC 2 Type II certified</span>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<div class="section">
+  <p class="section-label">Platform</p>
+  <h2 class="section-title">Everything migration<br>in one place.</h2>
+  <p class="section-sub">Stop juggling 12 browser tabs. Birlay connects your visa, housing, banking, and enrollment into a single intelligent workflow.</p>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">📋</div>
+      <h3 class="feature-title">Visa Tracker</h3>
+      <p class="feature-desc">Real-time status updates on your application. Know exactly what's pending, what's approved, and what's next.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🏠</div>
+      <h3 class="feature-title">Housing Hub</h3>
+      <p class="feature-desc">Verified student housing in Lisbon, Porto, and beyond. Compare options, read reviews, book directly.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎓</div>
+      <h3 class="feature-title">School Match</h3>
+      <p class="feature-desc">Find accredited programs that qualify for your visa type. Filter by language, field, cost, and post-study rights.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💳</div>
+      <h3 class="feature-title">Finance Guide</h3>
+      <p class="feature-desc">Cost calculators, scholarship databases, and step-by-step bank account opening for new arrivals.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3 class="feature-title">Document Vault</h3>
+      <p class="feature-desc">Secure storage for all your documents. Share with consulates, schools, and landlords with a single link.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌐</div>
+      <h3 class="feature-title">Path to PR</h3>
+      <p class="feature-desc">Plan beyond your studies. Map your route from student visa to work permit to permanent residency.</p>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="section" style="padding-top:0">
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-number">12k+</div>
+      <div class="stat-label">Students helped</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">98%</div>
+      <div class="stat-label">Visa approval rate</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">3.2x</div>
+      <div class="stat-label">Faster than solo</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<div class="process">
+  <div class="process-inner">
+    <p class="section-label">How it works</p>
+    <h2 class="section-title">Four steps to your<br>new life in Europe.</h2>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3 class="step-title">Tell us your goal</h3>
+        <p class="step-desc">Answer a few questions. We build your personal migration plan in seconds.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3 class="step-title">Choose your path</h3>
+        <p class="step-desc">Pick a school and program. We verify it qualifies for your visa type.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3 class="step-title">File & track</h3>
+        <p class="step-desc">Submit your visa application with guided checklists. Track everything live.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h3 class="step-title">Land & settle</h3>
+        <p class="step-desc">Your housing, banking, and registration are ready before you arrive.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div style="padding: 100px 48px;">
+  <div class="cta-card" style="max-width:800px; margin: 0 auto; text-align:center; background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px; padding: 80px 60px; position:relative; overflow:hidden;">
+    <div class="cta-glow"></div>
+    <h2 class="cta-title">Ready to move?</h2>
+    <p class="cta-sub">Join 12,000+ students who moved to Europe with Birlay.<br>Start free. No credit card required.</p>
+    <div class="email-form">
+      <input type="email" class="email-input" placeholder="your@email.com">
+      <button class="btn-cta">Get started →</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-text">© 2025 Birlay Technologies Ltd.</span>
+  <ul class="footer-links">
+    <li><a href="#">Privacy</a></li>
+    <li><a href="#">Terms</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</footer>
+
+<script>
+  // Generate stars
+  const container = document.getElementById('stars');
+  for (let i = 0; i < 120; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.cssText = `
+      left: ${Math.random() * 100}%;
+      top: ${Math.random() * 100}%;
+      --duration: ${2 + Math.random() * 4}s;
+      --delay: ${Math.random() * 4}s;
+      --opacity: ${0.2 + Math.random() * 0.6};
+      width: ${Math.random() > 0.8 ? 3 : 2}px;
+      height: ${Math.random() > 0.8 ? 3 : 2}px;
+    `;
+    container.appendChild(star);
+  }
+</script>
+</body>
+</html>
