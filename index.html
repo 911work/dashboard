@@ -3,477 +3,412 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Анализ кандидата — Нарима Джамбекова</title>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Cape Town — Жильё на 3–17 апреля 2026</title>
 <style>
-  :root {
-    --bg: #0a0a0c;
-    --surface: #111114;
-    --surface-2: #18181c;
-    --border: #2a2a30;
-    --text: #e8e6e3;
-    --text-muted: #8a8890;
-    --accent: #c9a44a;
-    --accent-dim: #8a7233;
-    --user-bg: #1a1a2e;
-    --user-border: #2a2a4e;
-    --ai-bg: #0f1210;
-    --ai-border: #1a2a1e;
-    --green: #4ade80;
-    --red: #f87171;
-    --orange: #fbbf24;
-    --blue: #60a5fa;
-  }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',sans-serif;background:#fafafa;color:#222;line-height:1.5}
+a{color:inherit;text-decoration:none}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+/* ── Header ── */
+.header{background:#fff;border-bottom:1px solid #ebebeb;padding:20px 0;position:sticky;top:0;z-index:100}
+.header-inner{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.logo{font-size:22px;font-weight:700;color:#222}
+.logo span{color:#ff385c}
+.search-info{font-size:14px;color:#717171;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.search-info b{color:#222}
+.fav-counter{background:#ff385c;color:#fff;font-size:13px;font-weight:600;padding:6px 16px;border-radius:24px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;border:none}
+.fav-counter:hover{background:#e0294e}
+.fav-counter.active{background:#222}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 16px;
-    line-height: 1.7;
-    -webkit-font-smoothing: antialiased;
-  }
+/* ── Filters ── */
+.filters{max-width:1280px;margin:0 auto;padding:16px 24px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pill{padding:8px 18px;border-radius:24px;border:1px solid #ddd;background:#fff;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;color:#222;white-space:nowrap}
+.pill:hover{border-color:#222}
+.pill.active{background:#222;color:#fff;border-color:#222}
+.filters-label{font-size:13px;color:#717171;font-weight:500;margin-right:4px}
 
-  .noise {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9999;
-  }
+/* ── Grid ── */
+.grid{max-width:1280px;margin:0 auto;padding:8px 24px 60px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px}
 
-  .container {
-    max-width: 820px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
+/* ── Card ── */
+.card{background:#fff;border-radius:16px;overflow:hidden;transition:transform .2s,box-shadow .2s;position:relative;cursor:default}
+.card:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.card.hidden{display:none}
+.card-img{width:100%;aspect-ratio:4/3;position:relative;overflow:hidden}
+.card-img-bg{width:100%;height:100%;object-fit:cover;display:flex;align-items:center;justify-content:center;font-size:48px}
+.badge{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.95);backdrop-filter:blur(4px);padding:4px 12px;border-radius:8px;font-size:13px;font-weight:700;color:#222;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.heart{position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.4);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.heart:hover{background:rgba(0,0,0,.6);transform:scale(1.1)}
+.heart.liked{background:#ff385c}
+.heart svg{width:18px;height:18px;fill:#fff;transition:transform .15s}
+.heart.liked svg{transform:scale(1.15)}
+.district-tag{position:absolute;bottom:12px;left:12px;background:rgba(255,255,255,.92);backdrop-filter:blur(4px);padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600;color:#222;letter-spacing:.3px;text-transform:uppercase}
+.card-body{padding:16px 18px 20px}
+.card-title{font-size:16px;font-weight:600;margin-bottom:4px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-type{font-size:12px;color:#717171;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px}
+.card-desc{font-size:13px;color:#555;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;line-height:1.5}
+.card-footer{display:flex;align-items:center;justify-content:space-between}
+.price{font-size:16px;font-weight:700}.price span{font-size:13px;font-weight:400;color:#717171}
+.rating{display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600}
+.star{color:#ff385c}
+.card-link{display:inline-block;margin-top:12px;font-size:13px;font-weight:600;color:#ff385c;transition:opacity .15s}
+.card-link:hover{opacity:.7}
+.card-amenities{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.amenity{font-size:11px;background:#f5f5f5;padding:3px 8px;border-radius:6px;color:#555}
 
-  /* HEADER */
-  header {
-    padding: 80px 0 60px;
-    border-bottom: 1px solid var(--border);
-    position: relative;
-  }
+/* ── Image placeholders per district ── */
+.img-gardens{background:linear-gradient(135deg,#a8edea 0%,#fed6e3 100%)}
+.img-tamboerskloof{background:linear-gradient(135deg,#fbc2eb 0%,#a6c1ee 100%)}
+.img-newlands{background:linear-gradient(135deg,#d4fc79 0%,#96e6a1 100%)}
+.img-simons{background:linear-gradient(135deg,#89f7fe 0%,#66a6ff 100%)}
+.img-noordhoek{background:linear-gradient(135deg,#ffecd2 0%,#fcb69f 100%)}
 
-  header::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, rgba(201,164,74,0.08) 0%, transparent 70%);
-    pointer-events: none;
-  }
+.img-label{font-size:14px;font-weight:600;color:rgba(0,0,0,.25);text-transform:uppercase;letter-spacing:1px;position:absolute;bottom:50%;left:50%;transform:translate(-50%,50%);pointer-events:none}
 
-  .header-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--accent-dim);
-    margin-bottom: 20px;
-  }
+/* ── Empty state ── */
+.empty{text-align:center;padding:80px 24px;color:#717171;font-size:16px;display:none}
+.empty.show{display:block}
 
-  h1 {
-    font-family: 'Instrument Serif', serif;
-    font-size: clamp(36px, 6vw, 56px);
-    font-weight: 400;
-    line-height: 1.15;
-    color: var(--text);
-    margin-bottom: 16px;
-  }
-
-  h1 em {
-    font-style: italic;
-    color: var(--accent);
-  }
-
-  .header-meta {
-    font-size: 14px;
-    color: var(--text-muted);
-    display: flex;
-    gap: 24px;
-    flex-wrap: wrap;
-  }
-
-  .header-meta span::before {
-    content: '→ ';
-    color: var(--accent-dim);
-  }
-
-  /* CONVERSATION */
-  .conversation {
-    padding: 48px 0;
-  }
-
-  .exchange {
-    margin-bottom: 56px;
-    animation: fadeUp 0.6s ease both;
-  }
-
-  .exchange:nth-child(1) { animation-delay: 0.1s; }
-  .exchange:nth-child(2) { animation-delay: 0.2s; }
-  .exchange:nth-child(3) { animation-delay: 0.3s; }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* USER MESSAGE */
-  .user-msg {
-    background: var(--user-bg);
-    border: 1px solid var(--user-border);
-    border-radius: 12px;
-    padding: 20px 24px;
-    margin-bottom: 24px;
-    position: relative;
-  }
-
-  .user-msg::before {
-    content: 'ВОПРОС';
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: var(--blue);
-    position: absolute;
-    top: -22px;
-    left: 0;
-  }
-
-  .user-msg p {
-    color: #b8b6d0;
-    font-size: 15px;
-  }
-
-  /* AI RESPONSE */
-  .ai-msg {
-    background: var(--ai-bg);
-    border: 1px solid var(--ai-border);
-    border-radius: 12px;
-    padding: 28px 28px;
-    position: relative;
-  }
-
-  .ai-msg::before {
-    content: 'JARVIS';
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: var(--accent-dim);
-    position: absolute;
-    top: -22px;
-    left: 0;
-  }
-
-  .ai-msg h3 {
-    font-family: 'Instrument Serif', serif;
-    font-size: 22px;
-    font-weight: 400;
-    color: var(--accent);
-    margin: 28px 0 12px;
-  }
-
-  .ai-msg h3:first-child {
-    margin-top: 0;
-  }
-
-  .ai-msg p {
-    margin-bottom: 12px;
-    color: var(--text);
-    font-size: 15px;
-  }
-
-  .ai-msg p:last-child {
-    margin-bottom: 0;
-  }
-
-  .ai-msg strong {
-    color: var(--accent);
-    font-weight: 600;
-  }
-
-  .ai-msg em {
-    font-style: italic;
-    color: var(--text-muted);
-  }
-
-  /* TAGS */
-  .tag {
-    display: inline-block;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    padding: 3px 10px;
-    border-radius: 4px;
-    margin: 2px 4px 2px 0;
-  }
-
-  .tag--green { background: rgba(74,222,128,0.1); color: var(--green); border: 1px solid rgba(74,222,128,0.2); }
-  .tag--red { background: rgba(248,113,113,0.1); color: var(--red); border: 1px solid rgba(248,113,113,0.2); }
-  .tag--orange { background: rgba(251,191,36,0.1); color: var(--orange); border: 1px solid rgba(251,191,36,0.2); }
-  .tag--blue { background: rgba(96,165,250,0.1); color: var(--blue); border: 1px solid rgba(96,165,250,0.2); }
-
-  /* CLIFTON CHART */
-  .clifton-grid {
-    display: grid;
-    gap: 6px;
-    margin: 16px 0;
-  }
-
-  .clifton-row {
-    display: grid;
-    grid-template-columns: 140px 1fr 50px;
-    align-items: center;
-    gap: 12px;
-    font-size: 13px;
-  }
-
-  .clifton-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--text-muted);
-    text-align: right;
-  }
-
-  .clifton-bar-track {
-    height: 6px;
-    background: var(--surface-2);
-    border-radius: 3px;
-    overflow: hidden;
-  }
-
-  .clifton-bar {
-    height: 100%;
-    border-radius: 3px;
-    transition: width 1s ease;
-  }
-
-  .clifton-rank {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--text-muted);
-  }
-
-  /* VERDICT BOX */
-  .verdict {
-    background: linear-gradient(135deg, rgba(201,164,74,0.06) 0%, rgba(201,164,74,0.02) 100%);
-    border: 1px solid rgba(201,164,74,0.2);
-    border-radius: 12px;
-    padding: 24px 28px;
-    margin-top: 20px;
-  }
-
-  .verdict-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 2px;
-    color: var(--accent);
-    margin-bottom: 10px;
-  }
-
-  /* SECTION DIVIDER */
-  .divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 48px 0;
-  }
-
-  /* FOOTER */
-  footer {
-    padding: 40px 0 60px;
-    border-top: 1px solid var(--border);
-    text-align: center;
-  }
-
-  footer p {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--text-muted);
-    letter-spacing: 1px;
-  }
-
-  /* RESPONSIVE */
-  @media (max-width: 640px) {
-    header { padding: 48px 0 40px; }
-    .conversation { padding: 32px 0; }
-    .ai-msg { padding: 20px; }
-    .user-msg { padding: 16px 20px; }
-    .clifton-row { grid-template-columns: 110px 1fr 40px; }
-    .header-meta { flex-direction: column; gap: 8px; }
-  }
+/* ── Responsive ── */
+@media(max-width:680px){
+  .grid{grid-template-columns:1fr;padding:8px 16px 40px}
+  .header-inner{padding:0 16px}
+  .filters{padding:12px 16px}
+  .search-info{font-size:13px}
+}
 </style>
 </head>
 <body>
-<div class="noise"></div>
 
-<div class="container">
-  <header>
-    <div class="header-label">Candidate Analysis Report</div>
-    <h1>Нарима <em>Джамбекова</em></h1>
-    <div class="header-meta">
-      <span>Marketing Project Manager</span>
-      <span>CliftonStrengths 34 + Резюме</span>
-      <span>Март 2026</span>
+<div class="header">
+  <div class="header-inner">
+    <div class="logo"><span>&#9679;</span> Cape Town Stays</div>
+    <div class="search-info">
+      <span><b>3–17 апр 2026</b> &middot; 14 ночей</span>
+      <span>Бюджет: <b>~950 €</b> (68 €/ночь)</span>
     </div>
-  </header>
-
-  <div class="conversation">
-
-    <!-- EXCHANGE 1 -->
-    <div class="exchange">
-      <div class="user-msg">
-        <p>Оцени мой характер на основе переписок которые мы ведём. Вот Клифтон-тест девочки, которая хочет ко мне на ассистента по работе в компании / проджекта. Она мне подходит?</p>
-      </div>
-
-      <div class="ai-msg">
-        <h3>Что я знаю о вас</h3>
-        <p>Вы — стратег-визионер с высокой скоростью мышления, нетерпеливый к медленным процессам, ориентированный на результат и масштаб. Думаете системами, быстро переключаетесь между задачами, требуете от людей самостоятельности и не терпите, когда нужно разжёвывать очевидное. Сильный фокус на рост, слабая толерантность к рутине. Генерируете идеи быстрее, чем окружение успевает их переваривать. Вам нужен человек, который ловит контекст на лету и превращает поток мыслей в структурированные действия.</p>
-
-        <h3>Нарима — Топ-10 CliftonStrengths</h3>
-
-        <div class="clifton-grid">
-          <div class="clifton-row">
-            <span class="clifton-label">Strategic</span>
-            <div class="clifton-bar-track"><div class="clifton-bar" style="width:100%; background: var(--accent);"></div></div>
-            <span class="clifton-rank">#1</span>
-          </div>
-          <div class="clifton-row">
-            <span class="clifton-label">Arranger</span>
-            <div class="clifton-bar-track"><div class="clifton-bar" style="width:97%; background: var(--accent);"></div></div>
-            <span class="clifton-rank">#2</span>
-          </div>
-          <div class="clifton-row">
-            <span class="clifton-label">Individualization</span>
-            <div class="clifton-bar-track"><div class="clifton-bar" style="width:94%; background: var(--green);"></div></div>
-            <span class="clifton-rank">#3</span>
-          </div>
-          <div class="clifton-row">
-            <span class="clifton-label">Achiever</span>
-            <div class="clifton-bar-track"><div class="clifton-bar" style="width:91%; background: var(--green);"></div></div>
-            <span class="clifton-rank">#4</span>
-          </div>
-          <div class="clifton-row">
-            <span class="clifton-label">Ideation</span>
-            <div class="clifton-bar-track"><div class="clifton-bar" style="width:88%; background: var(--accent);"></div></div>
-            <span class="clifton-rank">#5</span>
-          </div>
-          <div class="clifton-row">
-            <span class="clifton-label">Activator</span>
-            <div class="clifton-bar-track"><div class="clifton-bar" style="width:85%; background: var(--blue);"></div></div>
-            <span class="clifton-rank">#6</span>
-          </div>
-          <div class="clifton-row">
-            <span class="clifton-label">Learner</span>
-            <div class="clifton-bar-track"><div class="clifton-bar" style="width:82%; background: var(--accent);"></div></div>
-            <span class="clifton-rank">#7</span>
-          </div>
-          <div class="clifton-row">
-            <span class="clifton-label">Communication</span>
-            <div class="clifton-bar-track"><div class="clifton-bar" style="width:79%; background: var(--blue);"></div></div>
-            <span class="clifton-rank">#8</span>
-          </div>
-          <div class="clifton-row">
-            <span class="clifton-label">Significance</span>
-            <div class="clifton-bar-track"><div class="clifton-bar" style="width:76%; background: var(--blue);"></div></div>
-            <span class="clifton-rank">#9</span>
-          </div>
-          <div class="clifton-row">
-            <span class="clifton-label">Maximizer</span>
-            <div class="clifton-bar-track"><div class="clifton-bar" style="width:73%; background: var(--blue);"></div></div>
-            <span class="clifton-rank">#10</span>
-          </div>
-        </div>
-
-        <h3>Почему подходит</h3>
-        <p><strong>Strategic + Ideation</strong> — не просто исполнитель. Будет понимать <em>почему</em> вы принимаете решения, видеть паттерны и предлагать альтернативы. Это редкость для ассистента — обычно на эту роль идут люди с Discipline, Responsibility, Consistency наверху.</p>
-        <p><strong>Arranger (#2)</strong> — ключевая операционная сила. Жонглирует людьми, ресурсами и задачами одновременно, перестраивает на ходу. Для вашего темпа — критично.</p>
-        <p><strong>Achiever (#4)</strong> — трудоголик, внутренний движок, не нужно пинать.</p>
-        <p><strong>Individualization (#3)</strong> — быстро считывает людей. Полезно для команды из 15 человек и B2B-партнёров.</p>
-        <p><strong>Activator (#6)</strong> — не будет сидеть и ждать идеальных условий, начнёт действовать.</p>
-
-        <h3>Потенциальные риски</h3>
-        <p>
-          <span class="tag tag--red">Discipline #21</span>
-          <span class="tag tag--red">Responsibility #23</span>
-          <span class="tag tag--red">Consistency #33</span>
-          <span class="tag tag--red">Deliberative #34</span>
-        </p>
-        <p>Системное ведение процессов, чеклисты, рутинный контроль, дотошная проверка деталей — <strong>не</strong> её сильная сторона. Она скорее «креативный операционщик», чем «надёжная машина процессов».</p>
-        <p>Если нужен человек для CRM-гигиены и контроля 50 мелких дедлайнов — будет напряжённо. Если нужен кто-то, кто ловит стратегический контекст, координирует людей и двигает проекты — подходит отлично.</p>
-
-        <div class="verdict">
-          <div class="verdict-label">ВЕРДИКТ</div>
-          <p>Подходит, и хорошо — при условии, что рутинный трекинг закрыт инструментами (Notion/Kommo-автоматизации) или вторым человеком. Сильна как правая рука на уровне мышления и координации, слабее — на уровне процессной дисциплины.</p>
-        </div>
-      </div>
-    </div>
-
-    <hr class="divider">
-
-    <!-- EXCHANGE 2 -->
-    <div class="exchange">
-      <div class="user-msg">
-        <p>Посмотри также её резюме и конкретные хард скиллы. Коротко распиши — есть ли там цифры/кейсы?</p>
-      </div>
-
-      <div class="ai-msg">
-        <h3>Хард скиллы</h3>
-        <p>
-          <span class="tag tag--green">Power BI</span>
-          <span class="tag tag--green">Jira / Notion / Asana</span>
-          <span class="tag tag--green">Excel</span>
-          <span class="tag tag--blue">Figma</span>
-          <span class="tag tag--blue">Sprint Planning</span>
-          <span class="tag tag--blue">KPI Tracking</span>
-          <span class="tag tag--orange">BI Analytics</span>
-        </p>
-        <p>Математическое образование (мехмат КазНУ) — мозги заточены под структуру и данные.</p>
-
-        <h3>Цифры и кейсы</h3>
-        <p>Практически нет. Резюме написано в формате «что делала», а не «чего добилась». Единственное конкретное — координация команды из 15 человек (Brave Talents) и запуск 3+ сервисных направлений (Sok Group). Нет ни одной метрики: ни роста конверсии, ни сокращения сроков, ни влияния на выручку.</p>
-
-        <h3>Что реально ценно</h3>
-        <p>2.5 года в Brave Talents координировала кросс-функциональную команду из 15 человек (дизайнеры, контент, продакшн) — прямо ваш масштаб команды в Facultét. Внедряла спринты, стендапы, таск-менеджмент — значит, процессную инфраструктуру умеет строить, даже если Discipline внизу по Клифтону. Плюс банковский аналитический бэкграунд (Power BI, модели мотивации, расчёт KPI) — не типичный PM-навык, бонус.</p>
-
-        <h3>Что настораживает</h3>
-        <p><strong>$2,000 на руки</strong> — для удалёнки из Алматы адекватно, но не дёшево для ассистента. Не готова к переезду. Нет опыта в EdTech/миграционной тематике. И главное — резюме не продаёт результат, что может говорить либо о скромности, либо о том, что сильных измеримых результатов не было.</p>
-
-        <div class="verdict">
-          <div class="verdict-label">ИТОГО</div>
-          <p>Хард скиллы для роли PM-ассистента — выше среднего. Аналитика + координация + инструменты — всё на месте. На тестовом задании стоит попросить именно кейс с цифрами, чтобы понять, есть ли за описаниями реальный импакт.</p>
-        </div>
-      </div>
-    </div>
-
+    <button class="fav-counter" id="favToggle" onclick="toggleFavView()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      <span id="favCount">0</span> избранных
+    </button>
   </div>
-
-  <footer>
-    <p>JARVIS × FACULTÉT — CANDIDATE INTELLIGENCE — 2026</p>
-  </footer>
 </div>
 
-<script>
-  // Animate Clifton bars on scroll
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const bars = entry.target.querySelectorAll('.clifton-bar');
-        bars.forEach((bar, i) => {
-          const width = bar.style.width;
-          bar.style.width = '0%';
-          setTimeout(() => {
-            bar.style.width = width;
-          }, i * 80);
-        });
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.3 });
+<div class="filters">
+  <span class="filters-label">Район:</span>
+  <button class="pill active" data-filter="all" onclick="setFilter('all',this)">Все</button>
+  <button class="pill" data-filter="Gardens" onclick="setFilter('Gardens',this)">Gardens</button>
+  <button class="pill" data-filter="Tamboerskloof" onclick="setFilter('Tamboerskloof',this)">Tamboerskloof</button>
+  <button class="pill" data-filter="Newlands" onclick="setFilter('Newlands',this)">Newlands</button>
+  <button class="pill" data-filter="Simon's Town" onclick="setFilter('Simon\'s Town',this)">Simon's Town</button>
+  <button class="pill" data-filter="Noordhoek" onclick="setFilter('Noordhoek',this)">Noordhoek</button>
+  <span class="filters-label" style="margin-left:12px">Тип:</span>
+  <button class="pill" data-type="apartment" onclick="setType('apartment',this)">Квартиры</button>
+  <button class="pill" data-type="hotel" onclick="setType('hotel',this)">Отели</button>
+  <button class="pill" data-type="house" onclick="setType('house',this)">Дома</button>
+</div>
 
-  document.querySelectorAll('.clifton-grid').forEach(grid => observer.observe(grid));
+<div class="grid" id="grid"></div>
+<div class="empty" id="empty">Ничего не найдено по выбранным фильтрам</div>
+
+<script>
+const LISTINGS = [
+  // ── Gardens ──
+  {
+    id:1, district:"Gardens", type:"apartment",
+    title:"Эклектичная квартира с видом на город и набережную",
+    desc:"Была в Real Simple и Home Magazines. Просторная, безупречная, с потрясающими панорамными видами на город и Waterfront. 2 мин пешком до Kloof St, 5 мин на машине до пляжей Camps Bay и Clifton.",
+    price:"~55 €", priceNum:55, rating:4.9,
+    amenities:["Wi-Fi","Вид на город","Kloof St рядом","Безопасность"],
+    url:"https://www.airbnb.com/gardens-cape-town-south-africa/stays/apartments",
+    imgClass:"img-gardens"
+  },
+  {
+    id:2, district:"Gardens", type:"apartment",
+    title:"Скандинавско-голландский дизайн у Table Mountain",
+    desc:"Уникальный стиль: скандинавский и голландский дизайн с южноафриканскими акцентами. Просторная, с видом на Table Mountain. Ежедневная уборка от выделенной горничной.",
+    price:"~60 €", priceNum:60, rating:4.9,
+    amenities:["Дизайнерская","Table Mountain","Уборка","Просторная"],
+    url:"https://www.airbnb.com/gardens-cape-town-south-africa/stays/apartments",
+    imgClass:"img-gardens"
+  },
+  {
+    id:3, district:"Gardens", type:"apartment",
+    title:"Пентхаус с видом на Lions Head и Signal Hill",
+    desc:"Центральный пентхаус: старинная ванна, тёплые полы в ванной, автоматические блэкаут-шторы. Виды на Lions Head, Signal Hill, Company's Gardens и городской горизонт.",
+    price:"~65 €", priceNum:65, rating:4.8,
+    amenities:["Пентхаус","Тёплый пол","Блэкаут","Панорама"],
+    url:"https://www.airbnb.com/gardens-cape-town-south-africa/stays/apartments",
+    imgClass:"img-gardens"
+  },
+  {
+    id:4, district:"Gardens", type:"hotel",
+    title:"Cloud 9 Boutique Hotel & Spa ★★★★",
+    desc:"Бутик-отель с сауной и спа на Kloof Nek Rd. Массаж, 24/7 ресепшн, многоязычный персонал. Пешком до Company Gardens, National Gallery и Парламента.",
+    price:"~78 €", priceNum:78, rating:4.7,
+    amenities:["Сауна","Спа","Массаж","24/7 ресепшн"],
+    url:"https://www.kayak.com/Cape-Town-Hotels-Cloud-9-Boutique-Hotel-And-Spa.313388.ksp",
+    imgClass:"img-gardens"
+  },
+  {
+    id:5, district:"Gardens", type:"hotel",
+    title:"Cape Cadogan Boutique Hotel ★★★★★",
+    desc:"Элегантный отель в Gardens — историческое здание с современным шиком. Пышные сады, плунж-бассейн, солнечная терраса. Идеальное сочетание истории и комфорта.",
+    price:"~85 €", priceNum:85, rating:4.8,
+    amenities:["5 звёзд","Бассейн","Сад","Историческое"],
+    url:"https://www.booking.com/district/za/cape-town/tamboerskloof.html",
+    imgClass:"img-gardens"
+  },
+
+  // ── Tamboerskloof ──
+  {
+    id:6, district:"Tamboerskloof", type:"apartment",
+    title:"Junomar 25 — современная квартира с парковкой",
+    desc:"Охраняемая территория, современная мебель, 2 тихие спальни с queen-кроватями. Вид на город, бесплатный Wi-Fi и парковка. 2.7 км до пляжа Broken Bath.",
+    price:"~48 €", priceNum:48, rating:4.6,
+    amenities:["Парковка","2 спальни","Wi-Fi","Охрана"],
+    url:"https://www.booking.com/hotel/za/tamboerskloof-apartment.en-gb.html",
+    imgClass:"img-tamboerskloof"
+  },
+  {
+    id:7, district:"Tamboerskloof", type:"apartment",
+    title:"Просторная центральная квартира без лоадшеддинга",
+    desc:"Сад, бесплатный Wi-Fi и парковка. 2 спальни, гостиная, полностью оборудованная кухня, ванная. 800 м от центра города. Без перебоев с электричеством!",
+    price:"~45 €", priceNum:45, rating:4.7,
+    amenities:["Без лоадшеддинга","Сад","2 спальни","Центр"],
+    url:"https://www.booking.com/hotel/za/cosy-spacious-central-flat-no-loadshedding.html",
+    imgClass:"img-tamboerskloof"
+  },
+  {
+    id:8, district:"Tamboerskloof", type:"apartment",
+    title:"2-комнатная с террасой и видом на горы",
+    desc:"Просторная планировка, 2 спальни и 2 ванные, полная кухня, стиральная машина, столовая. Кондиционер, стриминг-сервисы, терраса с видом на горы.",
+    price:"~52 €", priceNum:52, rating:4.8,
+    amenities:["Терраса","Вид на горы","2 ванных","Кондиционер"],
+    url:"https://www.booking.com/hotel/za/2-bedroom-apartment-tamboerskloof.en-gb.html",
+    imgClass:"img-tamboerskloof"
+  },
+  {
+    id:9, district:"Tamboerskloof", type:"house",
+    title:"Викторианский коттедж у Signal Hill",
+    desc:"Под Signal Hill в ярком Tamboerskloof. Светлая и мирная атмосфера. Table Mountain, пляжи, V&A Waterfront и рестораны Kloof St — в нескольких минутах езды или пешком.",
+    price:"~58 €", priceNum:58, rating:4.8,
+    amenities:["Викторианский","Signal Hill","Kloof St","Уютный"],
+    url:"https://www.airbnb.com/tamboerskloof-cape-town-south-africa/stays",
+    imgClass:"img-tamboerskloof"
+  },
+
+  // ── Newlands ──
+  {
+    id:10, district:"Newlands", type:"apartment",
+    title:"Mid-century люкс с инвертором у Table Mountain",
+    desc:"Элегантный mid-century дизайн + современный люкс. Инверторы (нет лоадшеддинга), пешая доступность ресторанов, потрясающие виды на Table Mountain.",
+    price:"~55 €", priceNum:55, rating:4.9,
+    amenities:["Mid-century","Инвертор","Table Mountain","Рестораны"],
+    url:"https://www.airbnb.com/newlands-cape-town-south-africa/stays/apartments",
+    imgClass:"img-newlands"
+  },
+  {
+    id:11, district:"Newlands", type:"house",
+    title:"Исторический коттедж в Newlands Village",
+    desc:"Новая реновация, дизайнерская мебель, парковка, патио, двор с барбекю. Пешком до стадиона Newlands Cricket, CBD Claremont и множества ресторанов.",
+    price:"~50 €", priceNum:50, rating:4.8,
+    amenities:["Реновация","Патио","Барбекю","Дизайнерская"],
+    url:"https://www.airbnb.com/rooms/17437377",
+    imgClass:"img-newlands"
+  },
+  {
+    id:12, district:"Newlands", type:"hotel",
+    title:"Vineyard Hotel ★★★★ — спа и бассейн",
+    desc:"Полноценный спа: массаж, обёртывания, маникюр. Открытый и крытый бассейны, фитнес. Историческое здание, пышные сады, виды на горы. 15 мин до центра.",
+    price:"~72 €", priceNum:72, rating:4.7,
+    amenities:["Спа","2 бассейна","Фитнес","Сады"],
+    url:"https://www.trip.com/hot/hotels-in-newlands-cape-town/",
+    imgClass:"img-newlands"
+  },
+  {
+    id:13, district:"Newlands", type:"house",
+    title:"Семейный дом в тихом тупике Newlands",
+    desc:"4 спальни, 3 en-suite ванных, кондиционеры во всех комнатах. Уборка и стирка включены. Тихий, зелёный, престижный район рядом с Kirstenbosch Gardens.",
+    price:"~65 €", priceNum:65, rating:4.9,
+    amenities:["4 спальни","Кондиционер","Уборка","Kirstenbosch"],
+    url:"https://www.airbnb.com/newlands-cape-town-south-africa/stays/houses",
+    imgClass:"img-newlands"
+  },
+
+  // ── Simon's Town ──
+  {
+    id:14, district:"Simon's Town", type:"apartment",
+    title:"Стильная 2-комнатная с видом на море",
+    desc:"На первом этаже, потрясающий вид на море Southern Peninsula. Пешком до магазинов, ресторанов и набережной Simon's Town.",
+    price:"~48 €", priceNum:48, rating:4.8,
+    amenities:["Вид на море","2 спальни","Пешком до центра"],
+    url:"https://www.airbnb.com/rooms/44259437",
+    imgClass:"img-simons"
+  },
+  {
+    id:15, district:"Simon's Town", type:"apartment",
+    title:"Апартаменты с невероятным видом на False Bay",
+    desc:"Полностью оборудованные, просторные, светлые. Балкон с остеклением и видом на залив. Рядом: пляжи, пингвины Boulders Beach, Cape Point, Kalk Bay, Muizenberg.",
+    price:"~42 €", priceNum:42, rating:4.9,
+    amenities:["False Bay","Балкон","Пингвины рядом","Светлая"],
+    url:"https://www.airbnb.com/simons-town-cape-town-south-africa/stays/apartments",
+    imgClass:"img-simons"
+  },
+  {
+    id:16, district:"Simon's Town", type:"apartment",
+    title:"The Loft — лофт с балконом над False Bay",
+    desc:"Просторный лофт: складные двери на большой приватный балкон с видом на False Bay. Open-plan спальня, гостиная, кухня. Отдельный вход и парковка. 5 мин пешком до всего.",
+    price:"~50 €", priceNum:50, rating:4.8,
+    amenities:["Лофт","Приватный балкон","Парковка","False Bay"],
+    url:"https://www.airbnb.com/simons-town-cape-town-south-africa/stays",
+    imgClass:"img-simons"
+  },
+  {
+    id:17, district:"Simon's Town", type:"hotel",
+    title:"Quayside Hotel — на берегу яхтенной гавани",
+    desc:"Лучший отель Simon's Town. На кромке воды яхт-бассейна с захватывающими видами на False Bay и горы Simon's Kloof. Для отдыха и бизнеса.",
+    price:"~68 €", priceNum:68, rating:4.6,
+    amenities:["На воде","Яхт-гавань","Панорама","Ресторан"],
+    url:"https://quayside.co.za/",
+    imgClass:"img-simons"
+  },
+
+  // ── Noordhoek ──
+  {
+    id:18, district:"Noordhoek", type:"apartment",
+    title:"Квартира с панорамой моря и солнечными батареями",
+    desc:"Тихий crescent в сельском Noordhoek. 2 спальни, своя парковка, отдельный вход. Огромный приватный балкон с непрерывным видом на океан. Солнечная система — нет лоадшеддинга.",
+    price:"~45 €", priceNum:45, rating:4.9,
+    amenities:["Вид на океан","Solar","2 спальни","Тихо"],
+    url:"https://www.airbnb.com/noordhoek-cape-town-south-africa/stays/apartments",
+    imgClass:"img-noordhoek"
+  },
+  {
+    id:19, district:"Noordhoek", type:"apartment",
+    title:"Eco Estate — горы, море и 24/7 охрана",
+    desc:"Солнечная, светлая, open-plan квартира наверху с огромным балконом. Виды на море и горы. Eco Estate с круглосуточной охраной. 15 мин пешком до пляжа, 25 мин до CBD.",
+    price:"~50 €", priceNum:50, rating:4.8,
+    amenities:["Eco Estate","Охрана 24/7","Море+горы","Пляж рядом"],
+    url:"https://www.airbnb.com/noordhoek-cape-town-south-africa/stays/apartments",
+    imgClass:"img-noordhoek"
+  },
+  {
+    id:20, district:"Noordhoek", type:"house",
+    title:"Фермерский дом с бассейном у пляжа",
+    desc:"Open-plan, виды на горы, короткая прогулка до пляжа Noordhoek и ресторанов. Большой сад с бассейном. Полностью на солнечных батареях, газовая плита, безлимитный Wi-Fi.",
+    price:"~62 €", priceNum:62, rating:4.9,
+    amenities:["Бассейн","Solar","Сад","Пляж рядом"],
+    url:"https://www.airbnb.com/noordhoek-cape-town-south-africa/stays/houses",
+    imgClass:"img-noordhoek"
+  },
+  {
+    id:21, district:"Noordhoek", type:"house",
+    title:"Коттедж на винодельне Village Lane",
+    desc:"Приватный коттедж на территории винодельни в Noordhoek. Дегустации вин, пешие прогулки, велотуры. Пешком до рынков, ресторанов и кафе.",
+    price:"~55 €", priceNum:55, rating:4.9,
+    amenities:["Винодельня","Дегустации","Приватный","Природа"],
+    url:"https://www.airbnb.com/noordhoek-cape-town-south-africa/stays",
+    imgClass:"img-noordhoek"
+  }
+];
+
+// ── State ──
+let currentDistrict = "all";
+let currentType = null;
+let favOnly = false;
+let likes = JSON.parse(localStorage.getItem("ct_likes") || "{}");
+
+// ── Render ──
+function render() {
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+  let count = 0;
+
+  LISTINGS.forEach(l => {
+    const matchD = currentDistrict === "all" || l.district === currentDistrict;
+    const matchT = !currentType || l.type === currentType;
+    const matchF = !favOnly || likes[l.id];
+    if (!matchD || !matchT || !matchF) return;
+    count++;
+
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <div class="card-img">
+        <div class="card-img-bg ${l.imgClass}">
+          <span class="img-label">${l.district}</span>
+        </div>
+        <div class="badge">#${l.id}</div>
+        <button class="heart ${likes[l.id]?'liked':''}" onclick="toggleLike(${l.id},this)" aria-label="В избранное">
+          <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        </button>
+        <div class="district-tag">${l.district}</div>
+      </div>
+      <div class="card-body">
+        <div class="card-type">${typeLabel(l.type)}</div>
+        <div class="card-title">${l.title}</div>
+        <div class="card-desc">${l.desc}</div>
+        <div class="card-amenities">${l.amenities.map(a=>'<span class="amenity">'+a+'</span>').join('')}</div>
+        <div class="card-footer">
+          <div class="price">${l.price} <span>/ ночь</span></div>
+          <div class="rating"><span class="star">★</span> ${l.rating}</div>
+        </div>
+        <a class="card-link" href="${l.url}" target="_blank" rel="noopener">Смотреть на платформе →</a>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  document.getElementById("empty").className = count === 0 ? "empty show" : "empty";
+}
+
+function typeLabel(t) {
+  return t === "apartment" ? "Квартира" : t === "hotel" ? "Отель" : "Дом / Коттедж";
+}
+
+// ── Filters ──
+function setFilter(district, el) {
+  currentDistrict = district;
+  document.querySelectorAll('.pill[data-filter]').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  render();
+}
+
+function setType(type, el) {
+  if (currentType === type) {
+    currentType = null;
+    el.classList.remove('active');
+  } else {
+    document.querySelectorAll('.pill[data-type]').forEach(p => p.classList.remove('active'));
+    currentType = type;
+    el.classList.add('active');
+  }
+  render();
+}
+
+// ── Likes ──
+function toggleLike(id, btn) {
+  likes[id] = !likes[id];
+  if (!likes[id]) delete likes[id];
+  localStorage.setItem("ct_likes", JSON.stringify(likes));
+  btn.classList.toggle("liked");
+  updateFavCount();
+}
+
+function updateFavCount() {
+  document.getElementById("favCount").textContent = Object.keys(likes).length;
+}
+
+function toggleFavView() {
+  favOnly = !favOnly;
+  document.getElementById("favToggle").classList.toggle("active", favOnly);
+  render();
+}
+
+// ── Init ──
+updateFavCount();
+render();
 </script>
 </body>
 </html>
