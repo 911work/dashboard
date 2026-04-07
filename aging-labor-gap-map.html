@@ -190,9 +190,6 @@ header h1{font-size:18px;font-weight:600;white-space:nowrap;background:linear-gr
 <p class="section-desc" id="corridor-growth-desc">How projected migration demand changes over time along each corridor. Most corridors show 40-80% growth over the decade.</p>
 <div class="chart-container" id="corridor-growth"></div>
 <div id="migration-economics-block"></div>
-<h3 class="section-title" id="visa-title">Visa Channels &amp; Education Pathways</h3>
-<p class="section-desc" id="visa-desc">How migrants actually enter and legalize: breakdown by channel (work/family/education/refugee) and the education-to-work pipeline for each major destination. Data as of 2024.</p>
-<div class="chart-container" id="visa-channels-chart"></div>
 <h3 class="section-title" id="skill-title">Skill &amp; Profession Demand by Country</h3>
 <p class="section-desc" id="skill-desc">Breakdown of workforce needs: blue-collar (manual/technical trades), grey-collar (healthcare, services), and white-collar (office/professional) roles. Percentages show the share of total demand.</p>
 <div class="chart-container" id="skill-chart"></div>
@@ -1061,7 +1058,6 @@ function renderDashboard() {
   renderFlowDiagram();
   renderCorridorGrowth();
   renderMigrationEconomics();
-  renderVisaChannels();
   renderSkillChart();
   renderProfessionChart();
 }
@@ -1159,6 +1155,58 @@ function renderHeatmap() {
 let corridorGroupMode = 'all';
 let expandedCorridor = null;
 
+function getVisaInfo(source, target) {
+  const vc = VISA_CHANNELS[target];
+  if (!vc) return '';
+  const isRu = currentLang === 'ru';
+  const ep = vc.eduPathway;
+
+  // Source-specific visa pathway hints
+  const visaHints = {
+    'India→United States': {mainVisa:'H-1B / L-1 / EB green card', eduPct:35, topDegrees:'MS Computer Science, MBA, MS Engineering'},
+    'Mexico→United States': {mainVisa:'Family-based (65%) / H-2A seasonal / TPS', eduPct:5, topDegrees:'Mostly family reunification, not education-driven'},
+    'Philippines→United States': {mainVisa:'Family-based / EB-3 nurses / H-2B', eduPct:10, topDegrees:'Nursing (BSN), Healthcare'},
+    'China→United States': {mainVisa:'F-1→OPT→H-1B / EB-5 investor / EB-1', eduPct:45, topDegrees:'STEM PhD, Computer Science MS, MBA'},
+    'India→Canada': {mainVisa:'Express Entry CEC/FSWP → PR / Study Permit→PGWP', eduPct:40, topDegrees:'IT Diploma, Business, Engineering'},
+    'Philippines→Canada': {mainVisa:'Caregiver Program / Express Entry / PNP', eduPct:15, topDegrees:'Nursing, Healthcare Administration'},
+    'India→United Kingdom': {mainVisa:'Skilled Worker / Health&Care / Student→Graduate Route', eduPct:30, topDegrees:'IT/CS Masters, MBA, Nursing'},
+    'Nigeria→United Kingdom': {mainVisa:'Health&Care Worker / Skilled Worker / Student', eduPct:25, topDegrees:'Nursing, Medicine, Business Masters'},
+    'India→Germany': {mainVisa:'EU Blue Card / Opportunity Card / Student→Job Search', eduPct:40, topDegrees:'Engineering MS, Computer Science, Natural Sciences'},
+    'Turkey→Germany': {mainVisa:'Family reunification (65%) / Skilled Worker / EU Blue Card', eduPct:8, topDegrees:'Mostly family-based, not education-driven'},
+    'Vietnam→Japan': {mainVisa:'Technical Intern (TITP) / SSW Type 1 / Student→Work', eduPct:30, topDegrees:'Japanese Language School → Vocational (専門学校)'},
+    'Philippines→Japan': {mainVisa:'SSW Type 1 (care/food) / EPA nurse / Student', eduPct:20, topDegrees:'Care Work certification, Nursing'},
+    'Indonesia→Japan': {mainVisa:'SSW Type 1 / Technical Intern / EPA nurse', eduPct:15, topDegrees:'Japanese Language → SSW exam'},
+    'Morocco→France': {mainVisa:'Family reunification (40%) / Salarié / Student→APS', eduPct:25, topDegrees:'Engineering, Business (Grande École), Medicine'},
+    'Algeria→France': {mainVisa:'Family (45%) / Franco-Algerian agreement / Student', eduPct:20, topDegrees:'Medicine, Engineering, Sciences'},
+    'Romania→Italy': {mainVisa:'EU free movement (no visa needed)', eduPct:5, topDegrees:'Not applicable — EU citizens'},
+    'India→Australia': {mainVisa:'Student→485 Graduate→189 Skilled / 482 Employer', eduPct:50, topDegrees:'IT, Nursing, Accounting, Engineering, Trades'},
+    'Bangladesh→Portugal': {mainVisa:'Work visa / Residence permit / Family', eduPct:5, topDegrees:'Mostly work-based, not education-driven'},
+    'Vietnam→South Korea': {mainVisa:'E-9 (EPS-TOPIK test required) / D-2 Student', eduPct:15, topDegrees:'Korean Language → Manufacturing/Agriculture'},
+    'Ukraine→Poland': {mainVisa:'Temporary Protection → Work Permit / EU card', eduPct:5, topDegrees:'Mostly refugee/work, not education'},
+    'India→Poland': {mainVisa:'Work permit / ICT permit / Student→Work', eduPct:20, topDegrees:'IT, Engineering'},
+  };
+
+  const key = source + '→' + target;
+  const hint = visaHints[key];
+
+  if (!hint) {
+    // Generic visa info for this destination
+    const ch = vc.channelSplit;
+    return `<div style="font-size:9px;color:var(--text-dim);margin-top:4px">
+      <span style="color:#2ecc71">⬤</span> ${isRu?'Работа':'Work'} ${ch.work||0}%
+      <span style="color:#3498db">⬤</span> ${isRu?'Семья':'Family'} ${ch.family||0}%
+      <span style="color:#e94560">⬤</span> ${isRu?'Образование':'Edu'} ${ch.education||0}%
+      | ${isRu?'Порог':'Threshold'}: ${vc.salaryThreshold}
+    </div>`;
+  }
+
+  return `<div style="font-size:9px;margin-top:4px;padding:6px 8px;background:rgba(233,69,96,.06);border-radius:4px;border:1px solid rgba(233,69,96,.15)">
+    <div style="color:var(--text);font-weight:600;margin-bottom:2px">${isRu?'Путь':'Visa path'}: ${hint.mainVisa}</div>
+    <div style="color:var(--text-dim)">${isRu?'Через образование':'Via education'}: <b style="color:var(--highlight)">${hint.eduPct}%</b> | ${hint.topDegrees}</div>
+    <div style="color:var(--text-dim)">${isRu?'Порог зарплаты':'Salary threshold'}: ${vc.salaryThreshold}</div>
+  </div>`;
+}
+
 function setCorridorGroup(mode) {
   corridorGroupMode = mode;
   expandedCorridor = null;
@@ -1220,7 +1268,7 @@ function renderFlowDiagram() {
               <div style="width:${pct}%;height:100%;background:var(--highlight);border-radius:3px;display:flex;align-items:center;padding-left:6px;font-size:10px;font-weight:600;color:#fff;min-width:40px">${flow.toLocaleString()}</div>
             </div>
           </div>
-          ${isExpanded ? `<div style="font-size:10px;color:var(--text-dim);line-height:1.4;padding:6px 0 2px 4px;border-left:2px solid var(--highlight);margin:4px 0 4px 4px;padding-left:8px">${note}</div>` : ''}
+          ${isExpanded ? `<div style="margin:4px 0 4px 4px;padding-left:8px;border-left:2px solid var(--highlight)"><div style="font-size:10px;color:var(--text-dim);line-height:1.4;padding:4px 0">${note}</div>${getVisaInfo(c.source, c.target)}</div>` : ''}
         </div>`;
       });
       html += '</div>';
@@ -1258,7 +1306,7 @@ function renderFlowDiagram() {
         </div>
         <div style="width:55px;text-align:right;font-size:11px;font-weight:600;color:${growthColor}">${growthSign}${growth}%</div>
       </div>
-      ${isExpanded ? `<div style="font-size:10px;color:var(--text-dim);line-height:1.5;padding:8px 4px 4px;border-left:2px solid var(--highlight);margin:6px 0 2px 4px;padding-left:10px">${note}<br><br><span style="color:var(--text)">2024: ${baseline.toLocaleString()} → ${currentYear}: ${flow.toLocaleString()} (${growthSign}${growth}%)</span></div>` : ''}
+      ${isExpanded ? `<div style="margin:6px 0 2px 4px;padding-left:10px;border-left:2px solid var(--highlight)"><div style="font-size:10px;color:var(--text-dim);line-height:1.5;padding:4px 0">${note}</div><div style="font-size:10px;color:var(--text);margin:4px 0">2024: ${baseline.toLocaleString()} → ${currentYear}: ${flow.toLocaleString()} (${growthSign}${growth}%)</div>${getVisaInfo(c.source, c.target)}</div>` : ''}
     </div>`;
   });
 
@@ -1302,72 +1350,6 @@ function renderCorridorGrowth() {
       <div style="width:60px;text-align:right;font-size:10px;font-weight:600;color:${growthColor}">${c.y2040>c.y2024?'+':''}${totalGrowth}%</div>
     </div>`;
   });
-  container.innerHTML = html;
-}
-
-function renderVisaChannels() {
-  const container = document.getElementById('visa-channels-chart');
-  const isRu = currentLang === 'ru';
-  const channelColors = {work:'#2ecc71',family:'#3498db',education:'#e94560',refugee:'#9b59b6',trainee:'#e67e22',diversity:'#f1c40f',other:'#8892a0'};
-  const channelLabels = isRu
-    ? {work:'Работа',family:'Семья',education:'Образование',refugee:'Беженцы',trainee:'Стажёры',diversity:'Лотерея',other:'Прочее'}
-    : {work:'Work',family:'Family',education:'Education',refugee:'Refugee',trainee:'Trainee',diversity:'Diversity',other:'Other'};
-
-  let html = `<div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;font-size:11px">`;
-  Object.entries(channelLabels).forEach(([k,v]) => {
-    if (channelColors[k]) html += `<span><span style="display:inline-block;width:10px;height:10px;background:${channelColors[k]};border-radius:2px;margin-right:4px"></span>${v}</span>`;
-  });
-  html += '</div>';
-
-  Object.entries(VISA_CHANNELS).forEach(([country, data]) => {
-    const cd = Object.values(COUNTRY_DATA).find(c => c.name === country);
-    const flag = cd ? cd.flag : '';
-    const ep = data.eduPathway;
-    const note = isRu ? data.note_ru : data.note_en;
-
-    // Channel split bar
-    html += `<div style="background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:12px">`;
-    html += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-      <span style="font-size:18px">${flag}</span>
-      <span style="font-size:14px;font-weight:700">${country}</span>
-      <span style="font-size:11px;color:var(--text-dim);margin-left:auto">${data.salaryThreshold}</span>
-    </div>`;
-
-    // Stacked bar for channels
-    html += `<div style="display:flex;height:24px;border-radius:4px;overflow:hidden;margin-bottom:8px">`;
-    Object.entries(data.channelSplit).forEach(([ch, pct]) => {
-      html += `<div style="width:${pct}%;background:${channelColors[ch]||'#555'};display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:#fff;min-width:${pct>8?'0':'20'}px" title="${channelLabels[ch]||ch}: ${pct}%">${pct>8?pct+'%':''}</div>`;
-    });
-    html += `</div>`;
-
-    // Education pathway highlight
-    html += `<div style="background:rgba(233,69,96,.08);border:1px solid rgba(233,69,96,.25);border-radius:8px;padding:10px 14px;margin-bottom:8px">
-      <div style="font-size:12px;font-weight:600;color:var(--highlight);margin-bottom:6px">${isRu?'Образовательный канал':'Education Pipeline'}: ${ep.pctOfTotal}% ${isRu?'всех мигрантов':'of all migrants'} → ${ep.stayRate}% ${isRu?'остаются работать':'stay to work'}</div>
-      <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px">${isRu?'Путь':'Path'}: <b style="color:var(--text)">${ep.mainVisa}</b></div>
-      <div style="display:flex;gap:4px;margin-bottom:6px">`;
-    // Degree split mini-bar
-    const degColors = {vocational:'#e67e22',diploma:'#e67e22',bachelor:'#3498db',master:'#9b59b6',phd:'#2ecc71'};
-    const degLabels = isRu ? {vocational:'ПТУ',diploma:'Диплом',bachelor:'Бакалавр',master:'Магистр',phd:'PhD'} : {vocational:'Vocational',diploma:'Diploma',bachelor:'Bachelor',master:'Master',phd:'PhD'};
-    Object.entries(ep.degrees).forEach(([deg, pct]) => {
-      html += `<div style="width:${pct}%;height:18px;background:${degColors[deg]||'#555'};border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:600;color:#fff" title="${degLabels[deg]||deg}: ${pct}%">${pct>=15?degLabels[deg]+' '+pct+'%':''}</div>`;
-    });
-    html += `</div>
-      <div style="font-size:10px;color:var(--text-dim)">${isRu?'Топ специальности':'Top fields'}: <b style="color:var(--text)">${ep.topFields.join(', ')}</b></div>
-    </div>`;
-
-    // Visa programs list
-    html += `<div style="font-size:10px;color:var(--text-dim);margin-bottom:6px">${isRu?'Основные программы':'Main programs'}:</div>
-      <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px">`;
-    data.mainPrograms.forEach(p => {
-      html += `<span style="font-size:9px;padding:3px 8px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:12px;color:var(--text-dim)">${p}</span>`;
-    });
-    html += `</div>`;
-
-    // Note
-    html += `<div style="font-size:10px;color:var(--text-dim);line-height:1.5;border-left:2px solid var(--highlight);padding-left:8px">${note}</div>`;
-    html += `</div>`;
-  });
-
   container.innerHTML = html;
 }
 
