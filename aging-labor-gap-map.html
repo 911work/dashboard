@@ -1153,9 +1153,9 @@ function updateUILanguage() {
 document.getElementById('panel-close').addEventListener('click', closeDetailPanel);
 document.getElementById('overlay').addEventListener('click', closeDetailPanel);
 
-document.querySelectorAll('.year-btn').forEach(btn => {
+document.querySelectorAll('.year-btn[data-year]').forEach(btn => {
   btn.addEventListener('click', function() {
-    document.querySelectorAll('.year-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.year-btn[data-year]').forEach(b => b.classList.remove('active'));
     this.classList.add('active');
     currentYear = parseInt(this.dataset.year);
     renderMap();
