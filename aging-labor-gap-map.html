@@ -189,6 +189,7 @@ header h1{font-size:18px;font-weight:600;white-space:nowrap;background:linear-gr
 <h3 class="section-title" id="corridor-growth-title">Migration Corridor Growth: 2030 → 2035 → 2040</h3>
 <p class="section-desc" id="corridor-growth-desc">How projected migration demand changes over time along each corridor. Most corridors show 40-80% growth over the decade.</p>
 <div class="chart-container" id="corridor-growth"></div>
+<div id="migration-economics-block"></div>
 <h3 class="section-title" id="skill-title">Skill &amp; Profession Demand by Country</h3>
 <p class="section-desc" id="skill-desc">Breakdown of workforce needs: blue-collar (manual/technical trades), grey-collar (healthcare, services), and white-collar (office/professional) roles. Percentages show the share of total demand.</p>
 <div class="chart-container" id="skill-chart"></div>
@@ -1002,6 +1003,7 @@ function renderDashboard() {
   renderHeatmap();
   renderFlowDiagram();
   renderCorridorGrowth();
+  renderMigrationEconomics();
   renderSkillChart();
   renderProfessionChart();
 }
@@ -1242,6 +1244,69 @@ function renderCorridorGrowth() {
       <div style="width:60px;text-align:right;font-size:10px;font-weight:600;color:${growthColor}">${c.y2040>c.y2024?'+':''}${totalGrowth}%</div>
     </div>`;
   });
+  container.innerHTML = html;
+}
+
+function renderMigrationEconomics() {
+  const container = document.getElementById('migration-economics-block');
+  const isRu = currentLang === 'ru';
+
+  const groups = isRu ? [
+    {color:'#2ecc71',icon:'💰',title:'Могут позволить и успешно привлекают',
+     countries:'США, Канада, Австралия, Швейцария, Сингапур, Ирландия',
+     text:'Высокие зарплаты, английский язык (или высокий уровень жизни), отработанные иммиграционные системы. Проблема не в деньгах, а в политической воле и скорости бюрократии. Конкурируют друг с другом за одних и тех же индийских IT-шников и филиппинских медсестёр — побеждает тот, кто быстрее выдаёт визу.'},
+    {color:'#f1c40f',icon:'🔤',title:'Могут, но мешает политика или язык',
+     countries:'Германия, Нидерланды, Скандинавия, UK',
+     text:'Экономически могут, зарплаты достаточные. Барьеры: немецкий язык (интеграция ~12-15K€/чел), Brexit (UK сами себе усложнили — каждый всплеск миграции вызывает скандал), скандинавские языки + высокие требования к интеграции. Opportunity Card (Германия, 2024) — шаг в правильном направлении.'},
+    {color:'#e67e22',icon:'⚖️',title:'Ловушка среднего дохода — привлекают, но не тех',
+     countries:'Испания, Италия, Португалия, Греция',
+     text:'Зарплаты $1200-2000/мес — слишком низкие для IT-специалистов и врачей (те едут в Германию или Канаду), но достаточные для рабочих профессий. Португалия платит врачу €1800/мес — тот же врач в Германии получит €4500. Итог: получают мигрантов на стройку и в с/х, но IT и здравоохранение деградируют.'},
+    {color:'#e74c3c',icon:'📉',title:'Обречены на растущий дефицит',
+     countries:'Польша*, Чехия, Венгрия, Румыния, Болгария, Балтика, Хорватия',
+     text:'Двойной удар: молодёжь уезжает в Западную Европу (свободное перемещение ЕС) + зарплаты $950-1600/мес непривлекательны для мигрантов из Азии, когда рядом Германия с $3400. *Польша — частичное исключение: быстрорастущая экономика и агрессивный рекрутинг из Азии. Болгария, Латвия, Хорватия — им практически нечего предложить.'},
+    {color:'#9b59b6',icon:'🏯',title:'Могут, но культурно не готовы',
+     countries:'Япония, Южная Корея',
+     text:'Экономически — абсолютно могут. Но Япония 30 лет сопротивлялась иммиграции по культурным причинам. SSW программа (2019) — революция по японским меркам, но масштаб мизерный для дефицита в 3.4M. Южная Корея: самая низкая рождаемость в мире (0.72 TFR), нужна массовая иммиграция, но общество не готово. Программа E-9 покрывает каплю.'}
+  ] : [
+    {color:'#2ecc71',icon:'💰',title:'Can afford and successfully attract migrants',
+     countries:'USA, Canada, Australia, Switzerland, Singapore, Ireland',
+     text:'High salaries, English language (or high living standards), well-established immigration systems. The problem isn\'t money — it\'s political will and bureaucratic speed. They compete with each other for the same Indian IT workers and Filipino nurses — whoever issues visas faster wins.'},
+    {color:'#f1c40f',icon:'🔤',title:'Can afford, but politics or language block them',
+     countries:'Germany, Netherlands, Scandinavia, UK',
+     text:'Economically capable, salaries sufficient. Barriers: German language (integration costs ~€12-15K/person), Brexit (UK created its own barriers — every migration spike triggers backlash), Scandinavian languages + high integration requirements. Germany\'s Opportunity Card (2024) is a step in the right direction.'},
+    {color:'#e67e22',icon:'⚖️',title:'Middle-income trap — attract workers, but not the right ones',
+     countries:'Spain, Italy, Portugal, Greece',
+     text:'Salaries $1,200-2,000/mo — too low for IT specialists and doctors (who go to Germany or Canada), but sufficient for manual labor. Portugal pays a doctor €1,800/mo — the same doctor gets €4,500 in Germany. Result: they get construction and agriculture migrants, but IT and healthcare continue to degrade.'},
+    {color:'#e74c3c',icon:'📉',title:'Destined for growing deficit',
+     countries:'Poland*, Czechia, Hungary, Romania, Bulgaria, Baltics, Croatia',
+     text:'Double hit: their own youth leaves for Western Europe (EU free movement) + salaries $950-1,600/mo are unattractive for Asian migrants when Germany offers $3,400 next door. *Poland is a partial exception: fast-growing economy and aggressive Asian recruitment. Bulgaria, Latvia, Croatia have almost nothing to offer.'},
+    {color:'#9b59b6',icon:'🏯',title:'Can afford it, but culturally not ready',
+     countries:'Japan, South Korea',
+     text:'Economically — absolutely can. But Japan resisted immigration for 30 years on cultural grounds. SSW program (2019) was revolutionary by Japanese standards, but the scale is tiny for a 3.4M deficit. South Korea: world\'s lowest fertility (0.72 TFR), needs mass immigration, but society isn\'t ready. E-9 program covers a drop in the bucket.'}
+  ];
+
+  const conclusion = isRu
+    ? '<b>Вывод (актуально на 2026 год):</b> Дефицит будет расти у всех, но по разным причинам. Богатые страны — демография ухудшается быстрее, чем они привлекают мигрантов. Бедные страны ЕС — не могут конкурировать за мигрантов. Япония/Корея — культурное сопротивление при наличии возможностей. Единственный реальный выход — <b>автоматизация + AI + рост производительности</b>, а не только ставка на миграцию. Но для ухода за пожилыми, строительства, медицины — робот пока не заменит человека. Это структурная ловушка без простого решения.'
+    : '<b>Bottom line (as of 2026):</b> The deficit will grow everywhere, but for different reasons. Rich countries — demographics deteriorate faster than they can attract migrants. Poor EU countries — can\'t compete for migrants. Japan/Korea — cultural resistance despite economic capacity. The only real solution is <b>automation + AI + productivity growth</b>, not just reliance on migration. But for elderly care, construction, healthcare — robots can\'t yet replace humans. This is a structural trap with no easy solution.';
+
+  let html = `<div style="margin:24px 0">
+    <h3 class="section-title">${isRu?'Могут ли страны позволить себе миграцию?':'Can countries actually afford migration?'}</h3>
+    <p class="section-desc">${isRu?'Анализ на 2026 год. Не все страны, нуждающиеся в мигрантах, могут реально их привлечь. Экономические возможности, язык, политика и культура определяют, кто выиграет «глобальную гонку за рабочие руки».':'Analysis as of 2026. Not all countries that need migrants can actually attract them. Economic capacity, language, politics and culture determine who wins the global race for workers.'}</p>`;
+
+  groups.forEach(g => {
+    html += `<div style="background:var(--card);border:1px solid var(--border);border-left:4px solid ${g.color};border-radius:10px;padding:16px 20px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <span style="font-size:20px">${g.icon}</span>
+        <span style="font-size:14px;font-weight:700;color:${g.color}">${g.title}</span>
+      </div>
+      <div style="font-size:12px;color:var(--text);margin-bottom:6px;font-weight:600">${g.countries}</div>
+      <div style="font-size:11px;color:var(--text-dim);line-height:1.6">${g.text}</div>
+    </div>`;
+  });
+
+  html += `<div style="background:rgba(233,69,96,.08);border:1px solid rgba(233,69,96,.3);border-radius:10px;padding:16px 20px;margin-top:16px;font-size:12px;color:var(--text-dim);line-height:1.7">${conclusion}</div>
+  </div>`;
+
   container.innerHTML = html;
 }
 
