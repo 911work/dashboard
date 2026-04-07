@@ -179,7 +179,14 @@ header h1{font-size:18px;font-weight:600;white-space:nowrap;background:linear-gr
 <div id="wave-chart"></div>
 </div>
 <h3 class="section-title" id="flow-title">Top Migration Corridors</h3>
-<p class="section-desc" id="flow-desc">Major projected migration flows showing annual number of workers needed. Line thickness reflects volume. Numbers next to destination countries show total inflow.</p>
+<p class="section-desc" id="flow-desc">Each bar is split by migration channel. Click any corridor for details.</p>
+<div style="display:flex;gap:12px;margin-bottom:10px;font-size:10px;flex-wrap:wrap">
+<span><span style="display:inline-block;width:10px;height:10px;background:#2ecc71;border-radius:2px;margin-right:3px"></span>Work</span>
+<span><span style="display:inline-block;width:10px;height:10px;background:#3498db;border-radius:2px;margin-right:3px"></span>Family</span>
+<span><span style="display:inline-block;width:10px;height:10px;background:#e94560;border-radius:2px;margin-right:3px"></span>Education</span>
+<span><span style="display:inline-block;width:10px;height:10px;background:#9b59b6;border-radius:2px;margin-right:3px"></span>Refugee</span>
+<span><span style="display:inline-block;width:10px;height:10px;background:#666;border-radius:2px;margin-right:3px"></span>Other/Trainee</span>
+</div>
 <div style="display:flex;gap:4px;margin-bottom:12px;background:var(--accent);border-radius:10px;padding:3px;width:fit-content">
 <button class="year-btn active" id="groupby-all" onclick="setCorridorGroup('all')">All</button>
 <button class="year-btn" id="groupby-dest" onclick="setCorridorGroup('dest')"><span data-i18n="groupByDest">By destination</span></button>
@@ -1161,50 +1168,118 @@ function getVisaInfo(source, target) {
   const isRu = currentLang === 'ru';
   const ep = vc.eduPathway;
 
-  // Source-specific visa pathway hints
+  // Source-specific channel split: work%, family%, education%, refugee%, other%
+  // These are approximate breakdowns of HOW people in each corridor actually arrive
   const visaHints = {
-    'India→United States': {mainVisa:'H-1B / L-1 / EB green card', eduPct:35, topDegrees:'MS Computer Science, MBA, MS Engineering'},
-    'Mexico→United States': {mainVisa:'Family-based (65%) / H-2A seasonal / TPS', eduPct:5, topDegrees:'Mostly family reunification, not education-driven'},
-    'Philippines→United States': {mainVisa:'Family-based / EB-3 nurses / H-2B', eduPct:10, topDegrees:'Nursing (BSN), Healthcare'},
-    'China→United States': {mainVisa:'F-1→OPT→H-1B / EB-5 investor / EB-1', eduPct:45, topDegrees:'STEM PhD, Computer Science MS, MBA'},
-    'India→Canada': {mainVisa:'Express Entry CEC/FSWP → PR / Study Permit→PGWP', eduPct:40, topDegrees:'IT Diploma, Business, Engineering'},
-    'Philippines→Canada': {mainVisa:'Caregiver Program / Express Entry / PNP', eduPct:15, topDegrees:'Nursing, Healthcare Administration'},
-    'India→United Kingdom': {mainVisa:'Skilled Worker / Health&Care / Student→Graduate Route', eduPct:30, topDegrees:'IT/CS Masters, MBA, Nursing'},
-    'Nigeria→United Kingdom': {mainVisa:'Health&Care Worker / Skilled Worker / Student', eduPct:25, topDegrees:'Nursing, Medicine, Business Masters'},
-    'India→Germany': {mainVisa:'EU Blue Card / Opportunity Card / Student→Job Search', eduPct:40, topDegrees:'Engineering MS, Computer Science, Natural Sciences'},
-    'Turkey→Germany': {mainVisa:'Family reunification (65%) / Skilled Worker / EU Blue Card', eduPct:8, topDegrees:'Mostly family-based, not education-driven'},
-    'Vietnam→Japan': {mainVisa:'Technical Intern (TITP) / SSW Type 1 / Student→Work', eduPct:30, topDegrees:'Japanese Language School → Vocational (専門学校)'},
-    'Philippines→Japan': {mainVisa:'SSW Type 1 (care/food) / EPA nurse / Student', eduPct:20, topDegrees:'Care Work certification, Nursing'},
-    'Indonesia→Japan': {mainVisa:'SSW Type 1 / Technical Intern / EPA nurse', eduPct:15, topDegrees:'Japanese Language → SSW exam'},
-    'Morocco→France': {mainVisa:'Family reunification (40%) / Salarié / Student→APS', eduPct:25, topDegrees:'Engineering, Business (Grande École), Medicine'},
-    'Algeria→France': {mainVisa:'Family (45%) / Franco-Algerian agreement / Student', eduPct:20, topDegrees:'Medicine, Engineering, Sciences'},
-    'Romania→Italy': {mainVisa:'EU free movement (no visa needed)', eduPct:5, topDegrees:'Not applicable — EU citizens'},
-    'India→Australia': {mainVisa:'Student→485 Graduate→189 Skilled / 482 Employer', eduPct:50, topDegrees:'IT, Nursing, Accounting, Engineering, Trades'},
-    'Bangladesh→Portugal': {mainVisa:'Work visa / Residence permit / Family', eduPct:5, topDegrees:'Mostly work-based, not education-driven'},
-    'Vietnam→South Korea': {mainVisa:'E-9 (EPS-TOPIK test required) / D-2 Student', eduPct:15, topDegrees:'Korean Language → Manufacturing/Agriculture'},
-    'Ukraine→Poland': {mainVisa:'Temporary Protection → Work Permit / EU card', eduPct:5, topDegrees:'Mostly refugee/work, not education'},
-    'India→Poland': {mainVisa:'Work permit / ICT permit / Student→Work', eduPct:20, topDegrees:'IT, Engineering'},
+    'India→United States': {work:40,family:35,edu:20,refugee:0,other:5, eduDegrees:'MS CS, MBA, Engineering'},
+    'Mexico→United States': {work:15,family:65,edu:3,refugee:5,other:12, eduDegrees:'Family-driven corridor'},
+    'Philippines→United States': {work:25,family:55,edu:8,refugee:2,other:10, eduDegrees:'Nursing BSN'},
+    'China→United States': {work:30,family:20,edu:40,refugee:2,other:8, eduDegrees:'STEM PhD, CS MS, MBA'},
+    'El Salvador→United States': {work:10,family:60,edu:2,refugee:15,other:13, eduDegrees:'Family/TPS corridor'},
+    'India→Canada': {work:35,family:15,edu:40,refugee:2,other:8, eduDegrees:'IT Diploma, Business, Engineering'},
+    'Philippines→Canada': {work:45,family:25,edu:15,refugee:5,other:10, eduDegrees:'Nursing, Healthcare'},
+    'China→Canada': {work:25,family:30,edu:35,refugee:2,other:8, eduDegrees:'Business, CS, Engineering'},
+    'Nigeria→Canada': {work:40,family:15,edu:35,refugee:5,other:5, eduDegrees:'IT, Healthcare, Finance'},
+    'Pakistan→Canada': {work:35,family:25,edu:30,refugee:5,other:5, eduDegrees:'IT, Engineering, Business'},
+    'India→United Kingdom': {work:35,family:10,edu:30,refugee:0,other:25, eduDegrees:'CS Masters, MBA, Nursing'},
+    'Nigeria→United Kingdom': {work:40,family:10,edu:25,refugee:5,other:20, eduDegrees:'Nursing, Medicine, Business'},
+    'Philippines→United Kingdom': {work:65,family:10,edu:10,refugee:0,other:15, eduDegrees:'Nursing, Care Work'},
+    'Pakistan→United Kingdom': {work:25,family:40,edu:20,refugee:5,other:10, eduDegrees:'Business, Engineering'},
+    'Zimbabwe→United Kingdom': {work:60,family:15,edu:15,refugee:5,other:5, eduDegrees:'Nursing, Medicine'},
+    'Turkey→Germany': {work:15,family:65,edu:8,refugee:5,other:7, eduDegrees:'Family-driven corridor'},
+    'India→Germany': {work:35,family:10,edu:40,refugee:0,other:15, eduDegrees:'Engineering MS, CS, Sciences'},
+    'Romania→Germany': {work:70,family:20,edu:5,refugee:0,other:5, eduDegrees:'EU free movement'},
+    'Poland→Germany': {work:75,family:15,edu:5,refugee:0,other:5, eduDegrees:'EU free movement'},
+    'Syria→Germany': {work:10,family:30,edu:5,refugee:50,other:5, eduDegrees:'Refugee corridor'},
+    'Vietnam→Japan': {work:20,family:5,edu:30,refugee:0,other:45, eduDegrees:'Language School → Vocational'},
+    'Philippines→Japan': {work:30,family:5,edu:20,refugee:0,other:45, eduDegrees:'Care certification, Nursing'},
+    'Indonesia→Japan': {work:25,family:5,edu:15,refugee:0,other:55, eduDegrees:'Language → SSW exam'},
+    'China→Japan': {work:30,family:15,edu:40,refugee:0,other:15, eduDegrees:'University, IT, Research'},
+    'Nepal→Japan': {work:15,family:5,edu:35,refugee:0,other:45, eduDegrees:'Language → Vocational'},
+    'Morocco→France': {work:20,family:40,edu:25,refugee:5,other:10, eduDegrees:'Grande École, Medicine'},
+    'Algeria→France': {work:15,family:45,edu:20,refugee:5,other:15, eduDegrees:'Medicine, Engineering'},
+    'Tunisia→France': {work:20,family:30,edu:35,refugee:5,other:10, eduDegrees:'Engineering, IT'},
+    'Senegal→France': {work:25,family:35,edu:20,refugee:5,other:15, eduDegrees:'Healthcare, Hospitality'},
+    "Côte d'Ivoire→France": {work:20,family:35,edu:25,refugee:10,other:10, eduDegrees:'Business, Sciences'},
+    'Romania→Italy': {work:75,family:20,edu:2,refugee:0,other:3, eduDegrees:'EU free movement'},
+    'Albania→Italy': {work:40,family:45,edu:5,refugee:0,other:10, eduDegrees:'Family-driven'},
+    'Morocco→Italy': {work:35,family:40,edu:10,refugee:5,other:10, eduDegrees:'Agriculture, Construction'},
+    'Philippines→Italy': {work:55,family:30,edu:5,refugee:0,other:10, eduDegrees:'Caregiving, Domestic'},
+    'Bangladesh→Italy': {work:50,family:35,edu:5,refugee:5,other:5, eduDegrees:'Leather, Textiles'},
+    'Ukraine→Poland': {work:30,family:10,edu:5,refugee:50,other:5, eduDegrees:'Refugee/work corridor'},
+    'India→Poland': {work:65,family:5,edu:20,refugee:0,other:10, eduDegrees:'IT, Engineering'},
+    'Philippines→Poland': {work:75,family:10,edu:5,refugee:0,other:10, eduDegrees:'Manufacturing, Hospitality'},
+    'Nepal→Poland': {work:70,family:10,edu:10,refugee:0,other:10, eduDegrees:'Construction, Food'},
+    'Belarus→Poland': {work:40,family:15,edu:10,refugee:25,other:10, eduDegrees:'IT, mixed'},
+    'India→Australia': {work:30,family:15,edu:45,refugee:2,other:8, eduDegrees:'IT, Nursing, Accounting, Trades'},
+    'Philippines→Australia': {work:45,family:25,edu:15,refugee:5,other:10, eduDegrees:'Nursing, Aged Care'},
+    'China→Australia': {work:20,family:25,edu:45,refugee:2,other:8, eduDegrees:'Business, IT, Engineering'},
+    'Nepal→Australia': {work:20,family:10,edu:55,refugee:5,other:10, eduDegrees:'Hospitality, Trades'},
+    'Vietnam→Australia': {work:35,family:25,edu:25,refugee:5,other:10, eduDegrees:'Agriculture, Hospitality'},
+    'Vietnam→South Korea': {work:75,family:5,edu:10,refugee:0,other:10, eduDegrees:'E-9 blue collar'},
+    'Indonesia→South Korea': {work:70,family:5,edu:10,refugee:0,other:15, eduDegrees:'Manufacturing, Fishery'},
+    'Bangladesh→South Korea': {work:75,family:5,edu:8,refugee:0,other:12, eduDegrees:'E-9 program'},
+    'Nepal→South Korea': {work:70,family:5,edu:12,refugee:0,other:13, eduDegrees:'E-9 Manufacturing'},
+    'Vietnam→Taiwan': {work:70,family:10,edu:5,refugee:0,other:15, eduDegrees:'Factory, Caregiving'},
+    'Indonesia→Taiwan': {work:65,family:10,edu:5,refugee:0,other:20, eduDegrees:'Caregiving, Factory'},
+    'Indonesia→Singapore': {work:60,family:10,edu:10,refugee:0,other:20, eduDegrees:'Domestic, Construction'},
+    'Bangladesh→United Kingdom': {work:45,family:30,edu:10,refugee:10,other:5, eduDegrees:'Restaurant, Care Work'},
+    'Bangladesh→Portugal': {work:60,family:25,edu:3,refugee:5,other:7, eduDegrees:'Work-driven'},
+    'Bangladesh→Japan': {work:20,family:5,edu:15,refugee:0,other:60, eduDegrees:'TITP/SSW program'},
+    'Nigeria→United States': {work:25,family:30,edu:30,refugee:5,other:10, eduDegrees:'Healthcare, IT, Finance'},
+    'Nigeria→Germany': {work:30,family:10,edu:45,refugee:10,other:5, eduDegrees:'IT, Engineering'},
+    'Nigeria→Ireland': {work:30,family:20,edu:35,refugee:10,other:5, eduDegrees:'Healthcare, Tech'},
+    'Morocco→Spain': {work:40,family:35,edu:10,refugee:5,other:10, eduDegrees:'Agriculture, Construction'},
+    'Morocco→Belgium': {work:20,family:50,edu:15,refugee:5,other:10, eduDegrees:'Family-driven'},
+    'Morocco→Netherlands': {work:15,family:55,edu:10,refugee:5,other:15, eduDegrees:'Family/legacy corridor'},
+    'Pakistan→United States': {work:25,family:35,edu:25,refugee:5,other:10, eduDegrees:'IT, Medicine, Business'},
+    'Pakistan→Germany': {work:30,family:15,edu:40,refugee:10,other:5, eduDegrees:'Engineering, IT'},
+    'Pakistan→Italy': {work:45,family:40,edu:5,refugee:5,other:5, eduDegrees:'Retail, Small business'},
+    'Romania→Spain': {work:70,family:25,edu:2,refugee:0,other:3, eduDegrees:'EU free movement'},
+    'Romania→United Kingdom': {work:60,family:25,edu:8,refugee:0,other:7, eduDegrees:'Post-Brexit decline'},
+    'Romania→Austria': {work:70,family:22,edu:3,refugee:0,other:5, eduDegrees:'EU free movement'},
+    'Turkey→Netherlands': {work:15,family:60,edu:10,refugee:5,other:10, eduDegrees:'Family/legacy'},
+    'Turkey→United Kingdom': {work:35,family:20,edu:30,refugee:5,other:10, eduDegrees:'Business, IT'},
+    'Turkey→Austria': {work:15,family:60,edu:8,refugee:5,other:12, eduDegrees:'Family/legacy'},
+    'Turkey→France': {work:20,family:55,edu:10,refugee:5,other:10, eduDegrees:'Family reunification'},
+    'Ukraine→Czech Republic': {work:30,family:10,edu:5,refugee:50,other:5, eduDegrees:'Refugee/work'},
+    'Ukraine→Germany': {work:20,family:15,edu:5,refugee:55,other:5, eduDegrees:'Refugee → integration'},
+    'Ukraine→Canada': {work:15,family:10,edu:5,refugee:65,other:5, eduDegrees:'CUAET program'},
+    'Ukraine→Italy': {work:40,family:25,edu:5,refugee:25,other:5, eduDegrees:'Domestic/care work'},
+    'Nepal→United Kingdom': {work:50,family:20,edu:15,refugee:5,other:10, eduDegrees:'Nursing, Care Work'},
+    'China→United Kingdom': {work:25,family:15,edu:45,refugee:2,other:13, eduDegrees:'Finance, STEM, Business'},
+    'Vietnam→Germany': {work:30,family:20,edu:25,refugee:0,other:25, eduDegrees:'Nursing, IT'},
   };
 
   const key = source + '→' + target;
   const hint = visaHints[key];
+  // Use corridor-specific or fall back to destination-level channel split
+  const ch = hint || {work:vc.channelSplit.work||0, family:vc.channelSplit.family||0, edu:vc.channelSplit.education||0, refugee:vc.channelSplit.refugee||0, other:vc.channelSplit.other||0, eduDegrees:''};
+  return ch;
+}
 
-  if (!hint) {
-    // Generic visa info for this destination
-    const ch = vc.channelSplit;
-    return `<div style="font-size:9px;color:var(--text-dim);margin-top:4px">
-      <span style="color:#2ecc71">⬤</span> ${isRu?'Работа':'Work'} ${ch.work||0}%
-      <span style="color:#3498db">⬤</span> ${isRu?'Семья':'Family'} ${ch.family||0}%
-      <span style="color:#e94560">⬤</span> ${isRu?'Образование':'Edu'} ${ch.education||0}%
-      | ${isRu?'Порог':'Threshold'}: ${vc.salaryThreshold}
-    </div>`;
-  }
+// Build a segmented bar for a corridor showing channel breakdown
+function buildCorridorBar(flow, source, target, pctOfMax, hue) {
+  const isRu = currentLang === 'ru';
+  const ch = getVisaInfo(source, target);
+  const colors = {work:'#2ecc71',family:'#3498db',edu:'#e94560',refugee:'#9b59b6',other:'#666'};
+  const labels = isRu ? {work:'Работа',family:'Семья',edu:'Обр.',refugee:'Беж.',other:'Пр.'} : {work:'Work',family:'Family',edu:'Edu',refugee:'Ref',other:'Oth'};
 
-  return `<div style="font-size:9px;margin-top:4px;padding:6px 8px;background:rgba(233,69,96,.06);border-radius:4px;border:1px solid rgba(233,69,96,.15)">
-    <div style="color:var(--text);font-weight:600;margin-bottom:2px">${isRu?'Путь':'Visa path'}: ${hint.mainVisa}</div>
-    <div style="color:var(--text-dim)">${isRu?'Через образование':'Via education'}: <b style="color:var(--highlight)">${hint.eduPct}%</b> | ${hint.topDegrees}</div>
-    <div style="color:var(--text-dim)">${isRu?'Порог зарплаты':'Salary threshold'}: ${vc.salaryThreshold}</div>
-  </div>`;
+  // Calculate absolute numbers
+  const nums = {};
+  let total = 0;
+  ['work','family','edu','refugee','other'].forEach(k => { nums[k] = Math.round(flow * (ch[k]||0) / 100); total += (ch[k]||0); });
+
+  let bar = `<div style="width:${pctOfMax}%;display:flex;height:100%;border-radius:4px;overflow:hidden">`;
+  ['work','family','edu','refugee','other'].forEach(k => {
+    const pct = ch[k] || 0;
+    if (pct < 2) return;
+    const n = nums[k];
+    const showLabel = pct >= 12;
+    bar += `<div style="width:${pct}%;background:${colors[k]};display:flex;align-items:center;justify-content:center;font-size:${showLabel?'8':'7'}px;font-weight:600;color:#fff;overflow:hidden;white-space:nowrap" title="${labels[k]}: ${n.toLocaleString()} (${pct}%)">${showLabel ? fmt(n) : ''}</div>`;
+  });
+  bar += `</div>`;
+  return bar;
 }
 
 function setCorridorGroup(mode) {
@@ -1260,15 +1335,17 @@ function renderFlowDiagram() {
         const corId = c.source + '-' + c.target;
         const isExpanded = expandedCorridor === corId;
 
+        const ch = getVisaInfo(c.source, c.target);
         html += `<div style="padding:3px 0;cursor:pointer" onclick="toggleCorridor('${corId}')">
           <div style="display:flex;align-items:center;gap:6px">
             <div style="width:120px;font-size:11px">${isTarget?'← ':'→ '}${otherFlag} ${other}</div>
-            <div style="width:50px;text-align:right;font-size:10px;color:#8892a0">${fmt(c.y2024)}</div>
-            <div style="flex:1;height:16px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden">
-              <div style="width:${pct}%;height:100%;background:var(--highlight);border-radius:3px;display:flex;align-items:center;padding-left:6px;font-size:10px;font-weight:600;color:#fff;min-width:40px">${flow.toLocaleString()}</div>
+            <div style="width:45px;text-align:right;font-size:10px;color:#8892a0">${fmt(c.y2024)}</div>
+            <div style="flex:1;height:18px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden">
+              ${buildCorridorBar(flow, c.source, c.target, parseFloat(pct), 0)}
             </div>
+            <div style="width:45px;text-align:right;font-size:10px;font-weight:700;color:#fff">${fmt(flow)}</div>
           </div>
-          ${isExpanded ? `<div style="margin:4px 0 4px 4px;padding-left:8px;border-left:2px solid var(--highlight)"><div style="font-size:10px;color:var(--text-dim);line-height:1.4;padding:4px 0">${note}</div>${getVisaInfo(c.source, c.target)}</div>` : ''}
+          ${isExpanded ? `<div style="margin:4px 0 4px 4px;padding-left:8px;border-left:2px solid var(--highlight)"><div style="font-size:10px;color:var(--text-dim);line-height:1.4;padding:4px 0">${note}</div><div style="font-size:9px;color:var(--text-dim)">${ch.eduDegrees?((currentLang==='ru'?'Образование: ':'Education: ')+ch.eduDegrees):''}</div></div>` : ''}
         </div>`;
       });
       html += '</div>';
@@ -1297,16 +1374,18 @@ function renderFlowDiagram() {
     const corId = c.source + '-' + c.target;
     const isExpanded = expandedCorridor === corId;
 
+    const ch = getVisaInfo(c.source, c.target);
     html += `<div style="margin-bottom:4px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);cursor:pointer" onclick="toggleCorridor('${corId}')">
       <div style="display:flex;align-items:center;gap:8px">
         <div style="width:200px;white-space:nowrap;font-size:12px;font-weight:500">${sf} ${c.source} → ${tf} ${c.target}</div>
         <div style="width:55px;text-align:right;font-size:10px;color:#8892a0">${fmt(baseline)}</div>
-        <div style="flex:1;height:20px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden">
-          <div style="width:${pct}%;height:100%;background:hsl(${hue},60%,50%);border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:700;color:#fff;min-width:50px">${flow.toLocaleString()}</div>
+        <div style="flex:1;height:22px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden">
+          ${buildCorridorBar(flow, c.source, c.target, parseFloat(pct), hue)}
         </div>
-        <div style="width:55px;text-align:right;font-size:11px;font-weight:600;color:${growthColor}">${growthSign}${growth}%</div>
+        <div style="width:50px;text-align:right;font-size:10px;font-weight:700;color:#fff">${fmt(flow)}</div>
+        <div style="width:50px;text-align:right;font-size:10px;font-weight:600;color:${growthColor}">${growthSign}${growth}%</div>
       </div>
-      ${isExpanded ? `<div style="margin:6px 0 2px 4px;padding-left:10px;border-left:2px solid var(--highlight)"><div style="font-size:10px;color:var(--text-dim);line-height:1.5;padding:4px 0">${note}</div><div style="font-size:10px;color:var(--text);margin:4px 0">2024: ${baseline.toLocaleString()} → ${currentYear}: ${flow.toLocaleString()} (${growthSign}${growth}%)</div>${getVisaInfo(c.source, c.target)}</div>` : ''}
+      ${isExpanded ? `<div style="margin:6px 0 2px 4px;padding-left:10px;border-left:2px solid var(--highlight)"><div style="font-size:10px;color:var(--text-dim);line-height:1.5;padding:4px 0">${note}</div><div style="font-size:10px;color:var(--text);margin:4px 0">2024: ${baseline.toLocaleString()} → ${currentYear}: ${flow.toLocaleString()} (${growthSign}${growth}%)</div><div style="font-size:9px;color:var(--text-dim);margin-top:4px">${ch.eduDegrees?((currentLang==='ru'?'Образование: ':'Education: ')+ch.eduDegrees):''}</div></div>` : ''}
     </div>`;
   });
 
