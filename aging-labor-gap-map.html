@@ -203,9 +203,9 @@ en: {
   heatmapTitle: "Sector Shortage Heatmap",
   heatmapDesc: "Color intensity shows shortage severity per sector. Healthcare dominates in most aging economies, while IT and construction are universally strained.",
   flowTitle: "Top Migration Corridors",
-  flowDesc: "Major projected migration flows showing estimated annual number of workers needed. Line thickness is proportional to volume.",
+  flowDesc: "Each corridor shows: source → destination, current 2024 baseline (grey), projected flow for selected year (colored bar with exact number), and % change vs 2024. Below each bar is an explanation of WHY this corridor grows or shrinks.",
   corridorGrowthTitle: "Migration Corridor Growth: 2030 → 2035 → 2040",
-  corridorGrowthDesc: "How projected migration demand changes over the decade along each major corridor. Most corridors show 40-80% growth by 2040.",
+  corridorGrowthDesc: "Comparison of all 4 time points: 2024 baseline (grey) → 2030 → 2035 → 2040. Rightmost column shows total growth from 2024 to 2040. Note: some corridors DECLINE (Turkey→Germany, Ukraine→Poland, Romania→Italy) because source countries face their own aging.",
   skillTitle: "Skill & Profession Demand by Country",
   skillDesc: "Workforce needs split into: Blue-collar (construction, manufacturing, agriculture, logistics), Grey-collar (healthcare, hospitality, education), White-collar (IT, finance, management). Shows what type of workers each country needs most.",
   profTitle: "Key Profession Categories in Demand",
@@ -262,9 +262,9 @@ ru: {
   heatmapTitle: "Тепловая карта дефицита по секторам",
   heatmapDesc: "Интенсивность цвета показывает серьёзность нехватки в каждом секторе. Здравоохранение доминирует в большинстве стареющих экономик, IT и строительство — повсеместно напряжены.",
   flowTitle: "Основные миграционные коридоры",
-  flowDesc: "Крупнейшие прогнозируемые миграционные потоки с указанием ежегодного числа необходимых работников. Толщина линии пропорциональна объёму.",
+  flowDesc: "Каждый коридор показывает: откуда → куда, текущий уровень 2024 (серый), прогноз на выбранный год (цветная полоса с точным числом) и % изменения vs 2024. Под каждой полосой — объяснение ПОЧЕМУ коридор растёт или снижается.",
   corridorGrowthTitle: "Рост миграционных коридоров: 2030 → 2035 → 2040",
-  corridorGrowthDesc: "Как меняется прогнозируемый спрос на мигрантов по каждому коридору за десятилетие. Большинство коридоров показывают рост на 40-80% к 2040 году.",
+  corridorGrowthDesc: "Сравнение всех 4 точек: базовый 2024 (серый) → 2030 → 2035 → 2040. Правый столбец — общий рост с 2024 по 2040. Обратите внимание: некоторые коридоры СНИЖАЮТСЯ (Турция→Германия, Украина→Польша, Румыния→Италия) — страны-источники сами стареют.",
   skillTitle: "Спрос на навыки и профессии по странам",
   skillDesc: "Потребности в рабочей силе: Синие воротнички (строительство, производство, с/х, логистика), Серые воротнички (медицина, сервис, образование), Белые воротнички (IT, финансы, управление). Показывает какой тип работников нужен каждой стране больше всего.",
   profTitle: "Ключевые категории востребованных профессий",
@@ -457,39 +457,64 @@ const COUNTRY_DATA = {
 2040:{medianAge:47.2,depRatio:44.0,popChange:-3.5,workAgeChange:-120000,population:1240000,ageCohorts:[7.0,7.5,9.2,10.8,11.5,13.0,14.5,14.0,12.5],totalVacancies:38000,sectors:{healthcare:8000,it:7500,construction:5000,manufacturing:5000,agriculture:2500,hospitality:4000,logistics:2500,education:2000,finance:1500},migration:{skillSplit:{low:18,medium:37,high:45},eduProfile:{vocational:28,bachelor:42,master:30},sourceCountries:["India","Ukraine","Nigeria","Philippines","Vietnam"],explanation:"Estonia doubles down on being a digital hub. India becomes top source for tech talent."}}}},
 };
 
-// Migration corridors data per year
-// All 15 corridors present in every year with realistic non-zero values
-const MIGRATION_CORRIDORS = {
-2030: [
-  {source:"India",target:"United States",flow:320000},{source:"Mexico",target:"United States",flow:280000},
-  {source:"India",target:"Canada",flow:145000},{source:"India",target:"United Kingdom",flow:120000},
-  {source:"Philippines",target:"United States",flow:95000},{source:"Turkey",target:"Germany",flow:85000},
-  {source:"Morocco",target:"France",flow:75000},{source:"Vietnam",target:"Japan",flow:72000},
-  {source:"Ukraine",target:"Poland",flow:68000},{source:"Romania",target:"Italy",flow:62000},
-  {source:"India",target:"Germany",flow:55000},{source:"India",target:"Australia",flow:52000},
-  {source:"Philippines",target:"Canada",flow:48000},{source:"Philippines",target:"Japan",flow:45000},
-  {source:"Nigeria",target:"United Kingdom",flow:42000}
-],
-2035: [
-  {source:"India",target:"United States",flow:380000},{source:"Mexico",target:"United States",flow:260000},
-  {source:"India",target:"Canada",flow:175000},{source:"India",target:"United Kingdom",flow:155000},
-  {source:"India",target:"Germany",flow:110000},{source:"Philippines",target:"United States",flow:115000},
-  {source:"Philippines",target:"Japan",flow:95000},{source:"Vietnam",target:"Japan",flow:88000},
-  {source:"Morocco",target:"France",flow:82000},{source:"India",target:"Australia",flow:78000},
-  {source:"Philippines",target:"Canada",flow:72000},{source:"Turkey",target:"Germany",flow:72000},
-  {source:"Ukraine",target:"Poland",flow:58000},{source:"Romania",target:"Italy",flow:55000},
-  {source:"Nigeria",target:"United Kingdom",flow:68000}
-],
-2040: [
-  {source:"India",target:"United States",flow:450000},{source:"Mexico",target:"United States",flow:240000},
-  {source:"India",target:"Canada",flow:210000},{source:"India",target:"United Kingdom",flow:185000},
-  {source:"India",target:"Germany",flow:145000},{source:"Philippines",target:"United States",flow:135000},
-  {source:"Philippines",target:"Japan",flow:120000},{source:"Vietnam",target:"Japan",flow:92000},
-  {source:"Nigeria",target:"United Kingdom",flow:95000},{source:"India",target:"Australia",flow:98000},
-  {source:"Morocco",target:"France",flow:88000},{source:"Turkey",target:"Germany",flow:65000},
-  {source:"Philippines",target:"Canada",flow:85000},{source:"Ukraine",target:"Poland",flow:48000},
-  {source:"Romania",target:"Italy",flow:48000}
-]};
+// Unified migration corridors: each corridor has data for 2024 (baseline), 2030, 2035, 2040
+// 2024 = approximate current actual annual migration (from OECD/UN data)
+// Corridors are consistent — every corridor appears in every year
+const CORRIDOR_DATA = [
+  {source:"India",target:"United States",y2024:180000,y2030:320000,y2035:380000,y2040:450000,
+   note_en:"India is the #1 source of H-1B visas and family immigration to the US. Growth driven by massive IT demand and established diaspora. Steady acceleration as US baby boomers retire.",
+   note_ru:"Индия — источник №1 виз H-1B и семейной иммиграции в США. Рост обусловлен огромным спросом на IT и диаспорой. Устойчивое ускорение по мере выхода бэби-бумеров на пенсию."},
+  {source:"Mexico",target:"United States",y2024:250000,y2030:280000,y2035:260000,y2040:240000,
+   note_en:"Mexico→US is the world's largest migration corridor. Slight decline projected as Mexico's own fertility drops and its economy grows, reducing push factors. Still massive in absolute terms.",
+   note_ru:"Мексика→США — крупнейший миграционный коридор в мире. Небольшое снижение прогнозируется по мере падения рождаемости в Мексике и роста её экономики. Всё ещё огромный в абсолютных цифрах."},
+  {source:"India",target:"Canada",y2024:120000,y2030:145000,y2035:175000,y2040:210000,
+   note_en:"Canada's Express Entry system heavily favors Indian applicants. India provides ~35% of all new permanent residents. Corridor grows as Canada raises immigration targets to 500K+/year.",
+   note_ru:"Система Express Entry Канады отдаёт предпочтение индийским заявителям. Индия даёт ~35% новых резидентов. Коридор растёт по мере повышения целей иммиграции до 500K+/год."},
+  {source:"India",target:"United Kingdom",y2024:90000,y2030:120000,y2035:155000,y2040:185000,
+   note_en:"Post-Brexit points system boosted Indian immigration to the UK. NHS desperately needs doctors and nurses. Commonwealth ties + English language = strong corridor.",
+   note_ru:"Балльная система после Brexit увеличила индийскую иммиграцию в Великобританию. NHS отчаянно нуждается во врачах и медсёстрах. Связи Содружества + английский язык."},
+  {source:"India",target:"Germany",y2024:30000,y2030:55000,y2035:110000,y2040:145000,
+   note_en:"Fast-growing corridor. Germany introduced Opportunity Card (2024) specifically to attract Indian IT workers. Doubles every 5 years as Germany's traditional EU sources dry up.",
+   note_ru:"Быстрорастущий коридор. Германия ввела Opportunity Card (2024) специально для индийских IT-работников. Удваивается каждые 5 лет по мере истощения традиционных источников из ЕС."},
+  {source:"India",target:"Australia",y2024:40000,y2030:52000,y2035:78000,y2040:98000,
+   note_en:"India overtook China as Australia's #1 migration source. Skilled migration + student-to-PR pipeline. Growth driven by healthcare and IT demand.",
+   note_ru:"Индия обогнала Китай как источник №1 мигрантов в Австралию. Квалифицированная миграция + путь студент→ПМЖ. Рост за счёт здравоохранения и IT."},
+  {source:"Philippines",target:"United States",y2024:70000,y2030:95000,y2035:115000,y2040:135000,
+   note_en:"Long-established corridor via family reunification and healthcare recruitment. Filipino nurses are in extreme demand. Steady growth tracks US healthcare shortage.",
+   note_ru:"Давний коридор через воссоединение семей и рекрутинг медработников. Филиппинские медсёстры крайне востребованы. Стабильный рост вслед за дефицитом в здравоохранении."},
+  {source:"Philippines",target:"Japan",y2024:25000,y2030:45000,y2035:95000,y2040:120000,
+   note_en:"Fastest-growing Asian corridor. Japan's Specified Skilled Worker program (2019) opened the door. Elder care is the main driver — triples by 2040 as Japan's 65+ population peaks.",
+   note_ru:"Самый быстрорастущий азиатский коридор. Программа SSW Японии (2019) открыла двери. Уход за пожилыми — главный драйвер. Утраивается к 2040, когда 65+ достигнет пика."},
+  {source:"Philippines",target:"Canada",y2024:35000,y2030:48000,y2035:72000,y2040:85000,
+   note_en:"Strong corridor via Live-in Caregiver Program and healthcare recruitment. Filipino community in Canada is well-established. Steady growth in healthcare and service sectors.",
+   note_ru:"Прочный коридор через программу сиделок и рекрутинг медработников. Филиппинская община в Канаде хорошо устоялась. Стабильный рост в здравоохранении и сервисе."},
+  {source:"Vietnam",target:"Japan",y2024:55000,y2030:72000,y2035:88000,y2040:92000,
+   note_en:"Vietnam is Japan's #1 source of technical interns. Growth slows by 2040 as Vietnam's own economy develops and wages rise, reducing push factors.",
+   note_ru:"Вьетнам — источник №1 технических стажёров в Японии. Рост замедляется к 2040, т.к. экономика Вьетнама развивается и зарплаты растут."},
+  {source:"Turkey",target:"Germany",y2024:70000,y2030:85000,y2035:72000,y2040:65000,
+   note_en:"Historic corridor (3M+ Turkish diaspora in Germany). DECLINING because Turkey's own fertility dropped below replacement (1.5 TFR) and its median age is rising. Fewer young Turks want to emigrate.",
+   note_ru:"Исторический коридор (3M+ турецкой диаспоры в Германии). СНИЖАЕТСЯ, т.к. рождаемость в Турции упала ниже замещения (1.5 TFR) и медианный возраст растёт. Меньше молодых турок хотят эмигрировать."},
+  {source:"Morocco",target:"France",y2024:60000,y2030:75000,y2035:82000,y2040:88000,
+   note_en:"Francophone language corridor. Steady moderate growth. Morocco's proximity and French-language education system make it a natural source for France's healthcare and service gaps.",
+   note_ru:"Франкоязычный коридор. Стабильный умеренный рост. Близость Марокко и франкоязычная система образования делают его естественным источником для здравоохранения и сервиса Франции."},
+  {source:"Ukraine",target:"Poland",y2024:85000,y2030:68000,y2035:58000,y2040:48000,
+   note_en:"DECLINING corridor. War initially spiked numbers, but Ukraine's own population collapse (aging + war losses) means fewer working-age Ukrainians available. Poland diversifies to India/Philippines.",
+   note_ru:"СНИЖАЮЩИЙСЯ коридор. Война сначала увеличила цифры, но демографический коллапс Украины (старение + потери) означает меньше трудоспособных украинцев. Польша переходит на Индию/Филиппины."},
+  {source:"Romania",target:"Italy",y2024:55000,y2030:62000,y2035:55000,y2040:48000,
+   note_en:"DECLINING corridor. Romania's own population is shrinking fast (-3.5%/decade). Fewer young Romanians available + Romania's wages rising = reduced push. Italy shifts to India, Philippines, Nigeria.",
+   note_ru:"СНИЖАЮЩИЙСЯ коридор. Население Румынии быстро сокращается (-3.5%/десятилетие). Меньше молодых + рост зарплат = снижение выталкивания. Италия переходит на Индию, Филиппины, Нигерию."},
+  {source:"Nigeria",target:"United Kingdom",y2024:30000,y2030:42000,y2035:68000,y2040:95000,
+   note_en:"Fastest-growing African corridor. Nigeria has 220M people with median age 18 — massive youth surplus. English language + Commonwealth ties. Triples by 2040 as UK's traditional EU sources decline.",
+   note_ru:"Самый быстрорастущий африканский коридор. Нигерия: 220M человек, медианный возраст 18 — огромный избыток молодёжи. Английский + связи Содружества. Утраивается к 2040."}
+];
+
+// Convert to per-year format for backward compatibility
+const MIGRATION_CORRIDORS = {2030:[],2035:[],2040:[]};
+CORRIDOR_DATA.forEach(c => {
+  MIGRATION_CORRIDORS[2030].push({source:c.source,target:c.target,flow:c.y2030});
+  MIGRATION_CORRIDORS[2035].push({source:c.source,target:c.target,flow:c.y2035});
+  MIGRATION_CORRIDORS[2040].push({source:c.source,target:c.target,flow:c.y2040});
+});
 
 const SECTORS = ['healthcare','it','construction','manufacturing','agriculture','hospitality','logistics','education','finance'];
 const FLAG_MAP = {"India":"\u{1F1EE}\u{1F1F3}","Mexico":"\u{1F1F2}\u{1F1FD}","Philippines":"\u{1F1F5}\u{1F1ED}","Turkey":"\u{1F1F9}\u{1F1F7}","Morocco":"\u{1F1F2}\u{1F1E6}","Vietnam":"\u{1F1FB}\u{1F1F3}","Ukraine":"\u{1F1FA}\u{1F1E6}","Romania":"\u{1F1F7}\u{1F1F4}","China":"\u{1F1E8}\u{1F1F3}","Nigeria":"\u{1F1F3}\u{1F1EC}","Pakistan":"\u{1F1F5}\u{1F1F0}","Brazil":"\u{1F1E7}\u{1F1F7}","Indonesia":"\u{1F1EE}\u{1F1E9}","Nepal":"\u{1F1F3}\u{1F1F5}","Bangladesh":"\u{1F1E7}\u{1F1E9}","Syria":"\u{1F1F8}\u{1F1FE}","Colombia":"\u{1F1E8}\u{1F1F4}","Albania":"\u{1F1E6}\u{1F1F1}","Serbia":"\u{1F1F7}\u{1F1F8}","Poland":"\u{1F1F5}\u{1F1F1}","Algeria":"\u{1F1E9}\u{1F1FF}","Tunisia":"\u{1F1F9}\u{1F1F3}","Senegal":"\u{1F1F8}\u{1F1F3}","Egypt":"\u{1F1EA}\u{1F1EC}","Kenya":"\u{1F1F0}\u{1F1EA}","Ghana":"\u{1F1EC}\u{1F1ED}","South Africa":"\u{1F1FF}\u{1F1E6}","Cambodia":"\u{1F1F0}\u{1F1ED}","Myanmar":"\u{1F1F2}\u{1F1F2}","Thailand":"\u{1F1F9}\u{1F1ED}","Sri Lanka":"\u{1F1F1}\u{1F1F0}","Uzbekistan":"\u{1F1FA}\u{1F1FF}","Georgia":"\u{1F1EC}\u{1F1EA}","Belarus":"\u{1F1E7}\u{1F1FE}","Moldova":"\u{1F1F2}\u{1F1E9}","Fiji":"\u{1F1EB}\u{1F1EF}","Venezuela":"\u{1F1FB}\u{1F1EA}","Ecuador":"\u{1F1EA}\u{1F1E8}","Peru":"\u{1F1F5}\u{1F1EA}","Cape Verde":"\u{1F1E8}\u{1F1FB}","Angola":"\u{1F1E6}\u{1F1F4}","Mozambique":"\u{1F1F2}\u{1F1FF}","DR Congo":"\u{1F1E8}\u{1F1E9}","Côte d'Ivoire":"\u{1F1E8}\u{1F1EE}","Cameroon":"\u{1F1E8}\u{1F1F2}","El Salvador":"\u{1F1F8}\u{1F1FB}","Guatemala":"\u{1F1EC}\u{1F1F9}","Bosnia":"\u{1F1E7}\u{1F1E6}","Mongolia":"\u{1F1F2}\u{1F1F3}","Afghanistan":"\u{1F1E6}\u{1F1EB}","Iraq":"\u{1F1EE}\u{1F1F6}","Somalia":"\u{1F1F8}\u{1F1F4}","Eritrea":"\u{1F1EA}\u{1F1F7}","Zimbabwe":"\u{1F1FF}\u{1F1FC}","Slovakia":"\u{1F1F8}\u{1F1F0}","Finland":"\u{1F1EB}\u{1F1EE}","Russia":"\u{1F1F7}\u{1F1FA}","Malaysia":"\u{1F1F2}\u{1F1FE}","Germany":"\u{1F1E9}\u{1F1EA}","Italy":"\u{1F1EE}\u{1F1F9}","France":"\u{1F1EB}\u{1F1F7}","Portugal":"\u{1F1F5}\u{1F1F9}","Sweden":"\u{1F1F8}\u{1F1EA}","UK":"\u{1F1EC}\u{1F1E7}"};
@@ -754,85 +779,77 @@ function renderHeatmap() {
 
 function renderFlowDiagram() {
   const container = document.getElementById('flow-chart');
-  const corridors = MIGRATION_CORRIDORS[currentYear].slice(0, 12); // top 12 for readability
-  const maxFlow = Math.max(...corridors.map(c => c.flow));
-  const width = container.clientWidth - 40 || 600;
-  const height = Math.max(500, corridors.length * 42);
-  const leftMargin = 140, rightMargin = 160;
+  // Sort by current year flow
+  const yearKey = 'y' + currentYear;
+  const sorted = [...CORRIDOR_DATA].sort((a,b) => b[yearKey] - a[yearKey]);
+  const maxFlow = sorted[0][yearKey];
 
-  const sources = [...new Set(corridors.map(c => c.source))];
-  const targets = [...new Set(corridors.map(c => c.target))];
-  const sourceScale = d3.scalePoint().domain(sources).range([35, height - 25]).padding(0.3);
-  const targetScale = d3.scalePoint().domain(targets).range([35, height - 25]).padding(0.3);
+  let html = '<div style="font-size:11px;color:var(--text-dim);margin-bottom:12px">' +
+    (currentLang==='ru'
+      ? 'Каждая строка = один миграционный коридор. Полоса показывает объём потока. Серое число слева — текущий уровень (2024).'
+      : 'Each row = one migration corridor. Bar shows projected flow volume. Grey number on left = current baseline (2024).') +
+    '</div>';
 
-  let svg = `<svg width="100%" height="${height}" viewBox="0 0 ${width} ${height}" style="overflow:visible">`;
+  sorted.forEach((c, i) => {
+    const flow = c[yearKey];
+    const baseline = c.y2024;
+    const pct = (flow / maxFlow * 100).toFixed(1);
+    const growth = ((flow - baseline) / baseline * 100).toFixed(0);
+    const growthColor = flow > baseline ? '#2ecc71' : flow < baseline ? '#e74c3c' : '#8892a0';
+    const growthSign = flow > baseline ? '+' : '';
+    const sf = FLAG_MAP[c.source] || '';
+    const cd = Object.values(COUNTRY_DATA).find(x => x.name === c.target);
+    const tf = cd ? cd.flag : '';
+    const hue = (i * 24) % 360;
+    const note = currentLang === 'ru' ? c.note_ru : c.note_en;
 
-  // Draw flow paths with labels on the right side of source
-  corridors.forEach((cor, i) => {
-    const sy = sourceScale(cor.source);
-    const ty = targetScale(cor.target);
-    const thickness = Math.max(2, (cor.flow / maxFlow) * 14);
-    const hue = (i * 30) % 360;
-    const cpx1 = leftMargin + (width - leftMargin - rightMargin) * 0.35;
-    const cpx2 = leftMargin + (width - leftMargin - rightMargin) * 0.65;
-    svg += `<path class="flow-path" d="M ${leftMargin} ${sy} C ${cpx1} ${sy}, ${cpx2} ${ty}, ${width - rightMargin} ${ty}"
-      stroke="hsl(${hue},65%,55%)" stroke-width="${thickness}"
-      onmouseover="this.style.strokeOpacity=0.85" onmouseout="this.style.strokeOpacity=0.35">
-      <title>${cor.source} → ${cor.target}: ${cor.flow.toLocaleString()}${t('perYear')}</title></path>`;
+    html += `<div style="margin-bottom:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05)">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <div style="width:200px;white-space:nowrap;font-size:12px;font-weight:500">${sf} ${c.source} → ${tf} ${c.target}</div>
+        <div style="width:60px;text-align:right;font-size:10px;color:#8892a0" title="2024 baseline">${fmt(baseline)}</div>
+        <div style="flex:1;height:20px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden;position:relative">
+          <div style="width:${pct}%;height:100%;background:hsl(${hue},60%,50%);border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:700;color:#fff;min-width:50px">${flow.toLocaleString()}</div>
+        </div>
+        <div style="width:55px;text-align:right;font-size:11px;font-weight:600;color:${growthColor}">${growthSign}${growth}%</div>
+      </div>
+      <div style="font-size:10px;color:var(--text-dim);line-height:1.4;padding-left:4px">${note}</div>
+    </div>`;
   });
 
-  // Source labels (left)
-  sources.forEach(s => {
-    const y = sourceScale(s);
-    svg += `<text x="${leftMargin-8}" y="${y+4}" class="flow-label" text-anchor="end" font-size="11" fill="#e0e0e0">${FLAG_MAP[s]||''} ${s}</text>`;
-  });
-
-  // Target labels with flow totals (right)
-  targets.forEach(tgt => {
-    const y = targetScale(tgt);
-    const cd = Object.values(COUNTRY_DATA).find(c => c.name === tgt);
-    const totalToTarget = corridors.filter(c=>c.target===tgt).reduce((s,c)=>s+c.flow,0);
-    svg += `<text x="${width-rightMargin+8}" y="${y+4}" class="flow-label" text-anchor="start" font-size="11" fill="#e0e0e0">${cd?cd.flag:''} ${tgt}</text>`;
-    svg += `<text x="${width-rightMargin+8}" y="${y+18}" text-anchor="start" font-size="9" fill="#8892a0">${fmt(totalToTarget)}${t('perYear')}</text>`;
-  });
-
-  svg += '</svg>';
-  container.innerHTML = svg;
+  container.innerHTML = html;
 }
 
 function renderCorridorGrowth() {
   const container = document.getElementById('corridor-growth');
-  // Get all unique corridors across years
-  const corridorMap = {};
-  [2030,2035,2040].forEach(yr => {
-    MIGRATION_CORRIDORS[yr].forEach(c => {
-      const key = c.source + ' → ' + c.target;
-      if (!corridorMap[key]) corridorMap[key] = {source:c.source,target:c.target,2030:0,2035:0,2040:0};
-      corridorMap[key][yr] = c.flow;
-    });
-  });
-  const corridors = Object.values(corridorMap).sort((a,b) => b[2040] - a[2040]).slice(0,10);
-  const maxFlow = Math.max(...corridors.map(c => Math.max(c[2030],c[2035],c[2040])));
+  const sorted = [...CORRIDOR_DATA].sort((a,b) => b.y2040 - a.y2040);
+  const maxFlow = Math.max(...sorted.map(c => Math.max(c.y2024,c.y2030,c.y2035,c.y2040)));
 
-  const colors = {2030:'#3498db',2035:'#f1c40f',2040:'#e74c3c'};
-  let html = `<div style="display:flex;gap:16px;margin-bottom:12px;font-size:12px">`;
-  [2030,2035,2040].forEach(yr => {
-    html += `<span><span style="display:inline-block;width:12px;height:12px;background:${colors[yr]};border-radius:2px;margin-right:4px"></span>${yr}</span>`;
+  const colors = {2024:'#8892a0',2030:'#3498db',2035:'#f1c40f',2040:'#e74c3c'};
+  let html = `<div style="display:flex;gap:16px;margin-bottom:14px;font-size:12px;flex-wrap:wrap">`;
+  [2024,2030,2035,2040].forEach(yr => {
+    const label = yr === 2024 ? (currentLang==='ru'?'2024 (текущий)':'2024 (current)') : yr;
+    html += `<span><span style="display:inline-block;width:12px;height:12px;background:${colors[yr]};border-radius:2px;margin-right:4px"></span>${label}</span>`;
   });
   html += '</div>';
 
-  corridors.forEach(c => {
+  sorted.forEach(c => {
     const sf = FLAG_MAP[c.source]||'';
     const cd = Object.values(COUNTRY_DATA).find(x => x.name === c.target);
     const tf = cd?cd.flag:'';
-    html += `<div class="corridor-row">
+    const totalGrowth = ((c.y2040 - c.y2024) / c.y2024 * 100).toFixed(0);
+    const growthColor = c.y2040 > c.y2024 ? '#2ecc71' : '#e74c3c';
+
+    html += `<div class="corridor-row" style="margin-bottom:4px">
       <div class="corridor-label">${sf} ${c.source} → ${tf} ${c.target}</div>
       <div class="corridor-bars">`;
-    [2030,2035,2040].forEach(yr => {
-      const w = Math.max(5, c[yr]/maxFlow*100);
-      html += `<div class="corridor-bar" style="width:${w}%;background:${colors[yr]}">${fmt(c[yr])}</div>`;
+    [2024,2030,2035,2040].forEach(yr => {
+      const val = c['y'+yr];
+      const w = Math.max(3, val/maxFlow*100);
+      html += `<div class="corridor-bar" style="width:${w}%;background:${colors[yr]}">${fmt(val)}</div>`;
     });
-    html += `</div></div>`;
+    html += `</div>
+      <div style="width:60px;text-align:right;font-size:10px;font-weight:600;color:${growthColor}">${c.y2040>c.y2024?'+':''}${totalGrowth}%</div>
+    </div>`;
   });
   container.innerHTML = html;
 }
