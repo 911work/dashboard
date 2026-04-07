@@ -190,6 +190,9 @@ header h1{font-size:18px;font-weight:600;white-space:nowrap;background:linear-gr
 <p class="section-desc" id="corridor-growth-desc">How projected migration demand changes over time along each corridor. Most corridors show 40-80% growth over the decade.</p>
 <div class="chart-container" id="corridor-growth"></div>
 <div id="migration-economics-block"></div>
+<h3 class="section-title" id="visa-title">Visa Channels &amp; Education Pathways</h3>
+<p class="section-desc" id="visa-desc">How migrants actually enter and legalize: breakdown by channel (work/family/education/refugee) and the education-to-work pipeline for each major destination. Data as of 2024.</p>
+<div class="chart-container" id="visa-channels-chart"></div>
 <h3 class="section-title" id="skill-title">Skill &amp; Profession Demand by Country</h3>
 <p class="section-desc" id="skill-desc">Breakdown of workforce needs: blue-collar (manual/technical trades), grey-collar (healthcare, services), and white-collar (office/professional) roles. Percentages show the share of total demand.</p>
 <div class="chart-container" id="skill-chart"></div>
@@ -825,6 +828,60 @@ CORRIDOR_DATA.forEach(c => {
 });
 
 const SECTORS = ['healthcare','it','construction','manufacturing','agriculture','hospitality','logistics','education','finance'];
+// Visa channels & education pathways per destination country
+// Sources: Eurostat 2024, IRCC Canada, Home Office UK, BAMF Germany, ISA Japan, DHA Australia
+// channelSplit: % of total inflow by channel. eduPathway: % of total who came via education route
+const VISA_CHANNELS = {
+"United States": {
+  channelSplit: {work:24,family:47,education:15,refugee:8,diversity:6},
+  eduPathway: {pctOfTotal:15, stayRate:45, topFields:["Computer Science/IT","Engineering","Business/MBA","Health Sciences","Mathematics/Statistics"],
+    degrees:{bachelor:25,master:55,phd:20}, mainVisa:"F-1 → OPT → H-1B → Green Card"},
+  mainPrograms: ["H-1B (specialty workers, 85K cap)","H-2A/H-2B (seasonal agricultural/non-ag)","L-1 (intra-company transfer)","EB green cards (employment-based, ~140K/yr)","F-1/OPT (student → work, 3yr STEM extension)","Diversity Visa Lottery (55K/yr)"],
+  salaryThreshold: "$65,000+ (H-1B prevailing wage)", note_en:"~100K international students/yr want to stay permanently. OPT STEM extension (3 years) is the key bridge. H-1B lottery makes it uncertain — only ~25% chance.", note_ru:"~100K иностранных студентов/год хотят остаться. OPT STEM (3 года) — ключевой мост. Лотерея H-1B — только ~25% шанс."},
+"Canada": {
+  channelSplit: {work:42,family:22,education:28,refugee:8},
+  eduPathway: {pctOfTotal:28, stayRate:55, topFields:["IT/Computer Science","Business Administration","Nursing/Healthcare","Engineering","Trades/Polytechnic"],
+    degrees:{diploma:35,bachelor:30,master:25,phd:10}, mainVisa:"Study Permit → PGWP → Express Entry PR"},
+  mainPrograms: ["Express Entry (FSWP/CEC/FSTP, ~110K/yr)","Provincial Nominee (PNP, ~120K/yr)","PGWP (Post-Graduation Work Permit, 1-3yr)","LMIA employer-sponsored","Atlantic Immigration Program","Francophone immigration streams"],
+  salaryThreshold: "No fixed minimum (points-based)", note_en:"28% of all immigrants came through education pathway. PGWP lets graduates work 1-3 years, then apply for PR via Express Entry. Canada cut student permits 35% in 2024 to reduce volume.", note_ru:"28% иммигрантов прошли через образование. PGWP даёт 1-3 года работы после учёбы, потом PR через Express Entry. Канада сократила студенческие визы на 35% в 2024."},
+"United Kingdom": {
+  channelSplit: {work:25,family:8,education:37,refugee:5,other:25},
+  eduPathway: {pctOfTotal:37, stayRate:35, topFields:["Business/Management","Engineering","Computer Science","Healthcare/Nursing","Law"],
+    degrees:{bachelor:40,master:50,phd:10}, mainVisa:"Student Visa → Graduate Route (2yr) → Skilled Worker Visa"},
+  mainPrograms: ["Skilled Worker Visa (points-based, £38.7K threshold)","Health & Care Worker Visa (£23.2K threshold)","Graduate Route (2yr post-study work)","Global Talent Visa (exceptional talent)","Seasonal Worker Visa (agriculture, 6mo)","Youth Mobility Scheme (selected countries)"],
+  salaryThreshold: "£38,700/yr (Skilled Worker); £23,200 (Health & Care)", note_en:"37% of visas are education-related — UK's biggest channel. But Graduate Route (2yr) has low conversion to permanent settlement (~35%). Policy tightened in 2024: dependants restricted, salary threshold raised from £26K to £38.7K.", note_ru:"37% виз — образовательные, крупнейший канал UK. Но Graduate Route (2 года) имеет низкую конверсию в ПМЖ (~35%). В 2024 ужесточено: иждивенцы ограничены, порог зарплаты поднят с £26K до £38.7K."},
+"Germany": {
+  channelSplit: {work:14,family:36,education:14,refugee:27,other:9},
+  eduPathway: {pctOfTotal:14, stayRate:40, topFields:["Engineering","Computer Science","Natural Sciences","Medicine","Business"],
+    degrees:{bachelor:20,master:60,phd:20}, mainVisa:"Student Visa → 18-month job search → EU Blue Card / Skilled Worker Visa"},
+  mainPrograms: ["EU Blue Card (€45.3K threshold, €41K for shortage occupations)","Skilled Worker Visa (Fachkräfteeinwanderung)","Opportunity Card / Chancenkarte (2024, points-based job search)","ICT Card (intra-corporate transfer)","Student Visa → Job Search Visa (18 months)","Bilateral agreements (India 90K/yr target, Vietnam, Philippines)"],
+  salaryThreshold: "€45,300/yr (Blue Card); €41,000 (shortage); Opportunity Card: no minimum", note_en:"Education pathway is only 14% — language barrier is the biggest filter. But 56,252 Blue Cards in 2024 (72% of all EU Blue Cards). Opportunity Card (2024) is a game-changer — come for 1 year to find work without a job offer.", note_ru:"Образовательный канал всего 14% — языковой барьер главный фильтр. Но 56,252 Blue Card в 2024 (72% всех EU Blue Card). Opportunity Card (2024) — прорыв: приезжай на год искать работу без оффера."},
+"Japan": {
+  channelSplit: {work:42,family:12,education:25,trainee:21},
+  eduPathway: {pctOfTotal:25, stayRate:30, topFields:["Japanese Language","Engineering","IT/Computer Science","Business","Nursing/Care Work"],
+    degrees:{vocational:45,bachelor:35,master:15,phd:5}, mainVisa:"Student Visa → Job Search (1yr) → Engineer/Specialist/SSW"},
+  mainPrograms: ["SSW Type 1 (14 sectors, max 5yr, cap 805K)","SSW Type 2 (skilled, path to permanent residence)","Technical Intern Training → renamed 'Employment for Skill Development' (2027)","Engineer/Specialist in Humanities","Highly Skilled Professional (points-based, fast PR)","Student → Work visa conversion"],
+  salaryThreshold: "No fixed minimum (market rate for occupation)", note_en:"25% come as students, but only ~30% stay. Vocational schools (専門学校) are bigger pipeline than universities — 45% of student-to-worker conversions. SSW cap raised to 805K. New system replacing TITP launches 2027.", note_ru:"25% приезжают как студенты, но только ~30% остаются. Профтехшколы (専門学校) — больший конвейер чем университеты: 45% конверсий студент→работник. Лимит SSW поднят до 805K. Новая система вместо TITP с 2027."},
+"France": {
+  channelSplit: {work:16,family:33,education:34,refugee:12,other:5},
+  eduPathway: {pctOfTotal:34, stayRate:30, topFields:["Business/Grande École","Engineering","Sciences","Medicine","Arts/Humanities"],
+    degrees:{bachelor:30,master:55,phd:15}, mainVisa:"Student Visa → APS (1yr job search) → Salarié / Passeport Talent"},
+  mainPrograms: ["Passeport Talent (highly qualified, researchers, investors)","Salarié / Travailleur Temporaire (employer-sponsored)","APS (Autorisation Provisoire de Séjour, 1yr post-study)","Carte de séjour pluriannuelle (multi-year)","Seasonal worker permit","EU free movement (intra-EU)"],
+  salaryThreshold: "1.5× SMIC (€2,827/mo) for Passeport Talent", note_en:"34% come as students — but France has only ~30% stay rate (lower than Canada/Australia). Grande École graduates stay more. Key issue: low salaries compared to anglophone competitors make France less attractive for retention.", note_ru:"34% приезжают как студенты — но уровень удержания всего ~30% (ниже Канады/Австралии). Выпускники Grande École остаются чаще. Проблема: низкие зарплаты vs англоязычных конкурентов."},
+"Australia": {
+  channelSplit: {work:38,family:28,education:22,refugee:8,other:4},
+  eduPathway: {pctOfTotal:22, stayRate:50, topFields:["IT/Computer Science","Nursing/Health","Engineering","Accounting","Trades (Electrician, Plumber)"],
+    degrees:{vocational:25,bachelor:35,master:30,phd:10}, mainVisa:"Student Visa → Temporary Graduate (485) → Skilled Independent (189) / Employer Sponsored (482)"},
+  mainPrograms: ["Skilled Independent 189 (points-tested, no sponsor)","Employer Nominated 186 (permanent)","Temporary Skill Shortage 482 (employer-sponsored, 2-4yr)","Temporary Graduate 485 (2-4yr post-study)","Regional visas (491/191, bonus points)","Working Holiday (417/462, selected countries)"],
+  salaryThreshold: "AUD $73,150/yr (Temporary Skill Shortage)", note_en:"22% via education, ~50% of graduates stay. Student lodgements dropped to 427K in 2024-25 (from 600K) — government tightening. Trades pathway (vocational) is 25% of student conversions — electricians, plumbers highly valued.", note_ru:"22% через образование, ~50% выпускников остаются. Студенческие заявки упали до 427K в 2024-25 (с 600K) — правительство ужесточает. Путь через ПТУ (vocational) — 25% конверсий: электрики, сантехники высоко ценятся."},
+"South Korea": {
+  channelSplit: {work:55,family:15,education:22,other:8},
+  eduPathway: {pctOfTotal:22, stayRate:25, topFields:["Korean Language","Engineering","IT","Business","Healthcare"],
+    degrees:{vocational:30,bachelor:45,master:20,phd:5}, mainVisa:"D-2 Student → D-10 Job Search → E-7 Professional / E-9 Worker"},
+  mainPrograms: ["E-9 (non-professional, bilateral MOUs with 16 countries)","E-7 (professional/specialist)","D-10 (job search after graduation, 6mo)","F-2 (residential, points-based)","H-2 (ethnic Korean workers)"],
+  salaryThreshold: "Minimum wage (~$1,700/mo)", note_en:"22% via education but only ~25% stay — language barrier + competitive job market. E-9 program (blue-collar) is the backbone: 16 bilateral MOUs. Korean language proficiency test (EPS-TOPIK) required for E-9.", note_ru:"22% через образование, но только ~25% остаются — языковой барьер + конкурентный рынок. Программа E-9 (рабочие) — основа: 16 двусторонних соглашений. Тест корейского (EPS-TOPIK) обязателен для E-9."}
+};
+
 const FLAG_MAP = {"India":"\u{1F1EE}\u{1F1F3}","Mexico":"\u{1F1F2}\u{1F1FD}","Philippines":"\u{1F1F5}\u{1F1ED}","Turkey":"\u{1F1F9}\u{1F1F7}","Morocco":"\u{1F1F2}\u{1F1E6}","Vietnam":"\u{1F1FB}\u{1F1F3}","Ukraine":"\u{1F1FA}\u{1F1E6}","Romania":"\u{1F1F7}\u{1F1F4}","China":"\u{1F1E8}\u{1F1F3}","Nigeria":"\u{1F1F3}\u{1F1EC}","Pakistan":"\u{1F1F5}\u{1F1F0}","Brazil":"\u{1F1E7}\u{1F1F7}","Indonesia":"\u{1F1EE}\u{1F1E9}","Nepal":"\u{1F1F3}\u{1F1F5}","Bangladesh":"\u{1F1E7}\u{1F1E9}","Syria":"\u{1F1F8}\u{1F1FE}","Colombia":"\u{1F1E8}\u{1F1F4}","Albania":"\u{1F1E6}\u{1F1F1}","Serbia":"\u{1F1F7}\u{1F1F8}","Poland":"\u{1F1F5}\u{1F1F1}","Algeria":"\u{1F1E9}\u{1F1FF}","Tunisia":"\u{1F1F9}\u{1F1F3}","Senegal":"\u{1F1F8}\u{1F1F3}","Egypt":"\u{1F1EA}\u{1F1EC}","Kenya":"\u{1F1F0}\u{1F1EA}","Ghana":"\u{1F1EC}\u{1F1ED}","South Africa":"\u{1F1FF}\u{1F1E6}","Cambodia":"\u{1F1F0}\u{1F1ED}","Myanmar":"\u{1F1F2}\u{1F1F2}","Thailand":"\u{1F1F9}\u{1F1ED}","Sri Lanka":"\u{1F1F1}\u{1F1F0}","Uzbekistan":"\u{1F1FA}\u{1F1FF}","Georgia":"\u{1F1EC}\u{1F1EA}","Belarus":"\u{1F1E7}\u{1F1FE}","Moldova":"\u{1F1F2}\u{1F1E9}","Fiji":"\u{1F1EB}\u{1F1EF}","Venezuela":"\u{1F1FB}\u{1F1EA}","Ecuador":"\u{1F1EA}\u{1F1E8}","Peru":"\u{1F1F5}\u{1F1EA}","Cape Verde":"\u{1F1E8}\u{1F1FB}","Angola":"\u{1F1E6}\u{1F1F4}","Mozambique":"\u{1F1F2}\u{1F1FF}","DR Congo":"\u{1F1E8}\u{1F1E9}","Côte d'Ivoire":"\u{1F1E8}\u{1F1EE}","Cameroon":"\u{1F1E8}\u{1F1F2}","El Salvador":"\u{1F1F8}\u{1F1FB}","Guatemala":"\u{1F1EC}\u{1F1F9}","Bosnia":"\u{1F1E7}\u{1F1E6}","Mongolia":"\u{1F1F2}\u{1F1F3}","Afghanistan":"\u{1F1E6}\u{1F1EB}","Iraq":"\u{1F1EE}\u{1F1F6}","Somalia":"\u{1F1F8}\u{1F1F4}","Eritrea":"\u{1F1EA}\u{1F1F7}","Zimbabwe":"\u{1F1FF}\u{1F1FC}","Slovakia":"\u{1F1F8}\u{1F1F0}","Finland":"\u{1F1EB}\u{1F1EE}","Russia":"\u{1F1F7}\u{1F1FA}","Malaysia":"\u{1F1F2}\u{1F1FE}","Germany":"\u{1F1E9}\u{1F1EA}","Italy":"\u{1F1EE}\u{1F1F9}","France":"\u{1F1EB}\u{1F1F7}","Portugal":"\u{1F1F5}\u{1F1F9}","Sweden":"\u{1F1F8}\u{1F1EA}","UK":"\u{1F1EC}\u{1F1E7}"};
 
 // ===================== APP STATE =====================
@@ -1004,6 +1061,7 @@ function renderDashboard() {
   renderFlowDiagram();
   renderCorridorGrowth();
   renderMigrationEconomics();
+  renderVisaChannels();
   renderSkillChart();
   renderProfessionChart();
 }
@@ -1244,6 +1302,72 @@ function renderCorridorGrowth() {
       <div style="width:60px;text-align:right;font-size:10px;font-weight:600;color:${growthColor}">${c.y2040>c.y2024?'+':''}${totalGrowth}%</div>
     </div>`;
   });
+  container.innerHTML = html;
+}
+
+function renderVisaChannels() {
+  const container = document.getElementById('visa-channels-chart');
+  const isRu = currentLang === 'ru';
+  const channelColors = {work:'#2ecc71',family:'#3498db',education:'#e94560',refugee:'#9b59b6',trainee:'#e67e22',diversity:'#f1c40f',other:'#8892a0'};
+  const channelLabels = isRu
+    ? {work:'Работа',family:'Семья',education:'Образование',refugee:'Беженцы',trainee:'Стажёры',diversity:'Лотерея',other:'Прочее'}
+    : {work:'Work',family:'Family',education:'Education',refugee:'Refugee',trainee:'Trainee',diversity:'Diversity',other:'Other'};
+
+  let html = `<div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;font-size:11px">`;
+  Object.entries(channelLabels).forEach(([k,v]) => {
+    if (channelColors[k]) html += `<span><span style="display:inline-block;width:10px;height:10px;background:${channelColors[k]};border-radius:2px;margin-right:4px"></span>${v}</span>`;
+  });
+  html += '</div>';
+
+  Object.entries(VISA_CHANNELS).forEach(([country, data]) => {
+    const cd = Object.values(COUNTRY_DATA).find(c => c.name === country);
+    const flag = cd ? cd.flag : '';
+    const ep = data.eduPathway;
+    const note = isRu ? data.note_ru : data.note_en;
+
+    // Channel split bar
+    html += `<div style="background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:12px">`;
+    html += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+      <span style="font-size:18px">${flag}</span>
+      <span style="font-size:14px;font-weight:700">${country}</span>
+      <span style="font-size:11px;color:var(--text-dim);margin-left:auto">${data.salaryThreshold}</span>
+    </div>`;
+
+    // Stacked bar for channels
+    html += `<div style="display:flex;height:24px;border-radius:4px;overflow:hidden;margin-bottom:8px">`;
+    Object.entries(data.channelSplit).forEach(([ch, pct]) => {
+      html += `<div style="width:${pct}%;background:${channelColors[ch]||'#555'};display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:#fff;min-width:${pct>8?'0':'20'}px" title="${channelLabels[ch]||ch}: ${pct}%">${pct>8?pct+'%':''}</div>`;
+    });
+    html += `</div>`;
+
+    // Education pathway highlight
+    html += `<div style="background:rgba(233,69,96,.08);border:1px solid rgba(233,69,96,.25);border-radius:8px;padding:10px 14px;margin-bottom:8px">
+      <div style="font-size:12px;font-weight:600;color:var(--highlight);margin-bottom:6px">${isRu?'Образовательный канал':'Education Pipeline'}: ${ep.pctOfTotal}% ${isRu?'всех мигрантов':'of all migrants'} → ${ep.stayRate}% ${isRu?'остаются работать':'stay to work'}</div>
+      <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px">${isRu?'Путь':'Path'}: <b style="color:var(--text)">${ep.mainVisa}</b></div>
+      <div style="display:flex;gap:4px;margin-bottom:6px">`;
+    // Degree split mini-bar
+    const degColors = {vocational:'#e67e22',diploma:'#e67e22',bachelor:'#3498db',master:'#9b59b6',phd:'#2ecc71'};
+    const degLabels = isRu ? {vocational:'ПТУ',diploma:'Диплом',bachelor:'Бакалавр',master:'Магистр',phd:'PhD'} : {vocational:'Vocational',diploma:'Diploma',bachelor:'Bachelor',master:'Master',phd:'PhD'};
+    Object.entries(ep.degrees).forEach(([deg, pct]) => {
+      html += `<div style="width:${pct}%;height:18px;background:${degColors[deg]||'#555'};border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:600;color:#fff" title="${degLabels[deg]||deg}: ${pct}%">${pct>=15?degLabels[deg]+' '+pct+'%':''}</div>`;
+    });
+    html += `</div>
+      <div style="font-size:10px;color:var(--text-dim)">${isRu?'Топ специальности':'Top fields'}: <b style="color:var(--text)">${ep.topFields.join(', ')}</b></div>
+    </div>`;
+
+    // Visa programs list
+    html += `<div style="font-size:10px;color:var(--text-dim);margin-bottom:6px">${isRu?'Основные программы':'Main programs'}:</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px">`;
+    data.mainPrograms.forEach(p => {
+      html += `<span style="font-size:9px;padding:3px 8px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:12px;color:var(--text-dim)">${p}</span>`;
+    });
+    html += `</div>`;
+
+    // Note
+    html += `<div style="font-size:10px;color:var(--text-dim);line-height:1.5;border-left:2px solid var(--highlight);padding-left:8px">${note}</div>`;
+    html += `</div>`;
+  });
+
   container.innerHTML = html;
 }
 
