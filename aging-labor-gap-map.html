@@ -568,9 +568,9 @@ function getCollarSplit(sectors) {
   const white = (sectors.it||0) + (sectors.finance||0);
   const total = blue + grey + white;
   return {
-    blue: Math.round(blue/total*100),
-    grey: Math.round(grey/total*100),
-    white: Math.round(white/total*100)
+    blue: Math.round(blue/total*100), blueN: blue,
+    grey: Math.round(grey/total*100), greyN: grey,
+    white: Math.round(white/total*100), whiteN: white
   };
 }
 
@@ -871,10 +871,11 @@ function renderSkillChart() {
     html += `<div class="stacked-bar-row">
       <div class="stacked-bar-label">${c.flag} ${c.name}</div>
       <div class="stacked-bar-track">
-        <div class="stacked-segment" style="width:${cs.blue}%;background:${colors.blue}">${cs.blue}%</div>
-        <div class="stacked-segment" style="width:${cs.grey}%;background:${colors.grey}">${cs.grey}%</div>
-        <div class="stacked-segment" style="width:${cs.white}%;background:${colors.white}">${cs.white}%</div>
+        <div class="stacked-segment" style="width:${cs.blue}%;background:${colors.blue}">${cs.blue}% · ${fmt(cs.blueN)}</div>
+        <div class="stacked-segment" style="width:${cs.grey}%;background:${colors.grey}">${cs.grey}% · ${fmt(cs.greyN)}</div>
+        <div class="stacked-segment" style="width:${cs.white}%;background:${colors.white}">${cs.white}% · ${fmt(cs.whiteN)}</div>
       </div>
+      <div style="width:60px;font-size:10px;color:var(--text-dim);text-align:right">${fmt(yr.totalVacancies)}</div>
     </div>`;
   });
   container.innerHTML = html;
