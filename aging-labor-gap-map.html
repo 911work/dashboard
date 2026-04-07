@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Aging &amp; Labor Gap Map | 2030-2040 Projections</title>
+<title>Global Aging &amp; Labor Gap Map | 2030-2040</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -14,43 +14,46 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg)
 .spinner{width:50px;height:50px;border:3px solid var(--border);border-top-color:var(--highlight);border-radius:50%;animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 #loading p{margin-top:16px;color:var(--text-dim);font-size:14px}
-header{padding:12px 24px;display:flex;align-items:center;gap:16px;background:rgba(22,33,62,.9);backdrop-filter:blur(10px);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)}
+header{padding:10px 24px;display:flex;align-items:center;gap:12px;background:rgba(22,33,62,.95);backdrop-filter:blur(10px);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border);flex-wrap:wrap}
 header h1{font-size:18px;font-weight:600;white-space:nowrap;background:linear-gradient(135deg,var(--highlight),#ff6b6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.search-box{position:relative;flex:0 0 260px}
-.search-box input{width:100%;padding:8px 12px 8px 36px;background:var(--accent);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;outline:none;transition:border-color .2s}
+.search-box{position:relative;flex:0 0 220px}
+.search-box input{width:100%;padding:7px 12px 7px 34px;background:var(--accent);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;outline:none;transition:border-color .2s}
 .search-box input:focus{border-color:var(--highlight)}
 .search-box svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--text-dim)}
-.year-toggle{display:flex;gap:4px;margin-left:auto;background:var(--accent);border-radius:10px;padding:3px}
-.year-btn{padding:8px 20px;border:none;background:transparent;color:var(--text-dim);font-family:inherit;font-size:13px;font-weight:500;border-radius:8px;cursor:pointer;transition:all .25s}
+.year-toggle{display:flex;gap:4px;background:var(--accent);border-radius:10px;padding:3px}
+.year-btn{padding:7px 18px;border:none;background:transparent;color:var(--text-dim);font-family:inherit;font-size:13px;font-weight:500;border-radius:8px;cursor:pointer;transition:all .25s}
 .year-btn.active{background:var(--highlight);color:#fff;box-shadow:0 2px 8px rgba(233,69,96,.4)}
-#map-section{position:relative;height:58vh;min-height:400px;background:var(--bg);overflow:hidden}
+.lang-toggle{display:flex;gap:4px;background:var(--accent);border-radius:10px;padding:3px;margin-left:auto}
+.lang-btn{padding:7px 14px;border:none;background:transparent;color:var(--text-dim);font-family:inherit;font-size:12px;font-weight:500;border-radius:8px;cursor:pointer;transition:all .25s}
+.lang-btn.active{background:#3498db;color:#fff}
+#map-section{position:relative;height:72vh;min-height:500px;background:var(--bg);overflow:hidden}
 #map-svg{width:100%;height:100%}
 .country-path{stroke:#2a2a4e;stroke-width:.5;cursor:pointer;transition:opacity .3s}
 .country-path:hover{stroke:#fff;stroke-width:1.5}
 .country-path.dimmed{opacity:.15}
 .country-path.tracked{cursor:pointer}
-.legend{position:absolute;bottom:20px;left:20px;background:rgba(22,33,62,.9);backdrop-filter:blur(8px);padding:12px 16px;border-radius:10px;border:1px solid var(--border);font-size:11px}
-.legend-title{font-weight:600;margin-bottom:8px;font-size:12px}
-.legend-scale{display:flex;align-items:center;gap:2px}
-.legend-bar{width:100px;height:12px;border-radius:3px;background:linear-gradient(to right,var(--green),var(--yellow),var(--orange),var(--red))}
-.legend-labels{display:flex;justify-content:space-between;margin-top:4px;font-size:10px;color:var(--text-dim);width:100px}
-.tooltip{position:fixed;background:rgba(22,33,62,.95);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:12px;pointer-events:none;z-index:200;opacity:0;transition:opacity .15s;max-width:280px;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.legend{position:absolute;bottom:16px;left:16px;background:rgba(22,33,62,.92);backdrop-filter:blur(8px);padding:10px 14px;border-radius:10px;border:1px solid var(--border);font-size:11px}
+.legend-title{font-weight:600;margin-bottom:6px;font-size:11px}
+.legend-bar{width:120px;height:12px;border-radius:3px;background:linear-gradient(to right,var(--green),var(--yellow),var(--orange),var(--red))}
+.legend-labels{display:flex;justify-content:space-between;margin-top:3px;font-size:10px;color:var(--text-dim);width:120px}
+.tooltip{position:fixed;background:rgba(22,33,62,.96);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:12px;pointer-events:none;z-index:200;opacity:0;transition:opacity .15s;max-width:300px;box-shadow:0 4px 20px rgba(0,0,0,.4)}
 .tooltip.visible{opacity:1}
 .tooltip h3{font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
 .tooltip .stat{display:flex;justify-content:space-between;gap:16px;margin:3px 0;color:var(--text-dim)}
 .tooltip .stat span:last-child{color:var(--text);font-weight:500}
 #dashboard{padding:24px;max-width:1600px;margin:0 auto}
-.section-title{font-size:16px;font-weight:600;margin:24px 0 12px;display:flex;align-items:center;gap:8px}
+.section-title{font-size:16px;font-weight:600;margin:28px 0 6px;display:flex;align-items:center;gap:8px}
 .section-title::before{content:'';width:4px;height:20px;background:var(--highlight);border-radius:2px}
+.section-desc{font-size:12px;color:var(--text-dim);margin-bottom:14px;line-height:1.5;max-width:900px}
 .summary-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
-.summary-card{background:linear-gradient(135deg,var(--card),var(--accent));border:1px solid var(--border);border-radius:12px;padding:20px;position:relative;overflow:hidden}
+.summary-card{background:linear-gradient(135deg,var(--card),var(--accent));border:1px solid var(--border);border-radius:12px;padding:18px;position:relative;overflow:hidden}
 .summary-card::after{content:'';position:absolute;top:0;right:0;width:80px;height:80px;background:radial-gradient(circle,rgba(233,69,96,.1),transparent);border-radius:50%;transform:translate(20px,-20px)}
-.summary-card .label{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
-.summary-card .value{font-size:28px;font-weight:700;background:linear-gradient(135deg,#fff,var(--text));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.summary-card .sub{font-size:12px;color:var(--text-dim);margin-top:4px}
+.summary-card .label{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.summary-card .value{font-size:26px;font-weight:700;background:linear-gradient(135deg,#fff,var(--text));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.summary-card .sub{font-size:11px;color:var(--text-dim);margin-top:4px;line-height:1.4}
 .chart-container{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:20px}
 .chart-row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-@media(max-width:1200px){.chart-row{grid-template-columns:1fr}}
+@media(max-width:1200px){.chart-row{grid-template-columns:1fr}.summary-cards{grid-template-columns:repeat(2,1fr)}}
 .bar-row{display:flex;align-items:center;padding:4px 0;cursor:pointer;border-radius:4px;transition:background .15s}
 .bar-row:hover{background:rgba(255,255,255,.05)}
 .bar-label{width:110px;font-size:11px;text-align:right;padding-right:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -64,7 +67,6 @@ header h1{font-size:18px;font-weight:600;white-space:nowrap;background:linear-gr
 .heatmap-table td.country-name{font-size:11px;padding:4px 8px;white-space:nowrap;text-align:right;width:100px}
 .heatmap-cell{width:auto;min-width:50px;text-align:center;font-size:9px;font-weight:600;padding:6px 4px;border-radius:4px;cursor:pointer;transition:all .2s;color:#fff}
 .heatmap-cell:hover{transform:scale(1.1);box-shadow:0 0 10px rgba(233,69,96,.4)}
-.flow-diagram{position:relative;width:100%;min-height:350px}
 .flow-path{fill:none;stroke-opacity:.4;transition:stroke-opacity .2s}
 .flow-path:hover{stroke-opacity:.8}
 .flow-label{font-size:10px;fill:var(--text-dim)}
@@ -72,15 +74,26 @@ header h1{font-size:18px;font-weight:600;white-space:nowrap;background:linear-gr
 .stacked-bar-label{width:110px;font-size:11px;text-align:right;padding-right:10px;white-space:nowrap}
 .stacked-bar-track{flex:1;height:20px;display:flex;border-radius:4px;overflow:hidden}
 .stacked-segment{height:100%;transition:width .8s ease;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:#fff}
-#detail-panel{position:fixed;top:0;right:0;width:440px;height:100vh;background:var(--card);border-left:1px solid var(--border);transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);z-index:150;overflow-y:auto;box-shadow:-4px 0 30px rgba(0,0,0,.3)}
+.corridor-growth-chart{margin-top:16px;padding:12px;background:rgba(255,255,255,.03);border-radius:8px}
+.corridor-row{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:11px}
+.corridor-label{width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.corridor-bars{display:flex;gap:3px;flex:1;align-items:center}
+.corridor-bar{height:16px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:600;color:#fff;transition:width .6s}
+.profession-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-top:10px}
+.profession-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:12px}
+.profession-card h4{font-size:12px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.profession-card ul{list-style:none;padding:0;font-size:11px;color:var(--text-dim)}
+.profession-card ul li{padding:2px 0}
+.profession-card ul li::before{content:'•';color:var(--highlight);margin-right:6px}
+#detail-panel{position:fixed;top:0;right:0;width:460px;height:100vh;background:var(--card);border-left:1px solid var(--border);transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);z-index:150;overflow-y:auto;box-shadow:-4px 0 30px rgba(0,0,0,.3)}
 #detail-panel.open{transform:translateX(0)}
-.panel-header{padding:20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--card);z-index:1}
+.panel-header{padding:16px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--card);z-index:1}
 .panel-header .flag{font-size:32px}
 .panel-header h2{font-size:18px;font-weight:600;flex:1}
 .panel-close{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:none;background:rgba(255,255,255,.1);color:var(--text);border-radius:8px;cursor:pointer;font-size:16px;transition:background .2s}
 .panel-close:hover{background:var(--highlight)}
-.panel-section{padding:16px 20px;border-bottom:1px solid var(--border)}
-.panel-section h3{font-size:13px;font-weight:600;color:var(--highlight);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+.panel-section{padding:14px 20px;border-bottom:1px solid var(--border)}
+.panel-section h3{font-size:13px;font-weight:600;color:var(--highlight);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .stat-item{background:rgba(255,255,255,.03);border-radius:8px;padding:10px}
 .stat-item .s-label{font-size:10px;color:var(--text-dim);margin-bottom:2px}
@@ -105,15 +118,19 @@ header h1{font-size:18px;font-weight:600;white-space:nowrap;background:linear-gr
 .pyramid-bar{height:12px;border-radius:2px;transition:width .6s;min-width:2px}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:140;opacity:0;pointer-events:none;transition:opacity .3s}
 .overlay.visible{opacity:1;pointer-events:auto}
+.salary-block{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.salary-item{background:rgba(255,255,255,.03);border-radius:8px;padding:10px;text-align:center}
+.salary-item .s-label{font-size:10px;color:var(--text-dim);margin-bottom:4px}
+.salary-item .s-value{font-size:18px;font-weight:700}
 </style>
 </head>
 <body>
-<div id="loading"><div class="spinner"></div><p>Loading map data...</p></div>
+<div id="loading"><div class="spinner"></div><p id="loading-text">Loading map data...</p></div>
 <div class="overlay" id="overlay"></div>
 <div class="tooltip" id="tooltip"></div>
 <div id="app">
 <header>
-<h1>Global Aging &amp; Labor Gap Map</h1>
+<h1 id="main-title">Global Aging &amp; Labor Gap Map</h1>
 <div class="search-box">
 <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
 <input type="text" id="search" placeholder="Search countries...">
@@ -123,31 +140,48 @@ header h1{font-size:18px;font-weight:600;white-space:nowrap;background:linear-gr
 <button class="year-btn" data-year="2035">2035</button>
 <button class="year-btn" data-year="2040">2040</button>
 </div>
+<div class="lang-toggle">
+<button class="lang-btn active" data-lang="en">EN</button>
+<button class="lang-btn" data-lang="ru">RU</button>
+</div>
 </header>
 <div id="map-section">
 <svg id="map-svg"></svg>
 <div class="legend">
-<div class="legend-title">Aging Severity (Median Age)</div>
+<div class="legend-title" data-i18n="legendTitle">Aging Severity (Median Age)</div>
 <div class="legend-bar"></div>
 <div class="legend-labels"><span>&lt;40</span><span>45</span><span>48+</span></div>
 </div>
 </div>
 <div id="dashboard">
 <div class="summary-cards" id="summary-cards"></div>
-<h3 class="section-title">Top 15 Countries by Labor Shortage</h3>
+<h3 class="section-title" id="tier1-title">Top 15 Countries by Labor Shortage</h3>
+<p class="section-desc" id="tier1-desc">Countries ranked by projected annual job vacancies. Bar color reflects aging severity. Click any country for detailed breakdown.</p>
 <div class="chart-container" id="bar-chart"></div>
+<h3 class="section-title" id="tier2-title">Second Tier: Next 15 Countries</h3>
+<p class="section-desc" id="tier2-desc">These countries face significant but somewhat smaller labor gaps. Many are rapidly catching up as their populations age.</p>
+<div class="chart-container" id="bar-chart-2"></div>
 <div class="chart-row">
 <div>
-<h3 class="section-title">Sector Shortage Heatmap</h3>
+<h3 class="section-title" id="heatmap-title">Sector Shortage Heatmap</h3>
+<p class="section-desc" id="heatmap-desc">Color intensity shows shortage severity. Healthcare dominates in most aging economies, while IT and construction are universally strained.</p>
 <div class="chart-container heatmap-container" id="heatmap"></div>
 </div>
 <div>
-<h3 class="section-title">Top Migration Corridors</h3>
+<h3 class="section-title" id="flow-title">Top Migration Corridors</h3>
+<p class="section-desc" id="flow-desc">Major projected migration flows showing annual number of workers needed. Line thickness reflects volume.</p>
 <div class="chart-container" id="flow-chart"></div>
 </div>
 </div>
-<h3 class="section-title">Skill Demand by Country</h3>
+<h3 class="section-title" id="corridor-growth-title">Migration Corridor Growth: 2030 → 2035 → 2040</h3>
+<p class="section-desc" id="corridor-growth-desc">How projected migration demand changes over time along each corridor. Most corridors show 40-80% growth over the decade.</p>
+<div class="chart-container" id="corridor-growth"></div>
+<h3 class="section-title" id="skill-title">Skill &amp; Profession Demand by Country</h3>
+<p class="section-desc" id="skill-desc">Breakdown of workforce needs: blue-collar (manual/technical trades), grey-collar (healthcare, services), and white-collar (office/professional) roles. Percentages show the share of total demand.</p>
 <div class="chart-container" id="skill-chart"></div>
+<h3 class="section-title" id="prof-title">Key Profession Categories in Demand</h3>
+<p class="section-desc" id="prof-desc">Specific occupation groups driving labor shortages across developed economies.</p>
+<div class="chart-container" id="profession-chart"></div>
 </div>
 </div>
 <div id="detail-panel">
@@ -161,176 +195,272 @@ header h1{font-size:18px;font-weight:600;white-space:nowrap;background:linear-gr
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
 <script>
-// ===================== DATA MODEL =====================
+// ===================== INTERNATIONALIZATION =====================
+const I18N = {
+en: {
+  mainTitle: "Global Aging & Labor Gap Map",
+  searchPlaceholder: "Search countries...",
+  loadingText: "Loading map data...",
+  legendTitle: "Aging Severity (Median Age)",
+  tier1Title: "Top 15 Countries by Labor Shortage",
+  tier1Desc: "Countries ranked by projected annual job vacancies that cannot be filled domestically. Bar color reflects aging severity — red means critical demographic pressure. Click any country for a detailed breakdown including migration sources and sector gaps.",
+  tier2Title: "Second Tier: Next 15 Countries",
+  tier2Desc: "These countries face significant but somewhat smaller labor gaps. Many are rapidly catching up as their populations age and young workers emigrate.",
+  heatmapTitle: "Sector Shortage Heatmap",
+  heatmapDesc: "Color intensity shows shortage severity per sector. Healthcare dominates in most aging economies, while IT and construction are universally strained.",
+  flowTitle: "Top Migration Corridors",
+  flowDesc: "Major projected migration flows showing estimated annual number of workers needed. Line thickness is proportional to volume.",
+  corridorGrowthTitle: "Migration Corridor Growth: 2030 → 2035 → 2040",
+  corridorGrowthDesc: "How projected migration demand changes over the decade along each major corridor. Most corridors show 40-80% growth by 2040.",
+  skillTitle: "Skill & Profession Demand by Country",
+  skillDesc: "Workforce needs split into: Blue-collar (construction, manufacturing, agriculture, logistics), Grey-collar (healthcare, hospitality, education), White-collar (IT, finance, management). Shows what type of workers each country needs most.",
+  profTitle: "Key Profession Categories in Demand",
+  profDesc: "Specific occupation groups driving labor shortages. These are the jobs that aging societies struggle to fill domestically.",
+  summaryTotalGap: "Total Projected Job Gap",
+  summaryTotalGapSub: "Annual unfilled positions across all tracked countries. This represents the gap between retiring workers + economic growth demand minus domestic workforce pipeline.",
+  summaryCritical: "Critical Aging Zone",
+  summaryCriticalSub: "countries with median age ≥ 48 — meaning half the population is older than 48. These nations face severe fiscal pressure from pension/healthcare costs.",
+  summaryLargest: "Largest Single-Country Gap",
+  summaryLargestSub: "The country with the biggest absolute labor shortage, driven by a combination of large economy and rapid aging.",
+  summaryFastest: "Fastest Aging",
+  summaryFastestSub: "Country with the biggest projected increase in median age from 2030 to 2040, indicating accelerating demographic pressure.",
+  demographics: "Demographics",
+  laborGap: "Labor Gap",
+  migrationDemand: "Migration Demand",
+  annualVacancies: "Annual job vacancies",
+  topSectors: "Top 5 sectors with biggest shortages:",
+  skillLevelNeeded: "Skill level needed:",
+  educationProfile: "Education profile in demand:",
+  topSourceCountries: "Top source countries:",
+  medianAge: "Median Age",
+  depRatio: "Dependency Ratio",
+  popChange: "Pop. Change",
+  workingAgeDelta: "Working Age Δ",
+  avgSalary: "Avg. Salary",
+  costOfLiving: "Cost of Living",
+  salaryNote: "Monthly, after tax",
+  costNote: "Monthly, single person",
+  mild: "Mild", moderate: "Moderate", serious: "Serious", critical: "Critical",
+  blueCollar: "Blue-collar", greyCollar: "Grey-collar", whiteCollar: "White-collar",
+  perYear: "/yr",
+  countries: "countries",
+  annual: "Annual across",
+  blueCollarFull: "Blue-collar (Manual & Technical)",
+  greyCollarFull: "Grey-collar (Healthcare & Services)",
+  whiteCollarFull: "White-collar (Office & Professional)",
+  profBlueTitle: "🔧 Blue-collar: Manual & Technical Trades",
+  profGreyTitle: "🏥 Grey-collar: Healthcare & Services",
+  profWhiteTitle: "💼 White-collar: Office & Professional",
+  profBlueJobs: ["Welders, Machinists, CNC Operators","Electricians, Plumbers, HVAC Technicians","Construction Workers, Crane Operators","Truck/Bus/Delivery Drivers","Farm Workers, Food Processing","Warehouse Workers, Forklift Operators","Auto/Aircraft Mechanics"],
+  profGreyJobs: ["Registered Nurses, Nurse Aides","Elderly Care / Home Care Workers","Medical Technicians, Lab Assistants","Cooks, Chefs, Kitchen Staff","Hotel Housekeeping, Cleaners","Childcare Workers, Teaching Assistants","Security Guards, Retail Workers"],
+  profWhiteJobs: ["Software Developers, Data Engineers","Cybersecurity Analysts, Cloud Architects","Doctors, Pharmacists, Dentists","Accountants, Financial Analysts","Teachers, University Lecturers","Project Managers, Consultants","Researchers, Biotech Scientists"],
+  corridorYears: ["2030","2035","2040"]
+},
+ru: {
+  mainTitle: "Карта старения и дефицита рабочей силы",
+  searchPlaceholder: "Поиск стран...",
+  loadingText: "Загрузка карты...",
+  legendTitle: "Степень старения (медианный возраст)",
+  tier1Title: "Топ-15 стран по дефициту рабочей силы",
+  tier1Desc: "Страны ранжированы по прогнозируемому ежегодному числу вакансий, которые невозможно заполнить внутренними ресурсами. Цвет полосы отражает степень старения — красный означает критическое демографическое давление. Нажмите на страну для детального анализа.",
+  tier2Title: "Второй эшелон: следующие 15 стран",
+  tier2Desc: "Эти страны сталкиваются со значительным, но несколько меньшим дефицитом рабочей силы. Многие быстро догоняют лидеров по мере старения населения и эмиграции молодёжи.",
+  heatmapTitle: "Тепловая карта дефицита по секторам",
+  heatmapDesc: "Интенсивность цвета показывает серьёзность нехватки в каждом секторе. Здравоохранение доминирует в большинстве стареющих экономик, IT и строительство — повсеместно напряжены.",
+  flowTitle: "Основные миграционные коридоры",
+  flowDesc: "Крупнейшие прогнозируемые миграционные потоки с указанием ежегодного числа необходимых работников. Толщина линии пропорциональна объёму.",
+  corridorGrowthTitle: "Рост миграционных коридоров: 2030 → 2035 → 2040",
+  corridorGrowthDesc: "Как меняется прогнозируемый спрос на мигрантов по каждому коридору за десятилетие. Большинство коридоров показывают рост на 40-80% к 2040 году.",
+  skillTitle: "Спрос на навыки и профессии по странам",
+  skillDesc: "Потребности в рабочей силе: Синие воротнички (строительство, производство, с/х, логистика), Серые воротнички (медицина, сервис, образование), Белые воротнички (IT, финансы, управление). Показывает какой тип работников нужен каждой стране больше всего.",
+  profTitle: "Ключевые категории востребованных профессий",
+  profDesc: "Конкретные группы профессий, которые стареющие общества не могут заполнить внутренними ресурсами.",
+  summaryTotalGap: "Общий прогнозируемый дефицит",
+  summaryTotalGapSub: "Ежегодные незаполненные позиции по всем отслеживаемым странам. Разрыв между уходящими на пенсию + рост экономики минус внутренний кадровый потенциал.",
+  summaryCritical: "Критическая зона старения",
+  summaryCriticalSub: "стран с медианным возрастом ≥ 48 — половина населения старше 48 лет. Эти страны испытывают серьёзное фискальное давление от пенсий и здравоохранения.",
+  summaryLargest: "Крупнейший дефицит (одна страна)",
+  summaryLargestSub: "Страна с наибольшим абсолютным дефицитом рабочей силы — сочетание крупной экономики и быстрого старения.",
+  summaryFastest: "Самое быстрое старение",
+  summaryFastestSub: "Страна с наибольшим прогнозируемым ростом медианного возраста с 2030 по 2040 год — ускоряющееся демографическое давление.",
+  demographics: "Демография",
+  laborGap: "Дефицит рабочей силы",
+  migrationDemand: "Потребность в мигрантах",
+  annualVacancies: "Ежегодные вакансии",
+  topSectors: "Топ-5 секторов с наибольшим дефицитом:",
+  skillLevelNeeded: "Необходимый уровень квалификации:",
+  educationProfile: "Востребованный профиль образования:",
+  topSourceCountries: "Основные страны-источники:",
+  medianAge: "Медианный возраст",
+  depRatio: "Коэф. зависимости",
+  popChange: "Изм. населения",
+  workingAgeDelta: "Изм. трудосп. возр.",
+  avgSalary: "Сред. зарплата",
+  costOfLiving: "Стоимость жизни",
+  salaryNote: "в месяц, после налогов",
+  costNote: "в месяц, на одного",
+  mild: "Умеренное", moderate: "Заметное", serious: "Серьёзное", critical: "Критическое",
+  blueCollar: "Синие ворот.", greyCollar: "Серые ворот.", whiteCollar: "Белые ворот.",
+  perYear: "/год",
+  countries: "стран",
+  annual: "Ежегодно по",
+  blueCollarFull: "Синие воротнички (рабочие/технические)",
+  greyCollarFull: "Серые воротнички (медицина/сервис)",
+  whiteCollarFull: "Белые воротнички (офис/специалисты)",
+  profBlueTitle: "🔧 Синие воротнички: рабочие и технические профессии",
+  profGreyTitle: "🏥 Серые воротнички: медицина и сервис",
+  profWhiteTitle: "💼 Белые воротнички: офисные и профессиональные",
+  profBlueJobs: ["Сварщики, токари, операторы ЧПУ","Электрики, сантехники, HVAC-техники","Строители, крановщики","Водители грузовиков/автобусов/курьеры","Сельхозработники, пищевое производство","Складские рабочие, водители погрузчиков","Автомеханики, авиатехники"],
+  profGreyJobs: ["Медсёстры, санитары","Сиделки, работники по уходу за пожилыми","Медтехники, лаборанты","Повара, шеф-повара, кухонный персонал","Горничные, клинеры","Воспитатели, помощники учителей","Охранники, работники розничной торговли"],
+  profWhiteJobs: ["Программисты, дата-инженеры","Аналитики кибербезопасности, облачные архитекторы","Врачи, фармацевты, стоматологи","Бухгалтеры, финансовые аналитики","Учителя, преподаватели вузов","Проект-менеджеры, консультанты","Исследователи, биотех-учёные"],
+  corridorYears: ["2030","2035","2040"]
+}};
+let currentLang = 'en';
+function t(key) { return I18N[currentLang][key] || I18N.en[key] || key; }
+
+const SECTOR_LABELS_I18N = {
+  en: {healthcare:'Healthcare',it:'IT & Digital',construction:'Construction',manufacturing:'Manufacturing',agriculture:'Agriculture',hospitality:'Hospitality',logistics:'Logistics',education:'Education',finance:'Finance'},
+  ru: {healthcare:'Здравоохр.',it:'IT и цифра',construction:'Строительство',manufacturing:'Производство',agriculture:'С/хозяйство',hospitality:'Гостеприимство',logistics:'Логистика',education:'Образование',finance:'Финансы'}
+};
+function sectorLabel(key) { return (SECTOR_LABELS_I18N[currentLang] || SECTOR_LABELS_I18N.en)[key]; }
+
+
+// ===================== COUNTRY DATA =====================
+// Salary: average monthly net salary (USD). Cost: monthly cost of living single person (USD).
+// Sources: Numbeo, OECD, Eurostat estimates for ~2024-2025 baseline
 const COUNTRY_DATA = {
-"276": {name:"Germany",iso:"DE",flag:"\u{1F1E9}\u{1F1EA}",id:"276",years:{
-2030:{medianAge:47.1,depRatio:36.2,popChange:-1.2,workAgeChange:-2800000,population:82400000,
-ageCohorts:[8.2,8.5,10.8,12.1,13.5,15.2,14.0,11.2,6.5],
-totalVacancies:430000,sectors:{healthcare:95000,it:72000,construction:58000,manufacturing:65000,agriculture:18000,hospitality:42000,logistics:35000,education:28000,finance:17000},
-migration:{skillSplit:{low:25,medium:40,high:35},eduProfile:{vocational:45,bachelor:35,master:20},sourceCountries:["Turkey","Poland","Romania","Syria","India"],explanation:"Germany faces severe demographic decline with its baby boomer generation retiring en masse. The manufacturing and healthcare sectors face critical shortages, driving demand for skilled migrants from Eastern Europe, Turkey, and increasingly South Asia."}},
-2035:{medianAge:48.4,depRatio:42.1,popChange:-2.8,workAgeChange:-4200000,population:80800000,
-ageCohorts:[7.8,8.1,9.9,11.5,12.2,14.8,15.5,12.5,7.7],
-totalVacancies:620000,sectors:{healthcare:140000,it:98000,construction:78000,manufacturing:92000,agriculture:24000,hospitality:58000,logistics:52000,education:42000,finance:36000},
-migration:{skillSplit:{low:22,medium:42,high:36},eduProfile:{vocational:42,bachelor:36,master:22},sourceCountries:["India","Turkey","Philippines","Romania","Vietnam"],explanation:"By 2035, Germany's labor gap becomes critical. Healthcare alone needs 140K+ workers annually. India and Philippines emerge as key source countries for both skilled and semi-skilled labor."}},
-2040:{medianAge:49.6,depRatio:48.5,popChange:-4.5,workAgeChange:-5800000,population:78700000,
-ageCohorts:[7.4,7.6,9.2,10.8,11.5,13.2,15.2,14.8,10.3],
-totalVacancies:820000,sectors:{healthcare:185000,it:125000,construction:98000,manufacturing:118000,agriculture:30000,hospitality:72000,logistics:68000,education:58000,finance:66000},
-migration:{skillSplit:{low:20,medium:40,high:40},eduProfile:{vocational:38,bachelor:38,master:24},sourceCountries:["India","Philippines","Vietnam","Nigeria","Brazil"],explanation:"Germany's 2040 outlook is dire — nearly 1 in 2 citizens will be over 50. The country will need unprecedented immigration levels, increasingly from South and Southeast Asia and Africa."}}}},
-"392": {name:"Japan",iso:"JP",flag:"\u{1F1EF}\u{1F1F5}",id:"392",years:{
-2030:{medianAge:49.9,depRatio:42.8,popChange:-3.1,workAgeChange:-4500000,population:122000000,
-ageCohorts:[7.0,7.5,9.2,11.0,12.8,14.0,15.5,13.5,9.5],
-totalVacancies:580000,sectors:{healthcare:135000,it:88000,construction:72000,manufacturing:85000,agriculture:35000,hospitality:55000,logistics:48000,education:32000,finance:30000},
-migration:{skillSplit:{low:30,medium:40,high:30},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["Vietnam","Philippines","Indonesia","China","Nepal"],explanation:"Japan's extreme aging crisis — the world's oldest population — creates massive labor shortages across all sectors. The country has reluctantly expanded migration programs, primarily drawing from Southeast Asia."}},
-2035:{medianAge:51.2,depRatio:48.5,popChange:-5.2,workAgeChange:-6800000,population:119000000,
-ageCohorts:[6.5,6.9,8.5,10.2,11.5,13.5,15.8,15.0,12.1],
-totalVacancies:780000,sectors:{healthcare:180000,it:115000,construction:95000,manufacturing:110000,agriculture:42000,hospitality:72000,logistics:65000,education:48000,finance:53000},
-migration:{skillSplit:{low:28,medium:42,high:30},eduProfile:{vocational:38,bachelor:40,master:22},sourceCountries:["Vietnam","Philippines","Indonesia","Myanmar","India"],explanation:"By 2035, Japan needs nearly 800K workers annually. Elderly care alone requires 180K. The government significantly expands Specified Skilled Worker visa categories."}},
-2040:{medianAge:52.4,depRatio:55.2,popChange:-7.8,workAgeChange:-9200000,population:115000000,
-ageCohorts:[6.0,6.4,7.8,9.5,10.8,12.5,15.0,16.5,15.5],
-totalVacancies:980000,sectors:{healthcare:230000,it:142000,construction:115000,manufacturing:135000,agriculture:48000,hospitality:85000,logistics:80000,education:62000,finance:83000},
-migration:{skillSplit:{low:25,medium:42,high:33},eduProfile:{vocational:35,bachelor:40,master:25},sourceCountries:["Vietnam","Philippines","Indonesia","India","Bangladesh"],explanation:"Japan faces a demographic cliff — losing nearly 10M working-age adults since 2020. Robotics alone cannot fill the gap; mass immigration becomes essential for economic survival."}}}},
-"380": {name:"Italy",iso:"IT",flag:"\u{1F1EE}\u{1F1F9}",id:"380",years:{
-2030:{medianAge:48.6,depRatio:39.5,popChange:-2.0,workAgeChange:-2100000,population:58800000,
-ageCohorts:[7.5,8.0,9.5,11.5,13.0,14.8,15.0,12.5,8.2],
-totalVacancies:380000,sectors:{healthcare:82000,it:55000,construction:52000,manufacturing:58000,agriculture:28000,hospitality:48000,logistics:25000,education:18000,finance:14000},
-migration:{skillSplit:{low:32,medium:38,high:30},eduProfile:{vocational:42,bachelor:38,master:20},sourceCountries:["Romania","Albania","Morocco","Philippines","Bangladesh"],explanation:"Italy's aging crisis is compounded by very low fertility (1.24 TFR). Healthcare, agriculture, and construction heavily depend on migrant workers, primarily from Eastern Europe and North Africa."}},
-2035:{medianAge:50.2,depRatio:45.8,popChange:-3.8,workAgeChange:-3500000,population:57200000,
-ageCohorts:[7.0,7.5,8.8,10.8,12.0,14.0,15.5,14.0,10.4],
-totalVacancies:520000,sectors:{healthcare:115000,it:72000,construction:68000,manufacturing:75000,agriculture:35000,hospitality:62000,logistics:38000,education:28000,finance:27000},
-migration:{skillSplit:{low:30,medium:40,high:30},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["Romania","Albania","Morocco","India","Philippines"],explanation:"Italy's south-north internal migration dries up. The entire country needs foreign workers. India and Philippines grow as source countries for healthcare and IT."}},
-2040:{medianAge:51.8,depRatio:52.4,popChange:-6.0,workAgeChange:-5200000,population:55000000,
-ageCohorts:[6.5,7.0,8.2,9.8,11.2,13.0,15.0,15.5,13.8],
-totalVacancies:680000,sectors:{healthcare:155000,it:92000,construction:85000,manufacturing:95000,agriculture:42000,hospitality:75000,logistics:50000,education:40000,finance:46000},
-migration:{skillSplit:{low:28,medium:40,high:32},eduProfile:{vocational:38,bachelor:38,master:24},sourceCountries:["India","Philippines","Nigeria","Albania","Egypt"],explanation:"By 2040 Italy's population drops below 55M. Sub-Saharan Africa and South Asia become primary migration corridors as traditional Eastern European sources face their own aging crises."}}}},
-"410": {name:"South Korea",iso:"KR",flag:"\u{1F1F0}\u{1F1F7}",id:"410",years:{
-2030:{medianAge:47.5,depRatio:31.5,popChange:-1.5,workAgeChange:-2200000,population:51200000,
-ageCohorts:[6.8,7.5,10.5,12.5,14.0,15.0,14.5,11.8,7.4],
-totalVacancies:320000,sectors:{healthcare:62000,it:65000,construction:42000,manufacturing:55000,agriculture:15000,hospitality:32000,logistics:22000,education:15000,finance:12000},
-migration:{skillSplit:{low:28,medium:40,high:32},eduProfile:{vocational:35,bachelor:42,master:23},sourceCountries:["Vietnam","China","Philippines","Indonesia","Cambodia"],explanation:"South Korea's ultra-low fertility (0.72 TFR) creates the fastest aging trajectory globally. Manufacturing and tech sectors face acute shortages, drawing workers from Southeast Asia."}},
-2035:{medianAge:50.5,depRatio:40.2,popChange:-4.0,workAgeChange:-3800000,population:49800000,
-ageCohorts:[5.8,6.5,9.0,11.0,12.5,14.5,15.8,14.2,10.7],
-totalVacancies:480000,sectors:{healthcare:95000,it:88000,construction:58000,manufacturing:78000,agriculture:22000,hospitality:45000,logistics:38000,education:28000,finance:28000},
-migration:{skillSplit:{low:25,medium:40,high:35},eduProfile:{vocational:32,bachelor:42,master:26},sourceCountries:["Vietnam","Philippines","Indonesia","India","Uzbekistan"],explanation:"Korea's working-age population drops dramatically. The E-9 visa system expands massively. India and Central Asia emerge as new source corridors alongside traditional SE Asian partners."}},
-2040:{medianAge:53.5,depRatio:52.8,popChange:-7.2,workAgeChange:-5800000,population:47500000,
-ageCohorts:[5.0,5.5,7.5,9.5,11.0,13.5,16.0,16.5,15.5],
-totalVacancies:650000,sectors:{healthcare:135000,it:112000,construction:72000,manufacturing:98000,agriculture:28000,hospitality:58000,logistics:52000,education:42000,finance:53000},
-migration:{skillSplit:{low:22,medium:38,high:40},eduProfile:{vocational:28,bachelor:42,master:30},sourceCountries:["Vietnam","India","Philippines","Uzbekistan","Bangladesh"],explanation:"South Korea becomes one of the world's oldest nations. Without massive immigration, GDP contraction is inevitable. High-skilled IT workers are the most critical shortage."}}}},
-"724": {name:"Spain",iso:"ES",flag:"\u{1F1EA}\u{1F1F8}",id:"724",years:{
+"276": {name:"Germany",iso:"DE",flag:"\u{1F1E9}\u{1F1EA}",id:"276",salary:3200,costOfLiving:1200,years:{
+2030:{medianAge:47.1,depRatio:36.2,popChange:-1.2,workAgeChange:-2800000,population:82400000,ageCohorts:[8.2,8.5,10.8,12.1,13.5,15.2,14.0,11.2,6.5],totalVacancies:430000,sectors:{healthcare:95000,it:72000,construction:58000,manufacturing:65000,agriculture:18000,hospitality:42000,logistics:35000,education:28000,finance:17000},migration:{skillSplit:{low:25,medium:40,high:35},eduProfile:{vocational:45,bachelor:35,master:20},sourceCountries:["Turkey","Poland","Romania","Syria","India"],explanation:"Germany faces severe demographic decline with its baby boomer generation retiring en masse. The manufacturing and healthcare sectors face critical shortages, driving demand for skilled migrants from Eastern Europe, Turkey, and increasingly South Asia."}},
+2035:{medianAge:48.4,depRatio:42.1,popChange:-2.8,workAgeChange:-4200000,population:80800000,ageCohorts:[7.8,8.1,9.9,11.5,12.2,14.8,15.5,12.5,7.7],totalVacancies:620000,sectors:{healthcare:140000,it:98000,construction:78000,manufacturing:92000,agriculture:24000,hospitality:58000,logistics:52000,education:42000,finance:36000},migration:{skillSplit:{low:22,medium:42,high:36},eduProfile:{vocational:42,bachelor:36,master:22},sourceCountries:["India","Turkey","Philippines","Romania","Vietnam"],explanation:"By 2035, Germany's labor gap becomes critical. Healthcare alone needs 140K+ workers annually. India and Philippines emerge as key source countries for both skilled and semi-skilled labor."}},
+2040:{medianAge:49.6,depRatio:48.5,popChange:-4.5,workAgeChange:-5800000,population:78700000,ageCohorts:[7.4,7.6,9.2,10.8,11.5,13.2,15.2,14.8,10.3],totalVacancies:820000,sectors:{healthcare:185000,it:125000,construction:98000,manufacturing:118000,agriculture:30000,hospitality:72000,logistics:68000,education:58000,finance:66000},migration:{skillSplit:{low:20,medium:40,high:40},eduProfile:{vocational:38,bachelor:38,master:24},sourceCountries:["India","Philippines","Vietnam","Nigeria","Brazil"],explanation:"Germany's 2040 outlook is dire — nearly 1 in 2 citizens will be over 50. The country will need unprecedented immigration levels, increasingly from South and Southeast Asia and Africa."}}}},
+"392": {name:"Japan",iso:"JP",flag:"\u{1F1EF}\u{1F1F5}",id:"392",salary:2800,costOfLiving:1100,years:{
+2030:{medianAge:49.9,depRatio:42.8,popChange:-3.1,workAgeChange:-4500000,population:122000000,ageCohorts:[7.0,7.5,9.2,11.0,12.8,14.0,15.5,13.5,9.5],totalVacancies:580000,sectors:{healthcare:135000,it:88000,construction:72000,manufacturing:85000,agriculture:35000,hospitality:55000,logistics:48000,education:32000,finance:30000},migration:{skillSplit:{low:30,medium:40,high:30},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["Vietnam","Philippines","Indonesia","China","Nepal"],explanation:"Japan's extreme aging crisis — the world's oldest population — creates massive labor shortages across all sectors. The country has reluctantly expanded migration programs, primarily drawing from Southeast Asia."}},
+2035:{medianAge:51.2,depRatio:48.5,popChange:-5.2,workAgeChange:-6800000,population:119000000,ageCohorts:[6.5,6.9,8.5,10.2,11.5,13.5,15.8,15.0,12.1],totalVacancies:780000,sectors:{healthcare:180000,it:115000,construction:95000,manufacturing:110000,agriculture:42000,hospitality:72000,logistics:65000,education:48000,finance:53000},migration:{skillSplit:{low:28,medium:42,high:30},eduProfile:{vocational:38,bachelor:40,master:22},sourceCountries:["Vietnam","Philippines","Indonesia","Myanmar","India"],explanation:"By 2035, Japan needs nearly 800K workers annually. Elderly care alone requires 180K. The government significantly expands Specified Skilled Worker visa categories."}},
+2040:{medianAge:52.4,depRatio:55.2,popChange:-7.8,workAgeChange:-9200000,population:115000000,ageCohorts:[6.0,6.4,7.8,9.5,10.8,12.5,15.0,16.5,15.5],totalVacancies:980000,sectors:{healthcare:230000,it:142000,construction:115000,manufacturing:135000,agriculture:48000,hospitality:85000,logistics:80000,education:62000,finance:83000},migration:{skillSplit:{low:25,medium:42,high:33},eduProfile:{vocational:35,bachelor:40,master:25},sourceCountries:["Vietnam","Philippines","Indonesia","India","Bangladesh"],explanation:"Japan faces a demographic cliff — losing nearly 10M working-age adults since 2020. Robotics alone cannot fill the gap; mass immigration becomes essential for economic survival."}}}},
+"380": {name:"Italy",iso:"IT",flag:"\u{1F1EE}\u{1F1F9}",id:"380",salary:2100,costOfLiving:1000,years:{
+2030:{medianAge:48.6,depRatio:39.5,popChange:-2.0,workAgeChange:-2100000,population:58800000,ageCohorts:[7.5,8.0,9.5,11.5,13.0,14.8,15.0,12.5,8.2],totalVacancies:380000,sectors:{healthcare:82000,it:55000,construction:52000,manufacturing:58000,agriculture:28000,hospitality:48000,logistics:25000,education:18000,finance:14000},migration:{skillSplit:{low:32,medium:38,high:30},eduProfile:{vocational:42,bachelor:38,master:20},sourceCountries:["Romania","Albania","Morocco","Philippines","Bangladesh"],explanation:"Italy's aging crisis is compounded by very low fertility (1.24 TFR). Healthcare, agriculture, and construction heavily depend on migrant workers, primarily from Eastern Europe and North Africa."}},
+2035:{medianAge:50.2,depRatio:45.8,popChange:-3.8,workAgeChange:-3500000,population:57200000,ageCohorts:[7.0,7.5,8.8,10.8,12.0,14.0,15.5,14.0,10.4],totalVacancies:520000,sectors:{healthcare:115000,it:72000,construction:68000,manufacturing:75000,agriculture:35000,hospitality:62000,logistics:38000,education:28000,finance:27000},migration:{skillSplit:{low:30,medium:40,high:30},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["Romania","Albania","Morocco","India","Philippines"],explanation:"Italy's south-north internal migration dries up. The entire country needs foreign workers. India and Philippines grow as source countries for healthcare and IT."}},
+2040:{medianAge:51.8,depRatio:52.4,popChange:-6.0,workAgeChange:-5200000,population:55000000,ageCohorts:[6.5,7.0,8.2,9.8,11.2,13.0,15.0,15.5,13.8],totalVacancies:680000,sectors:{healthcare:155000,it:92000,construction:85000,manufacturing:95000,agriculture:42000,hospitality:75000,logistics:50000,education:40000,finance:46000},migration:{skillSplit:{low:28,medium:40,high:32},eduProfile:{vocational:38,bachelor:38,master:24},sourceCountries:["India","Philippines","Nigeria","Albania","Egypt"],explanation:"By 2040 Italy's population drops below 55M. Sub-Saharan Africa and South Asia become primary migration corridors as traditional Eastern European sources face their own aging crises."}}}},
+"410": {name:"South Korea",iso:"KR",flag:"\u{1F1F0}\u{1F1F7}",id:"410",salary:2600,costOfLiving:1050,years:{
+2030:{medianAge:47.5,depRatio:31.5,popChange:-1.5,workAgeChange:-2200000,population:51200000,ageCohorts:[6.8,7.5,10.5,12.5,14.0,15.0,14.5,11.8,7.4],totalVacancies:320000,sectors:{healthcare:62000,it:65000,construction:42000,manufacturing:55000,agriculture:15000,hospitality:32000,logistics:22000,education:15000,finance:12000},migration:{skillSplit:{low:28,medium:40,high:32},eduProfile:{vocational:35,bachelor:42,master:23},sourceCountries:["Vietnam","China","Philippines","Indonesia","Cambodia"],explanation:"South Korea's ultra-low fertility (0.72 TFR) creates the fastest aging trajectory globally. Manufacturing and tech sectors face acute shortages, drawing workers from Southeast Asia."}},
+2035:{medianAge:50.5,depRatio:40.2,popChange:-4.0,workAgeChange:-3800000,population:49800000,ageCohorts:[5.8,6.5,9.0,11.0,12.5,14.5,15.8,14.2,10.7],totalVacancies:480000,sectors:{healthcare:95000,it:88000,construction:58000,manufacturing:78000,agriculture:22000,hospitality:45000,logistics:38000,education:28000,finance:28000},migration:{skillSplit:{low:25,medium:40,high:35},eduProfile:{vocational:32,bachelor:42,master:26},sourceCountries:["Vietnam","Philippines","Indonesia","India","Uzbekistan"],explanation:"Korea's working-age population drops dramatically. The E-9 visa system expands massively. India and Central Asia emerge as new source corridors."}},
+2040:{medianAge:53.5,depRatio:52.8,popChange:-7.2,workAgeChange:-5800000,population:47500000,ageCohorts:[5.0,5.5,7.5,9.5,11.0,13.5,16.0,16.5,15.5],totalVacancies:650000,sectors:{healthcare:135000,it:112000,construction:72000,manufacturing:98000,agriculture:28000,hospitality:58000,logistics:52000,education:42000,finance:53000},migration:{skillSplit:{low:22,medium:38,high:40},eduProfile:{vocational:28,bachelor:42,master:30},sourceCountries:["Vietnam","India","Philippines","Uzbekistan","Bangladesh"],explanation:"South Korea becomes one of the world's oldest nations. Without massive immigration, GDP contraction is inevitable."}}}},
+"724": {name:"Spain",iso:"ES",flag:"\u{1F1EA}\u{1F1F8}",id:"724",salary:2000,costOfLiving:900,years:{
 2030:{medianAge:46.8,depRatio:33.5,popChange:-0.8,workAgeChange:-1500000,population:47200000,ageCohorts:[7.8,8.2,10.5,12.5,13.8,14.5,14.0,11.5,7.2],totalVacancies:280000,sectors:{healthcare:58000,it:45000,construction:42000,manufacturing:38000,agriculture:25000,hospitality:38000,logistics:15000,education:10000,finance:9000},migration:{skillSplit:{low:30,medium:40,high:30},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["Morocco","Colombia","Romania","Venezuela","Ecuador"],explanation:"Spain's tourism and agriculture sectors heavily depend on migrants. Latin American countries with shared language are primary source corridors."}},
 2035:{medianAge:48.8,depRatio:40.2,popChange:-2.5,workAgeChange:-2800000,population:46200000,ageCohorts:[7.2,7.6,9.5,11.5,12.5,14.0,15.2,13.0,9.5],totalVacancies:420000,sectors:{healthcare:88000,it:65000,construction:58000,manufacturing:52000,agriculture:32000,hospitality:55000,logistics:28000,education:22000,finance:20000},migration:{skillSplit:{low:28,medium:42,high:30},eduProfile:{vocational:38,bachelor:40,master:22},sourceCountries:["Morocco","Colombia","Peru","Venezuela","India"],explanation:"Healthcare shortages become critical. Spain expands recruitment from Latin America and begins active IT worker recruitment from India."}},
-2040:{medianAge:50.8,depRatio:48.5,popChange:-4.5,workAgeChange:-4500000,population:44800000,ageCohorts:[6.5,7.0,8.5,10.5,11.5,13.2,15.0,14.8,13.0],totalVacancies:580000,sectors:{healthcare:125000,it:85000,construction:72000,manufacturing:68000,agriculture:38000,hospitality:68000,logistics:42000,education:38000,finance:44000},migration:{skillSplit:{low:25,medium:42,high:33},eduProfile:{vocational:35,bachelor:40,master:25},sourceCountries:["Morocco","Colombia","India","Philippines","Senegal"],explanation:"By 2040, Spain's elderly population exceeds 25%. West Africa and South Asia become increasingly important migration sources alongside Latin America."}}}},
-"620": {name:"Portugal",iso:"PT",flag:"\u{1F1F5}\u{1F1F9}",id:"620",years:{
-2030:{medianAge:47.8,depRatio:38.2,popChange:-1.8,workAgeChange:-450000,population:10000000,ageCohorts:[7.5,8.0,10.0,11.8,13.2,14.8,14.5,12.0,8.2],totalVacancies:85000,sectors:{healthcare:18000,it:14000,construction:12000,manufacturing:10000,agriculture:8000,hospitality:12000,logistics:5000,education:3000,finance:3000},migration:{skillSplit:{low:32,medium:38,high:30},eduProfile:{vocational:42,bachelor:38,master:20},sourceCountries:["Brazil","Cape Verde","Angola","India","Nepal"],explanation:"Portugal draws heavily from Lusophone countries. Brazil is by far the largest source. Growing South Asian community fills construction and hospitality gaps."}},
-2035:{medianAge:49.5,depRatio:44.5,popChange:-3.5,workAgeChange:-720000,population:9650000,ageCohorts:[6.8,7.4,9.2,11.0,12.2,14.0,15.5,13.8,10.1],totalVacancies:120000,sectors:{healthcare:26000,it:20000,construction:16000,manufacturing:14000,agriculture:10000,hospitality:16000,logistics:8000,education:5000,finance:5000},migration:{skillSplit:{low:30,medium:40,high:30},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["Brazil","India","Cape Verde","Angola","Bangladesh"],explanation:"Portugal's Golden Visa and digital nomad programs attract some high-skilled workers, but bulk demand is for healthcare and construction workers."}},
-2040:{medianAge:51.2,depRatio:51.2,popChange:-5.5,workAgeChange:-1050000,population:9200000,ageCohorts:[6.2,6.8,8.5,10.2,11.5,13.2,15.2,14.8,13.6],totalVacancies:160000,sectors:{healthcare:36000,it:26000,construction:20000,manufacturing:18000,agriculture:12000,hospitality:20000,logistics:12000,education:8000,finance:8000},migration:{skillSplit:{low:28,medium:40,high:32},eduProfile:{vocational:38,bachelor:38,master:24},sourceCountries:["Brazil","India","Bangladesh","Angola","Mozambique"],explanation:"Portugal faces severe depopulation. Lusophone Africa and South Asia are critical to maintaining basic services, especially elder care."}}}},
-"300": {name:"Greece",iso:"GR",flag:"\u{1F1EC}\u{1F1F7}",id:"300",years:{
+2040:{medianAge:50.8,depRatio:48.5,popChange:-4.5,workAgeChange:-4500000,population:44800000,ageCohorts:[6.5,7.0,8.5,10.5,11.5,13.2,15.0,14.8,13.0],totalVacancies:580000,sectors:{healthcare:125000,it:85000,construction:72000,manufacturing:68000,agriculture:38000,hospitality:68000,logistics:42000,education:38000,finance:44000},migration:{skillSplit:{low:25,medium:42,high:33},eduProfile:{vocational:35,bachelor:40,master:25},sourceCountries:["Morocco","Colombia","India","Philippines","Senegal"],explanation:"By 2040, Spain's elderly population exceeds 25%. West Africa and South Asia become increasingly important migration sources."}}}},
+"620": {name:"Portugal",iso:"PT",flag:"\u{1F1F5}\u{1F1F9}",id:"620",salary:1400,costOfLiving:800,years:{
+2030:{medianAge:47.8,depRatio:38.2,popChange:-1.8,workAgeChange:-450000,population:10000000,ageCohorts:[7.5,8.0,10.0,11.8,13.2,14.8,14.5,12.0,8.2],totalVacancies:85000,sectors:{healthcare:18000,it:14000,construction:12000,manufacturing:10000,agriculture:8000,hospitality:12000,logistics:5000,education:3000,finance:3000},migration:{skillSplit:{low:32,medium:38,high:30},eduProfile:{vocational:42,bachelor:38,master:20},sourceCountries:["Brazil","Cape Verde","Angola","India","Nepal"],explanation:"Portugal draws heavily from Lusophone countries. Brazil is by far the largest source."}},
+2035:{medianAge:49.5,depRatio:44.5,popChange:-3.5,workAgeChange:-720000,population:9650000,ageCohorts:[6.8,7.4,9.2,11.0,12.2,14.0,15.5,13.8,10.1],totalVacancies:120000,sectors:{healthcare:26000,it:20000,construction:16000,manufacturing:14000,agriculture:10000,hospitality:16000,logistics:8000,education:5000,finance:5000},migration:{skillSplit:{low:30,medium:40,high:30},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["Brazil","India","Cape Verde","Angola","Bangladesh"],explanation:"Portugal's Golden Visa and digital nomad programs attract some high-skilled workers, but bulk demand is for healthcare and construction."}},
+2040:{medianAge:51.2,depRatio:51.2,popChange:-5.5,workAgeChange:-1050000,population:9200000,ageCohorts:[6.2,6.8,8.5,10.2,11.5,13.2,15.2,14.8,13.6],totalVacancies:160000,sectors:{healthcare:36000,it:26000,construction:20000,manufacturing:18000,agriculture:12000,hospitality:20000,logistics:12000,education:8000,finance:8000},migration:{skillSplit:{low:28,medium:40,high:32},eduProfile:{vocational:38,bachelor:38,master:24},sourceCountries:["Brazil","India","Bangladesh","Angola","Mozambique"],explanation:"Portugal faces severe depopulation. Lusophone Africa and South Asia are critical to maintaining basic services."}}}},
+"300": {name:"Greece",iso:"GR",flag:"\u{1F1EC}\u{1F1F7}",id:"300",salary:1300,costOfLiving:850,years:{
 2030:{medianAge:47.2,depRatio:37.5,popChange:-2.0,workAgeChange:-380000,population:10200000,ageCohorts:[7.5,7.8,10.2,11.8,13.5,14.8,14.5,12.2,7.7],totalVacancies:75000,sectors:{healthcare:16000,it:10000,construction:10000,manufacturing:8000,agriculture:10000,hospitality:12000,logistics:4000,education:3000,finance:2000},migration:{skillSplit:{low:35,medium:38,high:27},eduProfile:{vocational:45,bachelor:35,master:20},sourceCountries:["Albania","Bulgaria","Pakistan","Philippines","Egypt"],explanation:"Greece's economic recovery increases labor demand while its population shrinks. Agriculture, tourism, and construction need low to medium-skilled migrants."}},
 2035:{medianAge:49.0,depRatio:43.5,popChange:-3.8,workAgeChange:-620000,population:9850000,ageCohorts:[7.0,7.2,9.2,11.0,12.5,14.2,15.5,13.8,9.6],totalVacancies:105000,sectors:{healthcare:24000,it:15000,construction:14000,manufacturing:12000,agriculture:12000,hospitality:16000,logistics:5000,education:4000,finance:3000},migration:{skillSplit:{low:32,medium:40,high:28},eduProfile:{vocational:42,bachelor:38,master:20},sourceCountries:["Albania","Pakistan","Philippines","Egypt","Bangladesh"],explanation:"Healthcare becomes the largest single gap. Greece expands bilateral labor agreements with South Asia and North Africa."}},
-2040:{medianAge:51.0,depRatio:50.5,popChange:-6.0,workAgeChange:-900000,population:9400000,ageCohorts:[6.5,6.8,8.5,10.0,11.5,13.2,15.2,15.0,13.3],totalVacancies:140000,sectors:{healthcare:32000,it:20000,construction:18000,manufacturing:16000,agriculture:14000,hospitality:20000,logistics:8000,education:6000,finance:6000},migration:{skillSplit:{low:30,medium:40,high:30},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["Pakistan","Philippines","Egypt","Bangladesh","India"],explanation:"Greece's population falls below 9.5M. Traditional Albanian migration wanes as Albania ages too; South Asian and North African workers fill the gap."}}}},
-"616": {name:"Poland",iso:"PL",flag:"\u{1F1F5}\u{1F1F1}",id:"616",years:{
-2030:{medianAge:43.8,depRatio:32.0,popChange:-1.5,workAgeChange:-1800000,population:37000000,ageCohorts:[8.5,8.8,11.2,12.8,13.5,14.0,13.8,10.5,6.9],totalVacancies:250000,sectors:{healthcare:42000,it:38000,construction:38000,manufacturing:45000,agriculture:18000,hospitality:28000,logistics:18000,education:12000,finance:11000},migration:{skillSplit:{low:28,medium:42,high:30},eduProfile:{vocational:45,bachelor:35,master:20},sourceCountries:["Ukraine","Belarus","India","Philippines","Nepal"],explanation:"Poland transformed from emigration to immigration country. Ukraine is the dominant source but diversification to South Asia is underway due to Ukrainian war impacts."}},
-2035:{medianAge:46.5,depRatio:38.8,popChange:-3.2,workAgeChange:-3200000,population:36000000,ageCohorts:[7.8,8.2,10.2,11.8,12.5,13.8,14.8,12.5,8.4],totalVacancies:380000,sectors:{healthcare:65000,it:55000,construction:52000,manufacturing:62000,agriculture:22000,hospitality:42000,logistics:32000,education:22000,finance:28000},migration:{skillSplit:{low:25,medium:42,high:33},eduProfile:{vocational:42,bachelor:38,master:20},sourceCountries:["Ukraine","India","Philippines","Vietnam","Georgia"],explanation:"Poland's rapid aging catches up. Its own diaspora in Western Europe faces aging too. India and Vietnam become major source countries for manufacturing and IT."}},
-2040:{medianAge:49.2,depRatio:46.5,popChange:-5.5,workAgeChange:-4800000,population:34500000,ageCohorts:[7.0,7.5,9.0,10.8,11.5,13.0,15.2,14.0,11.9],totalVacancies:520000,sectors:{healthcare:92000,it:72000,construction:68000,manufacturing:80000,agriculture:28000,hospitality:55000,logistics:42000,education:35000,finance:48000},migration:{skillSplit:{low:22,medium:42,high:36},eduProfile:{vocational:38,bachelor:40,master:22},sourceCountries:["India","Ukraine","Philippines","Vietnam","Bangladesh"],explanation:"Poland joins the severely aging club. Manufacturing heartland faces existential workforce shortage. India becomes the single largest source country."}}}},
-"124": {name:"Canada",iso:"CA",flag:"\u{1F1E8}\u{1F1E6}",id:"124",years:{
-2030:{medianAge:42.8,depRatio:30.2,popChange:2.5,workAgeChange:800000,population:41500000,ageCohorts:[9.2,9.5,11.5,13.0,13.5,13.8,12.5,10.5,6.5],totalVacancies:420000,sectors:{healthcare:85000,it:72000,construction:58000,manufacturing:42000,agriculture:15000,hospitality:52000,logistics:35000,education:32000,finance:29000},migration:{skillSplit:{low:18,medium:35,high:47},eduProfile:{vocational:25,bachelor:42,master:33},sourceCountries:["India","Philippines","China","Nigeria","Pakistan"],explanation:"Canada's immigration-driven growth model requires 400K+ annual immigrants. Express Entry system favors high-skilled workers from India, Philippines, and Nigeria."}},
-2035:{medianAge:44.0,depRatio:34.5,popChange:3.5,workAgeChange:500000,population:43500000,ageCohorts:[8.8,9.2,10.8,12.5,13.0,13.5,13.2,11.5,7.5],totalVacancies:520000,sectors:{healthcare:110000,it:92000,construction:68000,manufacturing:48000,agriculture:18000,hospitality:62000,logistics:42000,education:40000,finance:40000},migration:{skillSplit:{low:16,medium:34,high:50},eduProfile:{vocational:22,bachelor:42,master:36},sourceCountries:["India","Philippines","Nigeria","China","Pakistan"],explanation:"Canada maintains world's highest immigration rate per capita. Healthcare becomes critical gap. India alone provides ~35% of new permanent residents."}},
-2040:{medianAge:45.2,depRatio:38.8,popChange:4.0,workAgeChange:200000,population:45500000,ageCohorts:[8.5,8.8,10.2,12.0,12.5,13.2,13.5,12.5,8.8],totalVacancies:640000,sectors:{healthcare:140000,it:112000,construction:78000,manufacturing:55000,agriculture:22000,hospitality:72000,logistics:52000,education:52000,finance:57000},migration:{skillSplit:{low:15,medium:33,high:52},eduProfile:{vocational:20,bachelor:42,master:38},sourceCountries:["India","Philippines","Nigeria","Pakistan","Kenya"],explanation:"By 2040, Canada targets 500K+ immigrants annually. Africa emerges as a major source continent. The country competes globally for tech talent."}}}},
-"036": {name:"Australia",iso:"AU",flag:"\u{1F1E6}\u{1F1FA}",id:"036",years:{
-2030:{medianAge:39.5,depRatio:27.2,popChange:3.0,workAgeChange:600000,population:28500000,ageCohorts:[10.0,10.2,12.0,13.5,13.2,12.8,11.5,10.0,6.8],totalVacancies:320000,sectors:{healthcare:62000,it:58000,construction:48000,manufacturing:28000,agriculture:18000,hospitality:42000,logistics:25000,education:22000,finance:17000},migration:{skillSplit:{low:18,medium:35,high:47},eduProfile:{vocational:28,bachelor:42,master:30},sourceCountries:["India","China","Philippines","UK","Nepal"],explanation:"Australia's skilled migration program draws heavily from India and China. Construction boom and healthcare expansion drive demand. Working Holiday visa fills seasonal gaps."}},
-2035:{medianAge:40.8,depRatio:30.5,popChange:3.5,workAgeChange:400000,population:30200000,ageCohorts:[9.5,9.8,11.5,13.0,13.0,12.5,12.2,11.0,7.5],totalVacancies:410000,sectors:{healthcare:82000,it:75000,construction:58000,manufacturing:32000,agriculture:22000,hospitality:52000,logistics:32000,education:30000,finance:27000},migration:{skillSplit:{low:16,medium:34,high:50},eduProfile:{vocational:25,bachelor:42,master:33},sourceCountries:["India","Philippines","China","Nepal","Vietnam"],explanation:"Aged care becomes Australia's biggest single sector gap. India dominates skilled migration; Philippines leads in healthcare worker supply."}},
-2040:{medianAge:42.0,depRatio:34.0,popChange:3.8,workAgeChange:200000,population:31800000,ageCohorts:[9.2,9.5,11.0,12.5,12.8,12.2,12.5,11.8,8.5],totalVacancies:500000,sectors:{healthcare:105000,it:92000,construction:65000,manufacturing:36000,agriculture:25000,hospitality:60000,logistics:40000,education:38000,finance:39000},migration:{skillSplit:{low:15,medium:33,high:52},eduProfile:{vocational:22,bachelor:42,master:36},sourceCountries:["India","Philippines","Nepal","Vietnam","Kenya"],explanation:"Australia needs 250K+ skilled migrants annually. Competition with Canada intensifies for Indian tech workers. East Africa emerges as a new corridor."}}}},
-"826": {name:"United Kingdom",iso:"GB",flag:"\u{1F1EC}\u{1F1E7}",id:"826",years:{
-2030:{medianAge:41.5,depRatio:30.8,popChange:0.8,workAgeChange:-500000,population:68500000,ageCohorts:[9.5,10.0,11.5,13.0,13.2,13.0,12.0,10.8,7.0],totalVacancies:520000,sectors:{healthcare:120000,it:82000,construction:65000,manufacturing:48000,agriculture:12000,hospitality:72000,logistics:42000,education:42000,finance:37000},migration:{skillSplit:{low:22,medium:38,high:40},eduProfile:{vocational:30,bachelor:42,master:28},sourceCountries:["India","Nigeria","Philippines","Pakistan","Zimbabwe"],explanation:"Post-Brexit UK reshapes immigration via points-based system. NHS healthcare shortages are critical. India and Nigeria are top source countries for skilled workers."}},
-2035:{medianAge:43.0,depRatio:35.2,popChange:0.5,workAgeChange:-1200000,population:69000000,ageCohorts:[9.0,9.5,10.8,12.5,12.8,13.0,12.8,11.5,8.1],totalVacancies:650000,sectors:{healthcare:150000,it:102000,construction:78000,manufacturing:55000,agriculture:15000,hospitality:85000,logistics:52000,education:55000,finance:58000},migration:{skillSplit:{low:20,medium:38,high:42},eduProfile:{vocational:28,bachelor:42,master:30},sourceCountries:["India","Nigeria","Philippines","Pakistan","Ghana"],explanation:"UK's social care system faces near-collapse without migrant workers. West Africa becomes a major source corridor alongside South Asia."}},
-2040:{medianAge:44.2,depRatio:39.5,popChange:0.2,workAgeChange:-1800000,population:69200000,ageCohorts:[8.5,9.0,10.2,12.0,12.5,12.8,13.0,12.5,9.5],totalVacancies:780000,sectors:{healthcare:185000,it:122000,construction:90000,manufacturing:62000,agriculture:18000,hospitality:95000,logistics:62000,education:65000,finance:81000},migration:{skillSplit:{low:18,medium:37,high:45},eduProfile:{vocational:25,bachelor:42,master:33},sourceCountries:["India","Nigeria","Philippines","Ghana","Kenya"],explanation:"By 2040, UK needs nearly 800K workers annually. Commonwealth ties drive migration corridors. East and West Africa see significant growth as source regions."}}}},
-"250": {name:"France",iso:"FR",flag:"\u{1F1EB}\u{1F1F7}",id:"250",years:{
-2030:{medianAge:43.2,depRatio:34.5,popChange:0.2,workAgeChange:-800000,population:66000000,ageCohorts:[9.2,9.8,11.0,12.5,13.0,13.2,12.5,11.2,7.6],totalVacancies:350000,sectors:{healthcare:72000,it:55000,construction:48000,manufacturing:42000,agriculture:15000,hospitality:48000,logistics:28000,education:22000,finance:20000},migration:{skillSplit:{low:25,medium:40,high:35},eduProfile:{vocational:38,bachelor:38,master:24},sourceCountries:["Algeria","Morocco","Tunisia","Senegal","Côte d'Ivoire"],explanation:"France draws primarily from Francophone Africa. Healthcare and construction are biggest gaps. Language corridor creates strong bilateral flows with Maghreb and West Africa."}},
-2035:{medianAge:44.8,depRatio:38.8,popChange:-0.5,workAgeChange:-1500000,population:65500000,ageCohorts:[8.8,9.2,10.5,12.0,12.5,13.0,13.2,12.0,8.8],totalVacancies:480000,sectors:{healthcare:98000,it:72000,construction:62000,manufacturing:55000,agriculture:20000,hospitality:62000,logistics:38000,education:35000,finance:38000},migration:{skillSplit:{low:23,medium:40,high:37},eduProfile:{vocational:35,bachelor:40,master:25},sourceCountries:["Algeria","Morocco","Senegal","Côte d'Ivoire","Cameroon"],explanation:"France's relatively higher fertility (1.8 TFR) provides some buffer, but aging still bites. Francophone Africa's youth bulge is France's main labor reservoir."}},
-2040:{medianAge:46.0,depRatio:43.2,popChange:-1.2,workAgeChange:-2200000,population:64800000,ageCohorts:[8.2,8.8,10.0,11.5,12.0,12.8,13.5,12.8,10.4],totalVacancies:620000,sectors:{healthcare:130000,it:92000,construction:75000,manufacturing:68000,agriculture:25000,hospitality:75000,logistics:48000,education:48000,finance:59000},migration:{skillSplit:{low:22,medium:40,high:38},eduProfile:{vocational:32,bachelor:40,master:28},sourceCountries:["Morocco","Senegal","Côte d'Ivoire","Cameroon","India"],explanation:"France begins recruiting beyond Francophone sphere as traditional corridors saturate. India and Eastern Europe supplement African migration flows."}}}},
-"528": {name:"Netherlands",iso:"NL",flag:"\u{1F1F3}\u{1F1F1}",id:"528",years:{
-2030:{medianAge:44.2,depRatio:32.8,popChange:0.5,workAgeChange:-350000,population:17800000,ageCohorts:[9.0,9.5,11.2,12.8,13.5,13.5,12.5,10.8,7.2],totalVacancies:185000,sectors:{healthcare:38000,it:32000,construction:25000,manufacturing:22000,agriculture:12000,hospitality:22000,logistics:15000,education:10000,finance:9000},migration:{skillSplit:{low:20,medium:38,high:42},eduProfile:{vocational:32,bachelor:42,master:26},sourceCountries:["Poland","India","Turkey","Romania","South Africa"],explanation:"Netherlands' knowledge economy drives high-skilled migration demand. IT and healthcare are top sectors. EU free movement provides Eastern European workers for logistics and agriculture."}},
-2035:{medianAge:45.8,depRatio:37.5,popChange:-0.2,workAgeChange:-650000,population:17750000,ageCohorts:[8.5,9.0,10.5,12.0,12.8,13.2,13.2,12.0,8.8],totalVacancies:250000,sectors:{healthcare:52000,it:42000,construction:32000,manufacturing:28000,agriculture:15000,hospitality:30000,logistics:22000,education:15000,finance:14000},migration:{skillSplit:{low:18,medium:37,high:45},eduProfile:{vocational:30,bachelor:42,master:28},sourceCountries:["India","Poland","Turkey","South Africa","Indonesia"],explanation:"As EU Eastern European labor pools shrink, Netherlands pivots toward India and former colonial ties with Indonesia and South Africa."}},
-2040:{medianAge:47.0,depRatio:42.5,popChange:-1.0,workAgeChange:-950000,population:17500000,ageCohorts:[8.0,8.5,10.0,11.5,12.2,13.0,13.5,12.8,10.5],totalVacancies:320000,sectors:{healthcare:68000,it:55000,construction:38000,manufacturing:34000,agriculture:18000,hospitality:38000,logistics:28000,education:20000,finance:21000},migration:{skillSplit:{low:16,medium:36,high:48},eduProfile:{vocational:28,bachelor:42,master:30},sourceCountries:["India","Indonesia","South Africa","Turkey","Nigeria"],explanation:"Netherlands competes fiercely for global tech talent. India is dominant source. Former colonial ties with Indonesia and Suriname provide cultural corridors."}}}},
-"056": {name:"Belgium",iso:"BE",flag:"\u{1F1E7}\u{1F1EA}",id:"056",years:{
-2030:{medianAge:43.0,depRatio:32.5,popChange:0.5,workAgeChange:-200000,population:11800000,ageCohorts:[9.2,9.5,11.5,12.8,13.2,13.0,12.2,11.0,7.6],totalVacancies:120000,sectors:{healthcare:25000,it:20000,construction:16000,manufacturing:15000,agriculture:5000,hospitality:16000,logistics:10000,education:7000,finance:6000},migration:{skillSplit:{low:22,medium:40,high:38},eduProfile:{vocational:35,bachelor:40,master:25},sourceCountries:["Morocco","Romania","Turkey","DR Congo","India"],explanation:"Belgium's dual-language structure creates unique labor market dynamics. French-speaking regions draw from Francophone Africa; Flemish regions from Eastern Europe and South Asia."}},
-2035:{medianAge:44.5,depRatio:36.8,popChange:0.0,workAgeChange:-400000,population:11800000,ageCohorts:[8.8,9.0,10.8,12.2,12.8,13.0,13.0,11.8,8.6],totalVacancies:165000,sectors:{healthcare:35000,it:28000,construction:22000,manufacturing:20000,agriculture:6000,hospitality:20000,logistics:14000,education:10000,finance:10000},migration:{skillSplit:{low:20,medium:40,high:40},eduProfile:{vocational:32,bachelor:42,master:26},sourceCountries:["Morocco","India","Turkey","DR Congo","Romania"],explanation:"Belgium's healthcare and IT sectors face growing gaps. Brussels as EU capital attracts some high-skilled workers, but care sector struggles."}},
-2040:{medianAge:45.8,depRatio:41.2,popChange:-0.5,workAgeChange:-600000,population:11700000,ageCohorts:[8.2,8.5,10.2,11.5,12.2,12.8,13.5,12.5,10.6],totalVacancies:210000,sectors:{healthcare:45000,it:35000,construction:28000,manufacturing:25000,agriculture:8000,hospitality:25000,logistics:18000,education:13000,finance:13000},migration:{skillSplit:{low:18,medium:40,high:42},eduProfile:{vocational:30,bachelor:42,master:28},sourceCountries:["India","Morocco","DR Congo","Turkey","Philippines"],explanation:"Belgium needs 200K+ workers annually. DR Congo's large Francophone population becomes an increasingly important source for French-speaking Belgium."}}}},
-"040": {name:"Austria",iso:"AT",flag:"\u{1F1E6}\u{1F1F9}",id:"040",years:{
-2030:{medianAge:44.8,depRatio:31.5,popChange:0.5,workAgeChange:-250000,population:9200000,ageCohorts:[8.8,9.0,11.0,12.5,13.2,14.0,13.0,11.0,7.5],totalVacancies:95000,sectors:{healthcare:20000,it:16000,construction:14000,manufacturing:12000,agriculture:5000,hospitality:12000,logistics:7000,education:5000,finance:4000},migration:{skillSplit:{low:22,medium:42,high:36},eduProfile:{vocational:42,bachelor:36,master:22},sourceCountries:["Germany","Serbia","Turkey","Romania","Bosnia"],explanation:"Austria benefits from German-language corridor with Germany. Balkan diaspora fills construction and hospitality. Tourism sector heavily depends on seasonal migrant workers."}},
-2035:{medianAge:46.2,depRatio:36.8,popChange:-0.2,workAgeChange:-500000,population:9150000,ageCohorts:[8.2,8.5,10.2,11.8,12.5,13.5,14.0,12.2,9.1],totalVacancies:135000,sectors:{healthcare:28000,it:22000,construction:18000,manufacturing:16000,agriculture:7000,hospitality:16000,logistics:12000,education:8000,finance:8000},migration:{skillSplit:{low:20,medium:42,high:38},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["Serbia","Turkey","Romania","India","Philippines"],explanation:"Austria expands Red-White-Red Card for skilled workers. South Asian IT workers increasingly targeted alongside traditional Balkan labor flows."}},
-2040:{medianAge:47.5,depRatio:42.2,popChange:-1.0,workAgeChange:-750000,population:9000000,ageCohorts:[7.5,8.0,9.5,11.0,12.0,13.0,14.2,13.5,11.3],totalVacancies:175000,sectors:{healthcare:38000,it:28000,construction:22000,manufacturing:20000,agriculture:8000,hospitality:20000,logistics:15000,education:12000,finance:12000},migration:{skillSplit:{low:18,medium:40,high:42},eduProfile:{vocational:38,bachelor:38,master:24},sourceCountries:["India","Serbia","Philippines","Turkey","Bosnia"],explanation:"Healthcare becomes Austria's critical gap. India and Philippines emerge as key source countries for nurses and IT professionals."}}}},
-"756": {name:"Switzerland",iso:"CH",flag:"\u{1F1E8}\u{1F1ED}",id:"756",years:{
-2030:{medianAge:44.5,depRatio:30.2,popChange:1.2,workAgeChange:-100000,population:9200000,ageCohorts:[9.0,9.2,11.5,13.0,13.5,13.2,12.5,10.8,7.3],totalVacancies:110000,sectors:{healthcare:22000,it:22000,construction:15000,manufacturing:12000,agriculture:4000,hospitality:14000,logistics:7000,education:7000,finance:7000},migration:{skillSplit:{low:15,medium:35,high:50},eduProfile:{vocational:30,bachelor:38,master:32},sourceCountries:["Germany","Italy","France","Portugal","India"],explanation:"Switzerland draws heavily from EU neighbors through free movement. Finance and pharma sectors need high-skilled workers. Quality of life attracts EU professionals."}},
-2035:{medianAge:46.0,depRatio:35.0,popChange:0.8,workAgeChange:-300000,population:9300000,ageCohorts:[8.5,8.8,10.8,12.5,13.0,13.0,13.2,12.0,8.2],totalVacancies:150000,sectors:{healthcare:32000,it:28000,construction:20000,manufacturing:16000,agriculture:5000,hospitality:18000,logistics:10000,education:10000,finance:11000},migration:{skillSplit:{low:14,medium:34,high:52},eduProfile:{vocational:28,bachelor:38,master:34},sourceCountries:["Germany","Italy","India","France","Portugal"],explanation:"As EU source countries age themselves, Switzerland increasingly looks to India and other non-EU sources for IT and healthcare talent."}},
-2040:{medianAge:47.2,depRatio:40.0,popChange:0.3,workAgeChange:-550000,population:9350000,ageCohorts:[8.0,8.5,10.2,12.0,12.5,12.8,13.5,12.8,9.7],totalVacancies:195000,sectors:{healthcare:42000,it:35000,construction:25000,manufacturing:20000,agriculture:6000,hospitality:22000,logistics:14000,education:14000,finance:17000},migration:{skillSplit:{low:12,medium:33,high:55},eduProfile:{vocational:25,bachelor:38,master:37},sourceCountries:["India","Germany","Italy","France","Philippines"],explanation:"Switzerland's premium economy demands the highest-skilled migrants globally. India overtakes EU countries as the primary source for new workers."}}}},
-"752": {name:"Sweden",iso:"SE",flag:"\u{1F1F8}\u{1F1EA}",id:"752",years:{
-2030:{medianAge:42.0,depRatio:33.5,popChange:1.0,workAgeChange:-100000,population:10800000,ageCohorts:[9.5,9.8,11.5,12.8,13.0,12.5,12.0,11.2,7.7],totalVacancies:125000,sectors:{healthcare:28000,it:22000,construction:16000,manufacturing:12000,agriculture:5000,hospitality:14000,logistics:10000,education:10000,finance:8000},migration:{skillSplit:{low:18,medium:38,high:44},eduProfile:{vocational:30,bachelor:42,master:28},sourceCountries:["Syria","Afghanistan","India","Iraq","Somalia"],explanation:"Sweden's generous asylum system created large refugee communities. Labor integration remains a challenge. IT sector increasingly recruits from India."}},
-2035:{medianAge:43.2,depRatio:37.0,popChange:0.8,workAgeChange:-250000,population:10900000,ageCohorts:[9.0,9.5,11.0,12.2,12.8,12.5,12.5,11.8,8.7],totalVacancies:165000,sectors:{healthcare:38000,it:28000,construction:20000,manufacturing:16000,agriculture:6000,hospitality:18000,logistics:14000,education:13000,finance:12000},migration:{skillSplit:{low:16,medium:38,high:46},eduProfile:{vocational:28,bachelor:42,master:30},sourceCountries:["India","Syria","Iraq","Afghanistan","Eritrea"],explanation:"Sweden shifts focus to labor migration alongside humanitarian. Healthcare and elder care drive demand. India becomes top labor migration source."}},
-2040:{medianAge:44.5,depRatio:40.5,popChange:0.5,workAgeChange:-400000,population:11000000,ageCohorts:[8.5,9.0,10.5,11.8,12.5,12.2,12.8,12.5,10.2],totalVacancies:210000,sectors:{healthcare:48000,it:35000,construction:25000,manufacturing:20000,agriculture:8000,hospitality:22000,logistics:18000,education:16000,finance:18000},migration:{skillSplit:{low:15,medium:37,high:48},eduProfile:{vocational:25,bachelor:42,master:33},sourceCountries:["India","Iraq","Somalia","Eritrea","Philippines"],explanation:"Sweden's elder care crisis deepens. The country increasingly targets Filipino healthcare workers alongside Indian tech professionals."}}}},
-"578": {name:"Norway",iso:"NO",flag:"\u{1F1F3}\u{1F1F4}",id:"578",years:{
-2030:{medianAge:40.8,depRatio:29.5,popChange:1.2,workAgeChange:50000,population:5700000,ageCohorts:[9.8,10.0,11.8,13.0,13.2,12.8,11.8,10.5,7.1],totalVacancies:72000,sectors:{healthcare:15000,it:12000,construction:10000,manufacturing:7000,agriculture:3000,hospitality:10000,logistics:6000,education:5000,finance:4000},migration:{skillSplit:{low:18,medium:40,high:42},eduProfile:{vocational:32,bachelor:40,master:28},sourceCountries:["Poland","Lithuania","Sweden","Philippines","India"],explanation:"Norway's oil wealth funds generous welfare but creates labor shortages in healthcare and construction. EU free movement provides Polish and Baltic workers."}},
-2035:{medianAge:42.0,depRatio:33.2,popChange:1.0,workAgeChange:-50000,population:5800000,ageCohorts:[9.5,9.8,11.2,12.5,13.0,12.8,12.2,11.0,8.0],totalVacancies:95000,sectors:{healthcare:20000,it:16000,construction:12000,manufacturing:9000,agriculture:4000,hospitality:12000,logistics:8000,education:7000,finance:7000},migration:{skillSplit:{low:16,medium:40,high:44},eduProfile:{vocational:30,bachelor:42,master:28},sourceCountries:["Poland","Philippines","India","Lithuania","Eritrea"],explanation:"Norway's healthcare system increasingly depends on Filipino nurses. Indian IT workers grow in numbers. Oil sector transition creates new skill demands."}},
-2040:{medianAge:43.2,depRatio:37.0,popChange:0.8,workAgeChange:-150000,population:5850000,ageCohorts:[9.0,9.5,10.8,12.0,12.5,12.5,12.5,12.0,9.2],totalVacancies:120000,sectors:{healthcare:28000,it:20000,construction:15000,manufacturing:12000,agriculture:5000,hospitality:14000,logistics:10000,education:8000,finance:8000},migration:{skillSplit:{low:15,medium:38,high:47},eduProfile:{vocational:28,bachelor:42,master:30},sourceCountries:["Philippines","India","Poland","Eritrea","Somalia"],explanation:"Norway's green energy transition creates new job categories while aging increases care demand. Philippines becomes the single largest source country."}}}},
-"246": {name:"Finland",iso:"FI",flag:"\u{1F1EB}\u{1F1EE}",id:"246",years:{
-2030:{medianAge:44.5,depRatio:37.5,popChange:-0.5,workAgeChange:-180000,population:5500000,ageCohorts:[8.8,9.0,11.0,12.2,12.8,13.2,13.0,11.8,8.2],totalVacancies:65000,sectors:{healthcare:14000,it:12000,construction:8000,manufacturing:8000,agriculture:3000,hospitality:7000,logistics:5000,education:4000,finance:4000},migration:{skillSplit:{low:18,medium:38,high:44},eduProfile:{vocational:32,bachelor:40,master:28},sourceCountries:["Estonia","Russia","Iraq","India","Philippines"],explanation:"Finland's remote location and difficult language limit migration attractiveness. Tech sector thrives but care sector struggles to attract foreign workers."}},
-2035:{medianAge:46.0,depRatio:42.0,popChange:-1.2,workAgeChange:-280000,population:5400000,ageCohorts:[8.2,8.5,10.2,11.5,12.2,13.0,13.8,12.8,9.8],totalVacancies:88000,sectors:{healthcare:20000,it:16000,construction:10000,manufacturing:10000,agriculture:4000,hospitality:10000,logistics:7000,education:5000,finance:6000},migration:{skillSplit:{low:16,medium:38,high:46},eduProfile:{vocational:30,bachelor:42,master:28},sourceCountries:["India","Philippines","Estonia","Iraq","Vietnam"],explanation:"Finland launches aggressive tech talent recruitment globally. India and Vietnam become top source countries for IT. Care sector crisis deepens."}},
-2040:{medianAge:47.5,depRatio:46.5,popChange:-2.0,workAgeChange:-400000,population:5250000,ageCohorts:[7.5,8.0,9.5,10.8,11.5,12.5,14.0,14.0,12.2],totalVacancies:115000,sectors:{healthcare:28000,it:20000,construction:12000,manufacturing:12000,agriculture:5000,hospitality:12000,logistics:9000,education:7000,finance:10000},migration:{skillSplit:{low:15,medium:37,high:48},eduProfile:{vocational:28,bachelor:42,master:30},sourceCountries:["India","Philippines","Vietnam","Estonia","Nepal"],explanation:"Finland faces severe population decline. Government offers unprecedented settlement incentives for immigrants. Healthcare system at breaking point without foreign workers."}}}},
-"208": {name:"Denmark",iso:"DK",flag:"\u{1F1E9}\u{1F1F0}",id:"208",years:{
-2030:{medianAge:43.0,depRatio:33.0,popChange:0.5,workAgeChange:-80000,population:6000000,ageCohorts:[9.5,9.8,11.5,12.5,13.0,12.8,12.2,11.2,7.5],totalVacancies:78000,sectors:{healthcare:16000,it:14000,construction:10000,manufacturing:8000,agriculture:4000,hospitality:10000,logistics:6000,education:5000,finance:5000},migration:{skillSplit:{low:18,medium:38,high:44},eduProfile:{vocational:32,bachelor:42,master:26},sourceCountries:["Romania","Poland","India","Philippines","Ukraine"],explanation:"Denmark's flexible labor market creates dynamic demand. Green energy transition drives technical skill needs. EU workers fill many positions, but non-EU recruitment grows."}},
-2035:{medianAge:44.2,depRatio:37.0,popChange:0.2,workAgeChange:-160000,population:6020000,ageCohorts:[9.0,9.5,11.0,12.0,12.8,12.8,12.5,11.8,8.6],totalVacancies:105000,sectors:{healthcare:22000,it:18000,construction:12000,manufacturing:10000,agriculture:5000,hospitality:14000,logistics:8000,education:8000,finance:8000},migration:{skillSplit:{low:16,medium:38,high:46},eduProfile:{vocational:30,bachelor:42,master:28},sourceCountries:["India","Philippines","Romania","Ukraine","Poland"],explanation:"Denmark's aging population increases care demand. Wind energy sector creates specialized skill gaps. Indian tech workers become the largest non-EU group."}},
-2040:{medianAge:45.5,depRatio:41.5,popChange:-0.2,workAgeChange:-250000,population:5980000,ageCohorts:[8.5,9.0,10.5,11.5,12.2,12.5,13.0,12.5,10.3],totalVacancies:135000,sectors:{healthcare:30000,it:22000,construction:15000,manufacturing:12000,agriculture:6000,hospitality:16000,logistics:12000,education:10000,finance:12000},migration:{skillSplit:{low:15,medium:37,high:48},eduProfile:{vocational:28,bachelor:42,master:30},sourceCountries:["India","Philippines","Ukraine","Romania","Nigeria"],explanation:"Denmark's welfare state faces fiscal pressure from aging. Healthcare and green energy demand drive immigration policy reform."}}}},
-"203": {name:"Czech Republic",iso:"CZ",flag:"\u{1F1E8}\u{1F1FF}",id:"203",years:{
-2030:{medianAge:44.8,depRatio:33.5,popChange:-0.8,workAgeChange:-350000,population:10500000,ageCohorts:[8.5,9.0,10.8,12.0,13.2,14.0,13.5,11.5,7.5],totalVacancies:120000,sectors:{healthcare:22000,it:18000,construction:18000,manufacturing:22000,agriculture:6000,hospitality:14000,logistics:8000,education:6000,finance:6000},migration:{skillSplit:{low:25,medium:45,high:30},eduProfile:{vocational:45,bachelor:35,master:20},sourceCountries:["Ukraine","Slovakia","Vietnam","Mongolia","India"],explanation:"Czech Republic's manufacturing economy needs skilled blue-collar workers. Ukraine dominates migration flows. Vietnamese community is well-established. India emerging for IT."}},
-2035:{medianAge:47.0,depRatio:39.5,popChange:-2.2,workAgeChange:-600000,population:10250000,ageCohorts:[7.8,8.5,9.8,11.2,12.2,13.5,14.5,13.0,9.5],totalVacancies:175000,sectors:{healthcare:32000,it:25000,construction:25000,manufacturing:30000,agriculture:8000,hospitality:20000,logistics:14000,education:10000,finance:11000},migration:{skillSplit:{low:22,medium:44,high:34},eduProfile:{vocational:42,bachelor:38,master:20},sourceCountries:["Ukraine","India","Vietnam","Philippines","Mongolia"],explanation:"Czech Republic's automotive industry faces severe worker shortage. Ukraine and India vie as top source countries. Manufacturing-focused vocational skills most in demand."}},
-2040:{medianAge:49.0,depRatio:46.0,popChange:-3.8,workAgeChange:-900000,population:9900000,ageCohorts:[7.2,7.8,9.0,10.5,11.5,12.8,14.8,14.5,11.9],totalVacancies:240000,sectors:{healthcare:45000,it:32000,construction:32000,manufacturing:38000,agriculture:10000,hospitality:28000,logistics:20000,education:16000,finance:19000},migration:{skillSplit:{low:20,medium:42,high:38},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["India","Ukraine","Philippines","Vietnam","Bangladesh"],explanation:"Czech Republic joins the severely aging group. Its industrial economy cannot function without large-scale immigration. India becomes the primary source."}}}},
-"840": {name:"United States",iso:"US",flag:"\u{1F1FA}\u{1F1F8}",id:"840",years:{
-2030:{medianAge:39.8,depRatio:27.5,popChange:2.0,workAgeChange:1200000,population:340000000,ageCohorts:[10.2,10.5,12.0,13.2,13.0,12.5,11.5,10.2,6.9],totalVacancies:2800000,sectors:{healthcare:580000,it:450000,construction:380000,manufacturing:280000,agriculture:150000,hospitality:380000,logistics:220000,education:180000,finance:180000},migration:{skillSplit:{low:25,medium:38,high:37},eduProfile:{vocational:30,bachelor:42,master:28},sourceCountries:["Mexico","India","China","Philippines","El Salvador"],explanation:"The US labor market faces massive shortages despite immigration. Healthcare, tech, and construction are critical gaps. Latin America and South Asia dominate migration flows."}},
-2035:{medianAge:40.8,depRatio:31.0,popChange:1.8,workAgeChange:600000,population:346000000,ageCohorts:[9.8,10.2,11.5,12.8,12.8,12.5,12.0,11.0,7.4],totalVacancies:3500000,sectors:{healthcare:720000,it:560000,construction:450000,manufacturing:350000,agriculture:180000,hospitality:450000,logistics:280000,education:240000,finance:270000},migration:{skillSplit:{low:23,medium:37,high:40},eduProfile:{vocational:28,bachelor:42,master:30},sourceCountries:["Mexico","India","Philippines","China","Guatemala"],explanation:"Baby Boomer retirement peaks. Healthcare gap alone exceeds 700K. H-1B visa demand from India intensifies. Latin American workers essential for agriculture and construction."}},
-2040:{medianAge:41.8,depRatio:34.5,popChange:1.5,workAgeChange:0,population:351000000,ageCohorts:[9.5,9.8,11.0,12.2,12.5,12.2,12.2,11.8,8.8],totalVacancies:4200000,sectors:{healthcare:880000,it:680000,construction:520000,manufacturing:420000,agriculture:200000,hospitality:520000,logistics:340000,education:300000,finance:340000},migration:{skillSplit:{low:22,medium:36,high:42},eduProfile:{vocational:26,bachelor:42,master:32},sourceCountries:["India","Mexico","Philippines","Nigeria","China"],explanation:"US needs 4M+ workers annually by 2040. India surpasses Mexico as top source for legal immigration. African migration corridors grow significantly."}}}},
-"702": {name:"Singapore",iso:"SG",flag:"\u{1F1F8}\u{1F1EC}",id:"702",years:{
-2030:{medianAge:44.2,depRatio:28.5,popChange:0.8,workAgeChange:-80000,population:5950000,ageCohorts:[8.0,8.5,11.0,13.5,14.0,13.5,12.5,11.0,8.0],totalVacancies:85000,sectors:{healthcare:16000,it:18000,construction:12000,manufacturing:10000,agriculture:1000,hospitality:10000,logistics:7000,education:5000,finance:6000},migration:{skillSplit:{low:22,medium:35,high:43},eduProfile:{vocational:25,bachelor:42,master:33},sourceCountries:["Malaysia","India","China","Philippines","Bangladesh"],explanation:"Singapore relies heavily on foreign workers across all sectors. Finance and tech attract global talent while construction and domestic work depend on South and Southeast Asian workers."}},
-2035:{medianAge:46.5,depRatio:35.0,popChange:0.5,workAgeChange:-150000,population:6000000,ageCohorts:[7.2,7.8,10.0,12.5,13.5,13.5,13.5,12.5,9.5],totalVacancies:110000,sectors:{healthcare:22000,it:22000,construction:15000,manufacturing:12000,agriculture:1000,hospitality:12000,logistics:10000,education:8000,finance:8000},migration:{skillSplit:{low:20,medium:35,high:45},eduProfile:{vocational:22,bachelor:42,master:36},sourceCountries:["India","Malaysia","China","Philippines","Bangladesh"],explanation:"Singapore's aging accelerates. Elder care becomes a major gap. India overtakes Malaysia as top source for skilled workers in finance and tech."}},
-2040:{medianAge:48.5,depRatio:42.0,popChange:0.2,workAgeChange:-250000,population:6020000,ageCohorts:[6.5,7.0,9.0,11.5,12.5,13.2,14.0,14.0,12.3],totalVacancies:140000,sectors:{healthcare:30000,it:28000,construction:18000,manufacturing:14000,agriculture:1000,hospitality:15000,logistics:12000,education:10000,finance:12000},migration:{skillSplit:{low:18,medium:34,high:48},eduProfile:{vocational:20,bachelor:42,master:38},sourceCountries:["India","China","Philippines","Malaysia","Vietnam"],explanation:"Singapore faces a critical aging challenge with nearly half its population over 45. Relies on being Asia's premier hub to attract global talent."}}}},
-"158": {name:"Taiwan",iso:"TW",flag:"\u{1F1F9}\u{1F1FC}",id:"158",years:{
-2030:{medianAge:46.5,depRatio:32.8,popChange:-1.2,workAgeChange:-1200000,population:23200000,ageCohorts:[7.5,8.0,10.5,12.0,13.5,14.5,14.0,12.0,8.0],totalVacancies:220000,sectors:{healthcare:42000,it:45000,construction:28000,manufacturing:38000,agriculture:10000,hospitality:22000,logistics:15000,education:10000,finance:10000},migration:{skillSplit:{low:28,medium:40,high:32},eduProfile:{vocational:38,bachelor:40,master:22},sourceCountries:["Vietnam","Indonesia","Philippines","Thailand","India"],explanation:"Taiwan's semiconductor industry needs highly skilled workers while caregiving and manufacturing rely on Southeast Asian migrant workers under bilateral programs."}},
-2035:{medianAge:49.0,depRatio:40.5,popChange:-3.0,workAgeChange:-2200000,population:22500000,ageCohorts:[6.5,7.2,9.2,11.0,12.5,14.0,15.0,13.5,11.1],totalVacancies:320000,sectors:{healthcare:65000,it:62000,construction:38000,manufacturing:52000,agriculture:12000,hospitality:32000,logistics:22000,education:18000,finance:19000},migration:{skillSplit:{low:25,medium:40,high:35},eduProfile:{vocational:35,bachelor:40,master:25},sourceCountries:["Vietnam","Indonesia","Philippines","India","Thailand"],explanation:"Taiwan's population decline accelerates. Chip industry competes globally for talent. India becomes an important source for tech workers alongside traditional SE Asian corridors."}},
-2040:{medianAge:52.0,depRatio:50.5,popChange:-5.5,workAgeChange:-3500000,population:21500000,ageCohorts:[5.5,6.2,8.0,10.0,11.5,13.0,15.5,15.5,14.8],totalVacancies:440000,sectors:{healthcare:92000,it:78000,construction:48000,manufacturing:65000,agriculture:15000,hospitality:42000,logistics:32000,education:28000,finance:40000},migration:{skillSplit:{low:22,medium:38,high:40},eduProfile:{vocational:32,bachelor:40,master:28},sourceCountries:["Vietnam","India","Indonesia","Philippines","Bangladesh"],explanation:"Taiwan becomes one of Asia's oldest societies alongside Japan and South Korea. Without immigration reform, economic contraction is unavoidable."}}}},
-"372": {name:"Ireland",iso:"IE",flag:"\u{1F1EE}\u{1F1EA}",id:"372",years:{
-2030:{medianAge:39.5,depRatio:26.5,popChange:2.0,workAgeChange:150000,population:5400000,ageCohorts:[10.5,10.8,12.5,14.0,13.5,12.0,10.5,9.5,6.7],totalVacancies:65000,sectors:{healthcare:14000,it:12000,construction:10000,manufacturing:6000,agriculture:3000,hospitality:8000,logistics:4000,education:4000,finance:4000},migration:{skillSplit:{low:18,medium:35,high:47},eduProfile:{vocational:25,bachelor:42,master:33},sourceCountries:["Brazil","India","Poland","Romania","Philippines"],explanation:"Ireland's tech boom and multinational presence drive high-skilled migration. Construction shortage from housing crisis. Brazil and India are growing source countries."}},
-2035:{medianAge:41.0,depRatio:30.0,popChange:1.5,workAgeChange:50000,population:5550000,ageCohorts:[10.0,10.5,11.8,13.2,13.2,12.2,11.2,10.5,7.4],totalVacancies:85000,sectors:{healthcare:18000,it:16000,construction:12000,manufacturing:8000,agriculture:3000,hospitality:10000,logistics:6000,education:6000,finance:6000},migration:{skillSplit:{low:16,medium:35,high:49},eduProfile:{vocational:22,bachelor:42,master:36},sourceCountries:["India","Brazil","Philippines","Poland","Nigeria"],explanation:"Ireland's younger demographics give it an advantage but healthcare still faces growing gaps. India becomes the dominant source for tech and healthcare professionals."}},
-2040:{medianAge:42.5,depRatio:34.0,popChange:1.0,workAgeChange:-50000,population:5650000,ageCohorts:[9.5,10.0,11.2,12.5,13.0,12.5,11.5,11.0,8.8],totalVacancies:108000,sectors:{healthcare:24000,it:20000,construction:14000,manufacturing:10000,agriculture:4000,hospitality:12000,logistics:8000,education:8000,finance:8000},migration:{skillSplit:{low:15,medium:34,high:51},eduProfile:{vocational:20,bachelor:42,master:38},sourceCountries:["India","Brazil","Nigeria","Philippines","South Africa"],explanation:"Ireland maintains relatively favorable demographics but healthcare and housing remain persistent challenges driving continued immigration demand."}}}},
-"554": {name:"New Zealand",iso:"NZ",flag:"\u{1F1F3}\u{1F1FF}",id:"554",years:{
-2030:{medianAge:39.0,depRatio:26.8,popChange:1.5,workAgeChange:80000,population:5400000,ageCohorts:[10.5,10.8,12.2,13.5,13.0,12.2,11.0,10.0,6.8],totalVacancies:55000,sectors:{healthcare:12000,it:8000,construction:8000,manufacturing:5000,agriculture:5000,hospitality:7000,logistics:4000,education:3000,finance:3000},migration:{skillSplit:{low:20,medium:38,high:42},eduProfile:{vocational:30,bachelor:42,master:28},sourceCountries:["India","Philippines","China","Fiji","South Africa"],explanation:"New Zealand's geographical isolation limits migration options. Points-based system attracts skilled workers from India and Philippines. Pacific Island workers fill seasonal roles."}},
-2035:{medianAge:40.5,depRatio:30.5,popChange:1.2,workAgeChange:30000,population:5500000,ageCohorts:[10.0,10.5,11.5,13.0,12.8,12.2,11.5,10.8,7.7],totalVacancies:72000,sectors:{healthcare:16000,it:12000,construction:10000,manufacturing:6000,agriculture:6000,hospitality:8000,logistics:5000,education:4000,finance:5000},migration:{skillSplit:{low:18,medium:37,high:45},eduProfile:{vocational:28,bachelor:42,master:30},sourceCountries:["India","Philippines","South Africa","Fiji","China"],explanation:"Healthcare and construction gaps grow. New Zealand competes with Australia for Pacific and South Asian workers. Climate migration from Pacific Islands increases."}},
-2040:{medianAge:42.0,depRatio:34.5,popChange:1.0,workAgeChange:-20000,population:5550000,ageCohorts:[9.5,10.0,11.0,12.5,12.5,12.0,12.0,11.5,9.0],totalVacancies:90000,sectors:{healthcare:20000,it:15000,construction:12000,manufacturing:7000,agriculture:7000,hospitality:10000,logistics:6000,education:6000,finance:7000},migration:{skillSplit:{low:17,medium:36,high:47},eduProfile:{vocational:25,bachelor:42,master:33},sourceCountries:["India","Philippines","South Africa","Fiji","Kenya"],explanation:"New Zealand's aging population increases elder care demand. East Africa emerges as a new migration corridor alongside established South Asian and Pacific routes."}}}},
-"348": {name:"Hungary",iso:"HU",flag:"\u{1F1ED}\u{1F1FA}",id:"348",years:{
-2030:{medianAge:45.5,depRatio:33.8,popChange:-2.0,workAgeChange:-350000,population:9600000,ageCohorts:[8.0,8.5,10.5,12.0,13.0,14.2,14.0,11.8,8.0],totalVacancies:95000,sectors:{healthcare:18000,it:14000,construction:14000,manufacturing:18000,agriculture:6000,hospitality:10000,logistics:6000,education:5000,finance:4000},migration:{skillSplit:{low:28,medium:42,high:30},eduProfile:{vocational:45,bachelor:35,master:20},sourceCountries:["Ukraine","Serbia","Romania","Philippines","Vietnam"],explanation:"Hungary's anti-immigration politics conflict with economic reality. Manufacturing sector desperately needs workers. Ukrainian and Balkan workers fill gaps quietly."}},
-2035:{medianAge:47.8,depRatio:40.0,popChange:-3.5,workAgeChange:-600000,population:9350000,ageCohorts:[7.2,7.8,9.5,11.2,12.2,13.5,14.8,13.2,10.6],totalVacancies:140000,sectors:{healthcare:28000,it:20000,construction:18000,manufacturing:25000,agriculture:8000,hospitality:14000,logistics:10000,education:8000,finance:9000},migration:{skillSplit:{low:25,medium:42,high:33},eduProfile:{vocational:42,bachelor:38,master:20},sourceCountries:["Ukraine","Philippines","Vietnam","Serbia","India"],explanation:"Economic reality forces immigration policy liberalization. Guest worker programs expand for manufacturing and healthcare. Southeast Asian workers increase."}},
-2040:{medianAge:49.8,depRatio:47.5,popChange:-5.2,workAgeChange:-900000,population:9000000,ageCohorts:[6.5,7.0,8.5,10.2,11.5,13.0,15.0,14.8,13.5],totalVacancies:190000,sectors:{healthcare:38000,it:25000,construction:25000,manufacturing:32000,agriculture:10000,hospitality:18000,logistics:14000,education:12000,finance:16000},migration:{skillSplit:{low:22,medium:42,high:36},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["India","Philippines","Ukraine","Vietnam","Bangladesh"],explanation:"Hungary faces severe population decline dropping below 9M. Automotive industry cannot survive without foreign workers. India and Philippines become primary sources."}}}},
-"191": {name:"Croatia",iso:"HR",flag:"\u{1F1ED}\u{1F1F7}",id:"191",years:{
-2030:{medianAge:46.2,depRatio:35.5,popChange:-3.0,workAgeChange:-200000,population:3800000,ageCohorts:[7.8,8.0,10.0,11.5,13.0,14.5,14.2,12.5,8.5],totalVacancies:52000,sectors:{healthcare:10000,it:6000,construction:8000,manufacturing:7000,agriculture:4000,hospitality:10000,logistics:3000,education:2000,finance:2000},migration:{skillSplit:{low:30,medium:42,high:28},eduProfile:{vocational:45,bachelor:35,master:20},sourceCountries:["Bosnia","Serbia","Nepal","Philippines","India"],explanation:"Croatia loses workers to Western EU while its tourism industry booms. Balkan neighbors and Nepalese workers fill hospitality and construction gaps."}},
-2035:{medianAge:48.5,depRatio:42.0,popChange:-4.5,workAgeChange:-320000,population:3650000,ageCohorts:[7.0,7.5,9.0,10.8,12.0,14.0,15.0,13.8,10.9],totalVacancies:72000,sectors:{healthcare:14000,it:8000,construction:10000,manufacturing:10000,agriculture:5000,hospitality:12000,logistics:5000,education:4000,finance:4000},migration:{skillSplit:{low:28,medium:42,high:30},eduProfile:{vocational:42,bachelor:38,master:20},sourceCountries:["Nepal","Philippines","Bosnia","Serbia","India"],explanation:"Croatia's EU emigration drain continues. Nepal becomes a major worker source for tourism and construction. Healthcare crisis deepens in rural areas."}},
-2040:{medianAge:50.5,depRatio:49.5,popChange:-6.5,workAgeChange:-450000,population:3450000,ageCohorts:[6.2,6.8,8.2,10.0,11.2,13.2,15.2,15.2,14.0],totalVacancies:95000,sectors:{healthcare:20000,it:12000,construction:14000,manufacturing:12000,agriculture:6000,hospitality:14000,logistics:6000,education:5000,finance:6000},migration:{skillSplit:{low:25,medium:42,high:33},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["Nepal","India","Philippines","Bosnia","Bangladesh"],explanation:"Croatia's population falls below 3.5M. Tourism-dependent economy cannot function without massive immigration. South Asia becomes the primary labor source."}}}},
-"642": {name:"Romania",iso:"RO",flag:"\u{1F1F7}\u{1F1F4}",id:"642",years:{
-2030:{medianAge:45.0,depRatio:32.5,popChange:-3.5,workAgeChange:-800000,population:18500000,ageCohorts:[8.0,8.2,10.2,12.0,13.0,14.5,14.0,12.0,8.1],totalVacancies:150000,sectors:{healthcare:28000,it:22000,construction:22000,manufacturing:25000,agriculture:12000,hospitality:16000,logistics:10000,education:8000,finance:7000},migration:{skillSplit:{low:28,medium:42,high:30},eduProfile:{vocational:42,bachelor:38,master:20},sourceCountries:["Moldova","Vietnam","Nepal","Philippines","Sri Lanka"],explanation:"Romania transitions from emigration source to destination. IT sector thrives but blue-collar gaps widen as Romanians continue moving West. Asian workers fill manufacturing and construction."}},
-2035:{medianAge:47.5,depRatio:39.0,popChange:-5.0,workAgeChange:-1300000,population:17500000,ageCohorts:[7.2,7.5,9.2,11.0,12.2,14.0,15.0,13.5,10.4],totalVacancies:210000,sectors:{healthcare:38000,it:30000,construction:28000,manufacturing:35000,agriculture:15000,hospitality:22000,logistics:16000,education:12000,finance:14000},migration:{skillSplit:{low:25,medium:42,high:33},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["Vietnam","Nepal","Philippines","Sri Lanka","India"],explanation:"Romania's population drops below 18M. The country actively recruits Asian workers for factories and construction. IT sector becomes a regional hub attracting some return migrants."}},
-2040:{medianAge:49.8,depRatio:46.0,popChange:-7.0,workAgeChange:-1800000,population:16200000,ageCohorts:[6.5,6.8,8.2,10.0,11.5,13.0,15.0,15.0,14.0],totalVacancies:280000,sectors:{healthcare:52000,it:38000,construction:35000,manufacturing:45000,agriculture:18000,hospitality:28000,logistics:22000,education:18000,finance:24000},migration:{skillSplit:{low:22,medium:42,high:36},eduProfile:{vocational:38,bachelor:38,master:24},sourceCountries:["India","Vietnam","Philippines","Nepal","Bangladesh"],explanation:"Romania faces demographic catastrophe losing nearly 4M people since 2020. India and Southeast Asia are critical to keeping the economy running."}}}},
-"100": {name:"Bulgaria",iso:"BG",flag:"\u{1F1E7}\u{1F1EC}",id:"100",years:{
-2030:{medianAge:47.0,depRatio:37.0,popChange:-4.5,workAgeChange:-350000,population:6300000,ageCohorts:[7.5,7.8,10.0,11.5,13.0,14.8,14.5,12.5,8.4],totalVacancies:65000,sectors:{healthcare:12000,it:8000,construction:10000,manufacturing:10000,agriculture:6000,hospitality:8000,logistics:4000,education:3000,finance:4000},migration:{skillSplit:{low:30,medium:42,high:28},eduProfile:{vocational:45,bachelor:35,master:20},sourceCountries:["Turkey","Ukraine","Moldova","Nepal","Uzbekistan"],explanation:"Bulgaria is Europe's fastest-shrinking country. Low wages limit migration attractiveness but tourism and manufacturing need workers desperately."}},
-2035:{medianAge:49.5,depRatio:44.0,popChange:-6.5,workAgeChange:-520000,population:5800000,ageCohorts:[6.8,7.2,9.0,10.5,12.0,14.0,15.5,14.0,11.0],totalVacancies:88000,sectors:{healthcare:18000,it:12000,construction:12000,manufacturing:14000,agriculture:8000,hospitality:10000,logistics:5000,education:4000,finance:5000},migration:{skillSplit:{low:28,medium:42,high:30},eduProfile:{vocational:42,bachelor:38,master:20},sourceCountries:["Turkey","Nepal","India","Ukraine","Uzbekistan"],explanation:"Bulgaria's population crashes below 6M. Young Bulgarians continue leaving for Western EU. Nepal and India emerge as affordable labor sources."}},
-2040:{medianAge:51.8,depRatio:52.0,popChange:-8.5,workAgeChange:-700000,population:5200000,ageCohorts:[6.0,6.5,8.0,9.5,11.0,13.0,15.5,15.5,15.0],totalVacancies:115000,sectors:{healthcare:24000,it:15000,construction:15000,manufacturing:18000,agriculture:10000,hospitality:14000,logistics:7000,education:6000,finance:6000},migration:{skillSplit:{low:25,medium:42,high:33},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["India","Nepal","Bangladesh","Turkey","Uzbekistan"],explanation:"Bulgaria faces existential demographic crisis. Population halved since 1990. Without massive immigration, entire regions become uninhabitable."}}}},
-"440": {name:"Lithuania",iso:"LT",flag:"\u{1F1F1}\u{1F1F9}",id:"440",years:{
-2030:{medianAge:45.5,depRatio:34.0,popChange:-3.0,workAgeChange:-120000,population:2650000,ageCohorts:[8.0,8.2,10.5,11.8,13.0,14.5,14.0,12.0,8.0],totalVacancies:38000,sectors:{healthcare:7000,it:5500,construction:5500,manufacturing:6000,agriculture:3000,hospitality:4500,logistics:3000,education:2000,finance:1500},migration:{skillSplit:{low:28,medium:42,high:30},eduProfile:{vocational:42,bachelor:38,master:20},sourceCountries:["Ukraine","Belarus","India","Philippines","Uzbekistan"],explanation:"Lithuania loses population to Western EU but attracts some Ukrainian and Belarusian workers. IT sector growing but healthcare faces crisis."}},
-2035:{medianAge:48.0,depRatio:41.0,popChange:-5.0,workAgeChange:-180000,population:2500000,ageCohorts:[7.2,7.5,9.2,11.0,12.0,14.0,15.0,13.5,10.6],totalVacancies:52000,sectors:{healthcare:10000,it:8000,construction:7000,manufacturing:8000,agriculture:4000,hospitality:6000,logistics:4000,education:3000,finance:2000},migration:{skillSplit:{low:25,medium:42,high:33},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["Ukraine","India","Belarus","Philippines","Vietnam"],explanation:"Lithuania's fintech hub attracts some skilled workers but overall population decline continues. India becomes a major source for IT professionals."}},
-2040:{medianAge:50.5,depRatio:49.0,popChange:-7.0,workAgeChange:-260000,population:2300000,ageCohorts:[6.5,6.8,8.0,10.0,11.0,13.0,15.5,15.0,14.2],totalVacancies:68000,sectors:{healthcare:14000,it:10000,construction:9000,manufacturing:10000,agriculture:5000,hospitality:8000,logistics:5000,education:4000,finance:3000},migration:{skillSplit:{low:22,medium:42,high:36},eduProfile:{vocational:38,bachelor:38,master:24},sourceCountries:["India","Ukraine","Philippines","Vietnam","Bangladesh"],explanation:"Lithuania's population drops to 2.3M — down 40% from independence. Government offers EU's most generous settlement packages to attract immigrants."}}}},
-"428": {name:"Latvia",iso:"LV",flag:"\u{1F1F1}\u{1F1FB}",id:"428",years:{
-2030:{medianAge:45.8,depRatio:35.0,popChange:-3.5,workAgeChange:-90000,population:1800000,ageCohorts:[7.8,8.0,10.2,11.5,13.0,14.8,14.2,12.2,8.3],totalVacancies:28000,sectors:{healthcare:5500,it:4000,construction:4000,manufacturing:4500,agriculture:2000,hospitality:3500,logistics:2000,education:1500,finance:1000},migration:{skillSplit:{low:28,medium:42,high:30},eduProfile:{vocational:42,bachelor:38,master:20},sourceCountries:["Ukraine","Belarus","India","Uzbekistan","Georgia"],explanation:"Latvia's small economy faces severe depopulation. Construction and healthcare are most affected. Ukrainian workers are the largest foreign group."}},
-2035:{medianAge:48.2,depRatio:42.0,popChange:-5.5,workAgeChange:-140000,population:1700000,ageCohorts:[7.0,7.2,9.0,10.8,12.0,14.0,15.2,14.0,10.8],totalVacancies:38000,sectors:{healthcare:8000,it:5500,construction:5000,manufacturing:6000,agriculture:3000,hospitality:5000,logistics:2500,education:2000,finance:1000},migration:{skillSplit:{low:25,medium:42,high:33},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["Ukraine","India","Uzbekistan","Philippines","Belarus"],explanation:"Latvia's workforce shrinks faster than the economy. IT sector is a bright spot but healthcare system faces near-collapse in rural areas."}},
-2040:{medianAge:50.8,depRatio:50.0,popChange:-7.5,workAgeChange:-200000,population:1580000,ageCohorts:[6.2,6.5,8.0,9.8,11.0,13.2,15.5,15.5,14.3],totalVacancies:48000,sectors:{healthcare:10000,it:7000,construction:6500,manufacturing:7500,agriculture:3500,hospitality:6000,logistics:3000,education:2500,finance:2000},migration:{skillSplit:{low:22,medium:42,high:36},eduProfile:{vocational:38,bachelor:38,master:24},sourceCountries:["India","Ukraine","Philippines","Uzbekistan","Bangladesh"],explanation:"Latvia drops below 1.6M people. Government considers radical immigration reforms including fast-track citizenship to attract workers from South Asia."}}}},
-"233": {name:"Estonia",iso:"EE",flag:"\u{1F1EA}\u{1F1EA}",id:"233",years:{
-2030:{medianAge:43.8,depRatio:32.5,popChange:-1.5,workAgeChange:-50000,population:1320000,ageCohorts:[8.5,8.8,11.0,12.2,13.0,14.0,13.5,11.5,7.5],totalVacancies:22000,sectors:{healthcare:4000,it:4500,construction:3000,manufacturing:3000,agriculture:1500,hospitality:2500,logistics:1500,education:1000,finance:1000},migration:{skillSplit:{low:22,medium:38,high:40},eduProfile:{vocational:35,bachelor:40,master:25},sourceCountries:["Ukraine","Finland","Russia","India","Latvia"],explanation:"Estonia's e-Residency and digital society attract tech workers. Small market limits migration scale but IT sector punches above its weight globally."}},
-2035:{medianAge:45.5,depRatio:38.0,popChange:-2.5,workAgeChange:-80000,population:1290000,ageCohorts:[7.8,8.2,10.0,11.5,12.5,13.5,14.0,12.8,9.7],totalVacancies:30000,sectors:{healthcare:6000,it:6000,construction:4000,manufacturing:4000,agriculture:2000,hospitality:3500,logistics:2000,education:1500,finance:1000},migration:{skillSplit:{low:20,medium:38,high:42},eduProfile:{vocational:32,bachelor:42,master:26},sourceCountries:["Ukraine","India","Finland","Nigeria","Latvia"],explanation:"Estonia's tech ecosystem attracts Indian and Nigerian developers. Healthcare gaps worsen. Digital nomad visa becomes a major immigration pathway."}},
-2040:{medianAge:47.2,depRatio:44.0,popChange:-3.5,workAgeChange:-120000,population:1240000,ageCohorts:[7.0,7.5,9.2,10.8,11.5,13.0,14.5,14.0,12.5],totalVacancies:38000,sectors:{healthcare:8000,it:7500,construction:5000,manufacturing:5000,agriculture:2500,hospitality:4000,logistics:2500,education:2000,finance:1500},migration:{skillSplit:{low:18,medium:37,high:45},eduProfile:{vocational:28,bachelor:42,master:30},sourceCountries:["India","Ukraine","Nigeria","Philippines","Vietnam"],explanation:"Estonia doubles down on being a digital hub. India becomes top source for tech talent. Small population means even modest immigration has significant demographic impact."}}}},
+2040:{medianAge:51.0,depRatio:50.5,popChange:-6.0,workAgeChange:-900000,population:9400000,ageCohorts:[6.5,6.8,8.5,10.0,11.5,13.2,15.2,15.0,13.3],totalVacancies:140000,sectors:{healthcare:32000,it:20000,construction:18000,manufacturing:16000,agriculture:14000,hospitality:20000,logistics:8000,education:6000,finance:6000},migration:{skillSplit:{low:30,medium:40,high:30},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["Pakistan","Philippines","Egypt","Bangladesh","India"],explanation:"Greece's population falls below 9.5M. South Asian and North African workers fill the gap."}}}},
+"616": {name:"Poland",iso:"PL",flag:"\u{1F1F5}\u{1F1F1}",id:"616",salary:1600,costOfLiving:700,years:{
+2030:{medianAge:43.8,depRatio:32.0,popChange:-1.5,workAgeChange:-1800000,population:37000000,ageCohorts:[8.5,8.8,11.2,12.8,13.5,14.0,13.8,10.5,6.9],totalVacancies:250000,sectors:{healthcare:42000,it:38000,construction:38000,manufacturing:45000,agriculture:18000,hospitality:28000,logistics:18000,education:12000,finance:11000},migration:{skillSplit:{low:28,medium:42,high:30},eduProfile:{vocational:45,bachelor:35,master:20},sourceCountries:["Ukraine","Belarus","India","Philippines","Nepal"],explanation:"Poland transformed from emigration to immigration country. Ukraine is the dominant source but diversification to South Asia is underway."}},
+2035:{medianAge:46.5,depRatio:38.8,popChange:-3.2,workAgeChange:-3200000,population:36000000,ageCohorts:[7.8,8.2,10.2,11.8,12.5,13.8,14.8,12.5,8.4],totalVacancies:380000,sectors:{healthcare:65000,it:55000,construction:52000,manufacturing:62000,agriculture:22000,hospitality:42000,logistics:32000,education:22000,finance:28000},migration:{skillSplit:{low:25,medium:42,high:33},eduProfile:{vocational:42,bachelor:38,master:20},sourceCountries:["Ukraine","India","Philippines","Vietnam","Georgia"],explanation:"Poland's rapid aging catches up. India and Vietnam become major source countries for manufacturing and IT."}},
+2040:{medianAge:49.2,depRatio:46.5,popChange:-5.5,workAgeChange:-4800000,population:34500000,ageCohorts:[7.0,7.5,9.0,10.8,11.5,13.0,15.2,14.0,11.9],totalVacancies:520000,sectors:{healthcare:92000,it:72000,construction:68000,manufacturing:80000,agriculture:28000,hospitality:55000,logistics:42000,education:35000,finance:48000},migration:{skillSplit:{low:22,medium:42,high:36},eduProfile:{vocational:38,bachelor:40,master:22},sourceCountries:["India","Ukraine","Philippines","Vietnam","Bangladesh"],explanation:"Poland joins the severely aging club. India becomes the single largest source country."}}}},
+"124": {name:"Canada",iso:"CA",flag:"\u{1F1E8}\u{1F1E6}",id:"124",salary:3400,costOfLiving:1400,years:{
+2030:{medianAge:42.8,depRatio:30.2,popChange:2.5,workAgeChange:800000,population:41500000,ageCohorts:[9.2,9.5,11.5,13.0,13.5,13.8,12.5,10.5,6.5],totalVacancies:420000,sectors:{healthcare:85000,it:72000,construction:58000,manufacturing:42000,agriculture:15000,hospitality:52000,logistics:35000,education:32000,finance:29000},migration:{skillSplit:{low:18,medium:35,high:47},eduProfile:{vocational:25,bachelor:42,master:33},sourceCountries:["India","Philippines","China","Nigeria","Pakistan"],explanation:"Canada's immigration-driven growth model requires 400K+ annual immigrants. Express Entry system favors high-skilled workers."}},
+2035:{medianAge:44.0,depRatio:34.5,popChange:3.5,workAgeChange:500000,population:43500000,ageCohorts:[8.8,9.2,10.8,12.5,13.0,13.5,13.2,11.5,7.5],totalVacancies:520000,sectors:{healthcare:110000,it:92000,construction:68000,manufacturing:48000,agriculture:18000,hospitality:62000,logistics:42000,education:40000,finance:40000},migration:{skillSplit:{low:16,medium:34,high:50},eduProfile:{vocational:22,bachelor:42,master:36},sourceCountries:["India","Philippines","Nigeria","China","Pakistan"],explanation:"Canada maintains world's highest immigration rate per capita. Healthcare becomes critical gap."}},
+2040:{medianAge:45.2,depRatio:38.8,popChange:4.0,workAgeChange:200000,population:45500000,ageCohorts:[8.5,8.8,10.2,12.0,12.5,13.2,13.5,12.5,8.8],totalVacancies:640000,sectors:{healthcare:140000,it:112000,construction:78000,manufacturing:55000,agriculture:22000,hospitality:72000,logistics:52000,education:52000,finance:57000},migration:{skillSplit:{low:15,medium:33,high:52},eduProfile:{vocational:20,bachelor:42,master:38},sourceCountries:["India","Philippines","Nigeria","Pakistan","Kenya"],explanation:"By 2040, Canada targets 500K+ immigrants annually. Africa emerges as a major source continent."}}}},
+"036": {name:"Australia",iso:"AU",flag:"\u{1F1E6}\u{1F1FA}",id:"036",salary:3800,costOfLiving:1500,years:{
+2030:{medianAge:39.5,depRatio:27.2,popChange:3.0,workAgeChange:600000,population:28500000,ageCohorts:[10.0,10.2,12.0,13.5,13.2,12.8,11.5,10.0,6.8],totalVacancies:320000,sectors:{healthcare:62000,it:58000,construction:48000,manufacturing:28000,agriculture:18000,hospitality:42000,logistics:25000,education:22000,finance:17000},migration:{skillSplit:{low:18,medium:35,high:47},eduProfile:{vocational:28,bachelor:42,master:30},sourceCountries:["India","China","Philippines","UK","Nepal"],explanation:"Australia's skilled migration program draws heavily from India and China. Construction boom and healthcare expansion drive demand."}},
+2035:{medianAge:40.8,depRatio:30.5,popChange:3.5,workAgeChange:400000,population:30200000,ageCohorts:[9.5,9.8,11.5,13.0,13.0,12.5,12.2,11.0,7.5],totalVacancies:410000,sectors:{healthcare:82000,it:75000,construction:58000,manufacturing:32000,agriculture:22000,hospitality:52000,logistics:32000,education:30000,finance:27000},migration:{skillSplit:{low:16,medium:34,high:50},eduProfile:{vocational:25,bachelor:42,master:33},sourceCountries:["India","Philippines","China","Nepal","Vietnam"],explanation:"Aged care becomes Australia's biggest single sector gap. India dominates skilled migration."}},
+2040:{medianAge:42.0,depRatio:34.0,popChange:3.8,workAgeChange:200000,population:31800000,ageCohorts:[9.2,9.5,11.0,12.5,12.8,12.2,12.5,11.8,8.5],totalVacancies:500000,sectors:{healthcare:105000,it:92000,construction:65000,manufacturing:36000,agriculture:25000,hospitality:60000,logistics:40000,education:38000,finance:39000},migration:{skillSplit:{low:15,medium:33,high:52},eduProfile:{vocational:22,bachelor:42,master:36},sourceCountries:["India","Philippines","Nepal","Vietnam","Kenya"],explanation:"Australia needs 250K+ skilled migrants annually. Competition with Canada intensifies for Indian tech workers."}}}},
+"826": {name:"United Kingdom",iso:"GB",flag:"\u{1F1EC}\u{1F1E7}",id:"826",salary:3000,costOfLiving:1350,years:{
+2030:{medianAge:41.5,depRatio:30.8,popChange:0.8,workAgeChange:-500000,population:68500000,ageCohorts:[9.5,10.0,11.5,13.0,13.2,13.0,12.0,10.8,7.0],totalVacancies:520000,sectors:{healthcare:120000,it:82000,construction:65000,manufacturing:48000,agriculture:12000,hospitality:72000,logistics:42000,education:42000,finance:37000},migration:{skillSplit:{low:22,medium:38,high:40},eduProfile:{vocational:30,bachelor:42,master:28},sourceCountries:["India","Nigeria","Philippines","Pakistan","Zimbabwe"],explanation:"Post-Brexit UK reshapes immigration via points-based system. NHS healthcare shortages are critical."}},
+2035:{medianAge:43.0,depRatio:35.2,popChange:0.5,workAgeChange:-1200000,population:69000000,ageCohorts:[9.0,9.5,10.8,12.5,12.8,13.0,12.8,11.5,8.1],totalVacancies:650000,sectors:{healthcare:150000,it:102000,construction:78000,manufacturing:55000,agriculture:15000,hospitality:85000,logistics:52000,education:55000,finance:58000},migration:{skillSplit:{low:20,medium:38,high:42},eduProfile:{vocational:28,bachelor:42,master:30},sourceCountries:["India","Nigeria","Philippines","Pakistan","Ghana"],explanation:"UK's social care system faces near-collapse without migrant workers. West Africa becomes a major source corridor."}},
+2040:{medianAge:44.2,depRatio:39.5,popChange:0.2,workAgeChange:-1800000,population:69200000,ageCohorts:[8.5,9.0,10.2,12.0,12.5,12.8,13.0,12.5,9.5],totalVacancies:780000,sectors:{healthcare:185000,it:122000,construction:90000,manufacturing:62000,agriculture:18000,hospitality:95000,logistics:62000,education:65000,finance:81000},migration:{skillSplit:{low:18,medium:37,high:45},eduProfile:{vocational:25,bachelor:42,master:33},sourceCountries:["India","Nigeria","Philippines","Ghana","Kenya"],explanation:"By 2040, UK needs nearly 800K workers annually. Commonwealth ties drive migration corridors."}}}},
+"250": {name:"France",iso:"FR",flag:"\u{1F1EB}\u{1F1F7}",id:"250",salary:2700,costOfLiving:1150,years:{
+2030:{medianAge:43.2,depRatio:34.5,popChange:0.2,workAgeChange:-800000,population:66000000,ageCohorts:[9.2,9.8,11.0,12.5,13.0,13.2,12.5,11.2,7.6],totalVacancies:350000,sectors:{healthcare:72000,it:55000,construction:48000,manufacturing:42000,agriculture:15000,hospitality:48000,logistics:28000,education:22000,finance:20000},migration:{skillSplit:{low:25,medium:40,high:35},eduProfile:{vocational:38,bachelor:38,master:24},sourceCountries:["Algeria","Morocco","Tunisia","Senegal","Côte d'Ivoire"],explanation:"France draws primarily from Francophone Africa. Healthcare and construction are biggest gaps."}},
+2035:{medianAge:44.8,depRatio:38.8,popChange:-0.5,workAgeChange:-1500000,population:65500000,ageCohorts:[8.8,9.2,10.5,12.0,12.5,13.0,13.2,12.0,8.8],totalVacancies:480000,sectors:{healthcare:98000,it:72000,construction:62000,manufacturing:55000,agriculture:20000,hospitality:62000,logistics:38000,education:35000,finance:38000},migration:{skillSplit:{low:23,medium:40,high:37},eduProfile:{vocational:35,bachelor:40,master:25},sourceCountries:["Algeria","Morocco","Senegal","Côte d'Ivoire","Cameroon"],explanation:"France's relatively higher fertility provides some buffer, but aging still bites. Francophone Africa's youth bulge is France's main labor reservoir."}},
+2040:{medianAge:46.0,depRatio:43.2,popChange:-1.2,workAgeChange:-2200000,population:64800000,ageCohorts:[8.2,8.8,10.0,11.5,12.0,12.8,13.5,12.8,10.4],totalVacancies:620000,sectors:{healthcare:130000,it:92000,construction:75000,manufacturing:68000,agriculture:25000,hospitality:75000,logistics:48000,education:48000,finance:59000},migration:{skillSplit:{low:22,medium:40,high:38},eduProfile:{vocational:32,bachelor:40,master:28},sourceCountries:["Morocco","Senegal","Côte d'Ivoire","Cameroon","India"],explanation:"France begins recruiting beyond Francophone sphere. India and Eastern Europe supplement African migration flows."}}}},
+"528": {name:"Netherlands",iso:"NL",flag:"\u{1F1F3}\u{1F1F1}",id:"528",salary:3100,costOfLiving:1300,years:{
+2030:{medianAge:44.2,depRatio:32.8,popChange:0.5,workAgeChange:-350000,population:17800000,ageCohorts:[9.0,9.5,11.2,12.8,13.5,13.5,12.5,10.8,7.2],totalVacancies:185000,sectors:{healthcare:38000,it:32000,construction:25000,manufacturing:22000,agriculture:12000,hospitality:22000,logistics:15000,education:10000,finance:9000},migration:{skillSplit:{low:20,medium:38,high:42},eduProfile:{vocational:32,bachelor:42,master:26},sourceCountries:["Poland","India","Turkey","Romania","South Africa"],explanation:"Netherlands' knowledge economy drives high-skilled migration demand."}},
+2035:{medianAge:45.8,depRatio:37.5,popChange:-0.2,workAgeChange:-650000,population:17750000,ageCohorts:[8.5,9.0,10.5,12.0,12.8,13.2,13.2,12.0,8.8],totalVacancies:250000,sectors:{healthcare:52000,it:42000,construction:32000,manufacturing:28000,agriculture:15000,hospitality:30000,logistics:22000,education:15000,finance:14000},migration:{skillSplit:{low:18,medium:37,high:45},eduProfile:{vocational:30,bachelor:42,master:28},sourceCountries:["India","Poland","Turkey","South Africa","Indonesia"],explanation:"As EU Eastern European labor pools shrink, Netherlands pivots toward India and former colonial ties."}},
+2040:{medianAge:47.0,depRatio:42.5,popChange:-1.0,workAgeChange:-950000,population:17500000,ageCohorts:[8.0,8.5,10.0,11.5,12.2,13.0,13.5,12.8,10.5],totalVacancies:320000,sectors:{healthcare:68000,it:55000,construction:38000,manufacturing:34000,agriculture:18000,hospitality:38000,logistics:28000,education:20000,finance:21000},migration:{skillSplit:{low:16,medium:36,high:48},eduProfile:{vocational:28,bachelor:42,master:30},sourceCountries:["India","Indonesia","South Africa","Turkey","Nigeria"],explanation:"Netherlands competes fiercely for global tech talent. India is dominant source."}}}},
+"056": {name:"Belgium",iso:"BE",flag:"\u{1F1E7}\u{1F1EA}",id:"056",salary:2600,costOfLiving:1100,years:{
+2030:{medianAge:43.0,depRatio:32.5,popChange:0.5,workAgeChange:-200000,population:11800000,ageCohorts:[9.2,9.5,11.5,12.8,13.2,13.0,12.2,11.0,7.6],totalVacancies:120000,sectors:{healthcare:25000,it:20000,construction:16000,manufacturing:15000,agriculture:5000,hospitality:16000,logistics:10000,education:7000,finance:6000},migration:{skillSplit:{low:22,medium:40,high:38},eduProfile:{vocational:35,bachelor:40,master:25},sourceCountries:["Morocco","Romania","Turkey","DR Congo","India"],explanation:"Belgium's dual-language structure creates unique dynamics. Francophone regions draw from Francophone Africa."}},
+2035:{medianAge:44.5,depRatio:36.8,popChange:0.0,workAgeChange:-400000,population:11800000,ageCohorts:[8.8,9.0,10.8,12.2,12.8,13.0,13.0,11.8,8.6],totalVacancies:165000,sectors:{healthcare:35000,it:28000,construction:22000,manufacturing:20000,agriculture:6000,hospitality:20000,logistics:14000,education:10000,finance:10000},migration:{skillSplit:{low:20,medium:40,high:40},eduProfile:{vocational:32,bachelor:42,master:26},sourceCountries:["Morocco","India","Turkey","DR Congo","Romania"],explanation:"Healthcare and IT sectors face growing gaps. Brussels as EU capital attracts some high-skilled workers."}},
+2040:{medianAge:45.8,depRatio:41.2,popChange:-0.5,workAgeChange:-600000,population:11700000,ageCohorts:[8.2,8.5,10.2,11.5,12.2,12.8,13.5,12.5,10.6],totalVacancies:210000,sectors:{healthcare:45000,it:35000,construction:28000,manufacturing:25000,agriculture:8000,hospitality:25000,logistics:18000,education:13000,finance:13000},migration:{skillSplit:{low:18,medium:40,high:42},eduProfile:{vocational:30,bachelor:42,master:28},sourceCountries:["India","Morocco","DR Congo","Turkey","Philippines"],explanation:"Belgium needs 200K+ workers annually."}}}},
+"040": {name:"Austria",iso:"AT",flag:"\u{1F1E6}\u{1F1F9}",id:"040",salary:2800,costOfLiving:1150,years:{
+2030:{medianAge:44.8,depRatio:31.5,popChange:0.5,workAgeChange:-250000,population:9200000,ageCohorts:[8.8,9.0,11.0,12.5,13.2,14.0,13.0,11.0,7.5],totalVacancies:95000,sectors:{healthcare:20000,it:16000,construction:14000,manufacturing:12000,agriculture:5000,hospitality:12000,logistics:7000,education:5000,finance:4000},migration:{skillSplit:{low:22,medium:42,high:36},eduProfile:{vocational:42,bachelor:36,master:22},sourceCountries:["Germany","Serbia","Turkey","Romania","Bosnia"],explanation:"Austria benefits from German-language corridor. Tourism sector heavily depends on seasonal migrant workers."}},
+2035:{medianAge:46.2,depRatio:36.8,popChange:-0.2,workAgeChange:-500000,population:9150000,ageCohorts:[8.2,8.5,10.2,11.8,12.5,13.5,14.0,12.2,9.1],totalVacancies:135000,sectors:{healthcare:28000,it:22000,construction:18000,manufacturing:16000,agriculture:7000,hospitality:16000,logistics:12000,education:8000,finance:8000},migration:{skillSplit:{low:20,medium:42,high:38},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["Serbia","Turkey","Romania","India","Philippines"],explanation:"Austria expands Red-White-Red Card for skilled workers."}},
+2040:{medianAge:47.5,depRatio:42.2,popChange:-1.0,workAgeChange:-750000,population:9000000,ageCohorts:[7.5,8.0,9.5,11.0,12.0,13.0,14.2,13.5,11.3],totalVacancies:175000,sectors:{healthcare:38000,it:28000,construction:22000,manufacturing:20000,agriculture:8000,hospitality:20000,logistics:15000,education:12000,finance:12000},migration:{skillSplit:{low:18,medium:40,high:42},eduProfile:{vocational:38,bachelor:38,master:24},sourceCountries:["India","Serbia","Philippines","Turkey","Bosnia"],explanation:"Healthcare becomes Austria's critical gap."}}}},
+"756": {name:"Switzerland",iso:"CH",flag:"\u{1F1E8}\u{1F1ED}",id:"756",salary:5200,costOfLiving:2200,years:{
+2030:{medianAge:44.5,depRatio:30.2,popChange:1.2,workAgeChange:-100000,population:9200000,ageCohorts:[9.0,9.2,11.5,13.0,13.5,13.2,12.5,10.8,7.3],totalVacancies:110000,sectors:{healthcare:22000,it:22000,construction:15000,manufacturing:12000,agriculture:4000,hospitality:14000,logistics:7000,education:7000,finance:7000},migration:{skillSplit:{low:15,medium:35,high:50},eduProfile:{vocational:30,bachelor:38,master:32},sourceCountries:["Germany","Italy","France","Portugal","India"],explanation:"Switzerland draws heavily from EU neighbors through free movement. Finance and pharma sectors need high-skilled workers."}},
+2035:{medianAge:46.0,depRatio:35.0,popChange:0.8,workAgeChange:-300000,population:9300000,ageCohorts:[8.5,8.8,10.8,12.5,13.0,13.0,13.2,12.0,8.2],totalVacancies:150000,sectors:{healthcare:32000,it:28000,construction:20000,manufacturing:16000,agriculture:5000,hospitality:18000,logistics:10000,education:10000,finance:11000},migration:{skillSplit:{low:14,medium:34,high:52},eduProfile:{vocational:28,bachelor:38,master:34},sourceCountries:["Germany","Italy","India","France","Portugal"],explanation:"As EU source countries age, Switzerland increasingly looks to India for IT and healthcare talent."}},
+2040:{medianAge:47.2,depRatio:40.0,popChange:0.3,workAgeChange:-550000,population:9350000,ageCohorts:[8.0,8.5,10.2,12.0,12.5,12.8,13.5,12.8,9.7],totalVacancies:195000,sectors:{healthcare:42000,it:35000,construction:25000,manufacturing:20000,agriculture:6000,hospitality:22000,logistics:14000,education:14000,finance:17000},migration:{skillSplit:{low:12,medium:33,high:55},eduProfile:{vocational:25,bachelor:38,master:37},sourceCountries:["India","Germany","Italy","France","Philippines"],explanation:"Switzerland's premium economy demands the highest-skilled migrants globally."}}}},
+"752": {name:"Sweden",iso:"SE",flag:"\u{1F1F8}\u{1F1EA}",id:"752",salary:3100,costOfLiving:1200,years:{
+2030:{medianAge:42.0,depRatio:33.5,popChange:1.0,workAgeChange:-100000,population:10800000,ageCohorts:[9.5,9.8,11.5,12.8,13.0,12.5,12.0,11.2,7.7],totalVacancies:125000,sectors:{healthcare:28000,it:22000,construction:16000,manufacturing:12000,agriculture:5000,hospitality:14000,logistics:10000,education:10000,finance:8000},migration:{skillSplit:{low:18,medium:38,high:44},eduProfile:{vocational:30,bachelor:42,master:28},sourceCountries:["Syria","Afghanistan","India","Iraq","Somalia"],explanation:"Sweden's generous asylum system created large refugee communities. IT sector increasingly recruits from India."}},
+2035:{medianAge:43.2,depRatio:37.0,popChange:0.8,workAgeChange:-250000,population:10900000,ageCohorts:[9.0,9.5,11.0,12.2,12.8,12.5,12.5,11.8,8.7],totalVacancies:165000,sectors:{healthcare:38000,it:28000,construction:20000,manufacturing:16000,agriculture:6000,hospitality:18000,logistics:14000,education:13000,finance:12000},migration:{skillSplit:{low:16,medium:38,high:46},eduProfile:{vocational:28,bachelor:42,master:30},sourceCountries:["India","Syria","Iraq","Afghanistan","Eritrea"],explanation:"Sweden shifts focus to labor migration alongside humanitarian. India becomes top labor migration source."}},
+2040:{medianAge:44.5,depRatio:40.5,popChange:0.5,workAgeChange:-400000,population:11000000,ageCohorts:[8.5,9.0,10.5,11.8,12.5,12.2,12.8,12.5,10.2],totalVacancies:210000,sectors:{healthcare:48000,it:35000,construction:25000,manufacturing:20000,agriculture:8000,hospitality:22000,logistics:18000,education:16000,finance:18000},migration:{skillSplit:{low:15,medium:37,high:48},eduProfile:{vocational:25,bachelor:42,master:33},sourceCountries:["India","Iraq","Somalia","Eritrea","Philippines"],explanation:"Sweden's elder care crisis deepens. Filipino healthcare workers and Indian tech professionals are key."}}}},
+"578": {name:"Norway",iso:"NO",flag:"\u{1F1F3}\u{1F1F4}",id:"578",salary:3800,costOfLiving:1600,years:{
+2030:{medianAge:40.8,depRatio:29.5,popChange:1.2,workAgeChange:50000,population:5700000,ageCohorts:[9.8,10.0,11.8,13.0,13.2,12.8,11.8,10.5,7.1],totalVacancies:72000,sectors:{healthcare:15000,it:12000,construction:10000,manufacturing:7000,agriculture:3000,hospitality:10000,logistics:6000,education:5000,finance:4000},migration:{skillSplit:{low:18,medium:40,high:42},eduProfile:{vocational:32,bachelor:40,master:28},sourceCountries:["Poland","Lithuania","Sweden","Philippines","India"],explanation:"Norway's oil wealth funds generous welfare but creates labor shortages in healthcare and construction."}},
+2035:{medianAge:42.0,depRatio:33.2,popChange:1.0,workAgeChange:-50000,population:5800000,ageCohorts:[9.5,9.8,11.2,12.5,13.0,12.8,12.2,11.0,8.0],totalVacancies:95000,sectors:{healthcare:20000,it:16000,construction:12000,manufacturing:9000,agriculture:4000,hospitality:12000,logistics:8000,education:7000,finance:7000},migration:{skillSplit:{low:16,medium:40,high:44},eduProfile:{vocational:30,bachelor:42,master:28},sourceCountries:["Poland","Philippines","India","Lithuania","Eritrea"],explanation:"Norway's healthcare system increasingly depends on Filipino nurses."}},
+2040:{medianAge:43.2,depRatio:37.0,popChange:0.8,workAgeChange:-150000,population:5850000,ageCohorts:[9.0,9.5,10.8,12.0,12.5,12.5,12.5,12.0,9.2],totalVacancies:120000,sectors:{healthcare:28000,it:20000,construction:15000,manufacturing:12000,agriculture:5000,hospitality:14000,logistics:10000,education:8000,finance:8000},migration:{skillSplit:{low:15,medium:38,high:47},eduProfile:{vocational:28,bachelor:42,master:30},sourceCountries:["Philippines","India","Poland","Eritrea","Somalia"],explanation:"Norway's green energy transition creates new jobs while aging increases care demand."}}}},
+"246": {name:"Finland",iso:"FI",flag:"\u{1F1EB}\u{1F1EE}",id:"246",salary:2900,costOfLiving:1150,years:{
+2030:{medianAge:44.5,depRatio:37.5,popChange:-0.5,workAgeChange:-180000,population:5500000,ageCohorts:[8.8,9.0,11.0,12.2,12.8,13.2,13.0,11.8,8.2],totalVacancies:65000,sectors:{healthcare:14000,it:12000,construction:8000,manufacturing:8000,agriculture:3000,hospitality:7000,logistics:5000,education:4000,finance:4000},migration:{skillSplit:{low:18,medium:38,high:44},eduProfile:{vocational:32,bachelor:40,master:28},sourceCountries:["Estonia","Russia","Iraq","India","Philippines"],explanation:"Finland's remote location and language limit migration attractiveness. Tech sector thrives but care sector struggles."}},
+2035:{medianAge:46.0,depRatio:42.0,popChange:-1.2,workAgeChange:-280000,population:5400000,ageCohorts:[8.2,8.5,10.2,11.5,12.2,13.0,13.8,12.8,9.8],totalVacancies:88000,sectors:{healthcare:20000,it:16000,construction:10000,manufacturing:10000,agriculture:4000,hospitality:10000,logistics:7000,education:5000,finance:6000},migration:{skillSplit:{low:16,medium:38,high:46},eduProfile:{vocational:30,bachelor:42,master:28},sourceCountries:["India","Philippines","Estonia","Iraq","Vietnam"],explanation:"Finland launches aggressive tech talent recruitment."}},
+2040:{medianAge:47.5,depRatio:46.5,popChange:-2.0,workAgeChange:-400000,population:5250000,ageCohorts:[7.5,8.0,9.5,10.8,11.5,12.5,14.0,14.0,12.2],totalVacancies:115000,sectors:{healthcare:28000,it:20000,construction:12000,manufacturing:12000,agriculture:5000,hospitality:12000,logistics:9000,education:7000,finance:10000},migration:{skillSplit:{low:15,medium:37,high:48},eduProfile:{vocational:28,bachelor:42,master:30},sourceCountries:["India","Philippines","Vietnam","Estonia","Nepal"],explanation:"Finland faces severe population decline. Healthcare system at breaking point without foreign workers."}}}},
+"208": {name:"Denmark",iso:"DK",flag:"\u{1F1E9}\u{1F1F0}",id:"208",salary:3400,costOfLiving:1400,years:{
+2030:{medianAge:43.0,depRatio:33.0,popChange:0.5,workAgeChange:-80000,population:6000000,ageCohorts:[9.5,9.8,11.5,12.5,13.0,12.8,12.2,11.2,7.5],totalVacancies:78000,sectors:{healthcare:16000,it:14000,construction:10000,manufacturing:8000,agriculture:4000,hospitality:10000,logistics:6000,education:5000,finance:5000},migration:{skillSplit:{low:18,medium:38,high:44},eduProfile:{vocational:32,bachelor:42,master:26},sourceCountries:["Romania","Poland","India","Philippines","Ukraine"],explanation:"Denmark's flexible labor market creates dynamic demand. Green energy transition drives technical skill needs."}},
+2035:{medianAge:44.2,depRatio:37.0,popChange:0.2,workAgeChange:-160000,population:6020000,ageCohorts:[9.0,9.5,11.0,12.0,12.8,12.8,12.5,11.8,8.6],totalVacancies:105000,sectors:{healthcare:22000,it:18000,construction:12000,manufacturing:10000,agriculture:5000,hospitality:14000,logistics:8000,education:8000,finance:8000},migration:{skillSplit:{low:16,medium:38,high:46},eduProfile:{vocational:30,bachelor:42,master:28},sourceCountries:["India","Philippines","Romania","Ukraine","Poland"],explanation:"Denmark's aging population increases care demand. Wind energy sector creates specialized skill gaps."}},
+2040:{medianAge:45.5,depRatio:41.5,popChange:-0.2,workAgeChange:-250000,population:5980000,ageCohorts:[8.5,9.0,10.5,11.5,12.2,12.5,13.0,12.5,10.3],totalVacancies:135000,sectors:{healthcare:30000,it:22000,construction:15000,manufacturing:12000,agriculture:6000,hospitality:16000,logistics:12000,education:10000,finance:12000},migration:{skillSplit:{low:15,medium:37,high:48},eduProfile:{vocational:28,bachelor:42,master:30},sourceCountries:["India","Philippines","Ukraine","Romania","Nigeria"],explanation:"Denmark's welfare state faces fiscal pressure from aging."}}}},
+"203": {name:"Czech Republic",iso:"CZ",flag:"\u{1F1E8}\u{1F1FF}",id:"203",salary:1500,costOfLiving:700,years:{
+2030:{medianAge:44.8,depRatio:33.5,popChange:-0.8,workAgeChange:-350000,population:10500000,ageCohorts:[8.5,9.0,10.8,12.0,13.2,14.0,13.5,11.5,7.5],totalVacancies:120000,sectors:{healthcare:22000,it:18000,construction:18000,manufacturing:22000,agriculture:6000,hospitality:14000,logistics:8000,education:6000,finance:6000},migration:{skillSplit:{low:25,medium:45,high:30},eduProfile:{vocational:45,bachelor:35,master:20},sourceCountries:["Ukraine","Slovakia","Vietnam","Mongolia","India"],explanation:"Czech Republic's manufacturing economy needs skilled blue-collar workers. Ukraine dominates migration flows."}},
+2035:{medianAge:47.0,depRatio:39.5,popChange:-2.2,workAgeChange:-600000,population:10250000,ageCohorts:[7.8,8.5,9.8,11.2,12.2,13.5,14.5,13.0,9.5],totalVacancies:175000,sectors:{healthcare:32000,it:25000,construction:25000,manufacturing:30000,agriculture:8000,hospitality:20000,logistics:14000,education:10000,finance:11000},migration:{skillSplit:{low:22,medium:44,high:34},eduProfile:{vocational:42,bachelor:38,master:20},sourceCountries:["Ukraine","India","Vietnam","Philippines","Mongolia"],explanation:"Czech Republic's automotive industry faces severe worker shortage."}},
+2040:{medianAge:49.0,depRatio:46.0,popChange:-3.8,workAgeChange:-900000,population:9900000,ageCohorts:[7.2,7.8,9.0,10.5,11.5,12.8,14.8,14.5,11.9],totalVacancies:240000,sectors:{healthcare:45000,it:32000,construction:32000,manufacturing:38000,agriculture:10000,hospitality:28000,logistics:20000,education:16000,finance:19000},migration:{skillSplit:{low:20,medium:42,high:38},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["India","Ukraine","Philippines","Vietnam","Bangladesh"],explanation:"Czech Republic joins the severely aging group. Its industrial economy cannot function without large-scale immigration."}}}},
+"840": {name:"United States",iso:"US",flag:"\u{1F1FA}\u{1F1F8}",id:"840",salary:4200,costOfLiving:1600,years:{
+2030:{medianAge:39.8,depRatio:27.5,popChange:2.0,workAgeChange:1200000,population:340000000,ageCohorts:[10.2,10.5,12.0,13.2,13.0,12.5,11.5,10.2,6.9],totalVacancies:2800000,sectors:{healthcare:580000,it:450000,construction:380000,manufacturing:280000,agriculture:150000,hospitality:380000,logistics:220000,education:180000,finance:180000},migration:{skillSplit:{low:25,medium:38,high:37},eduProfile:{vocational:30,bachelor:42,master:28},sourceCountries:["Mexico","India","China","Philippines","El Salvador"],explanation:"The US labor market faces massive shortages despite immigration. Healthcare, tech, and construction are critical gaps."}},
+2035:{medianAge:40.8,depRatio:31.0,popChange:1.8,workAgeChange:600000,population:346000000,ageCohorts:[9.8,10.2,11.5,12.8,12.8,12.5,12.0,11.0,7.4],totalVacancies:3500000,sectors:{healthcare:720000,it:560000,construction:450000,manufacturing:350000,agriculture:180000,hospitality:450000,logistics:280000,education:240000,finance:270000},migration:{skillSplit:{low:23,medium:37,high:40},eduProfile:{vocational:28,bachelor:42,master:30},sourceCountries:["Mexico","India","Philippines","China","Guatemala"],explanation:"Baby Boomer retirement peaks. Healthcare gap alone exceeds 700K."}},
+2040:{medianAge:41.8,depRatio:34.5,popChange:1.5,workAgeChange:0,population:351000000,ageCohorts:[9.5,9.8,11.0,12.2,12.5,12.2,12.2,11.8,8.8],totalVacancies:4200000,sectors:{healthcare:880000,it:680000,construction:520000,manufacturing:420000,agriculture:200000,hospitality:520000,logistics:340000,education:300000,finance:340000},migration:{skillSplit:{low:22,medium:36,high:42},eduProfile:{vocational:26,bachelor:42,master:32},sourceCountries:["India","Mexico","Philippines","Nigeria","China"],explanation:"US needs 4M+ workers annually by 2040. India surpasses Mexico as top source for legal immigration."}}}},
+"702": {name:"Singapore",iso:"SG",flag:"\u{1F1F8}\u{1F1EC}",id:"702",salary:4000,costOfLiving:1800,years:{
+2030:{medianAge:44.2,depRatio:28.5,popChange:0.8,workAgeChange:-80000,population:5950000,ageCohorts:[8.0,8.5,11.0,13.5,14.0,13.5,12.5,11.0,8.0],totalVacancies:85000,sectors:{healthcare:16000,it:18000,construction:12000,manufacturing:10000,agriculture:1000,hospitality:10000,logistics:7000,education:5000,finance:6000},migration:{skillSplit:{low:22,medium:35,high:43},eduProfile:{vocational:25,bachelor:42,master:33},sourceCountries:["Malaysia","India","China","Philippines","Bangladesh"],explanation:"Singapore relies heavily on foreign workers across all sectors."}},
+2035:{medianAge:46.5,depRatio:35.0,popChange:0.5,workAgeChange:-150000,population:6000000,ageCohorts:[7.2,7.8,10.0,12.5,13.5,13.5,13.5,12.5,9.5],totalVacancies:110000,sectors:{healthcare:22000,it:22000,construction:15000,manufacturing:12000,agriculture:1000,hospitality:12000,logistics:10000,education:8000,finance:8000},migration:{skillSplit:{low:20,medium:35,high:45},eduProfile:{vocational:22,bachelor:42,master:36},sourceCountries:["India","Malaysia","China","Philippines","Bangladesh"],explanation:"Singapore's aging accelerates. Elder care becomes a major gap."}},
+2040:{medianAge:48.5,depRatio:42.0,popChange:0.2,workAgeChange:-250000,population:6020000,ageCohorts:[6.5,7.0,9.0,11.5,12.5,13.2,14.0,14.0,12.3],totalVacancies:140000,sectors:{healthcare:30000,it:28000,construction:18000,manufacturing:14000,agriculture:1000,hospitality:15000,logistics:12000,education:10000,finance:12000},migration:{skillSplit:{low:18,medium:34,high:48},eduProfile:{vocational:20,bachelor:42,master:38},sourceCountries:["India","China","Philippines","Malaysia","Vietnam"],explanation:"Singapore faces a critical aging challenge with nearly half its population over 45."}}}},
+"158": {name:"Taiwan",iso:"TW",flag:"\u{1F1F9}\u{1F1FC}",id:"158",salary:1800,costOfLiving:850,years:{
+2030:{medianAge:46.5,depRatio:32.8,popChange:-1.2,workAgeChange:-1200000,population:23200000,ageCohorts:[7.5,8.0,10.5,12.0,13.5,14.5,14.0,12.0,8.0],totalVacancies:220000,sectors:{healthcare:42000,it:45000,construction:28000,manufacturing:38000,agriculture:10000,hospitality:22000,logistics:15000,education:10000,finance:10000},migration:{skillSplit:{low:28,medium:40,high:32},eduProfile:{vocational:38,bachelor:40,master:22},sourceCountries:["Vietnam","Indonesia","Philippines","Thailand","India"],explanation:"Taiwan's semiconductor industry needs highly skilled workers while caregiving relies on Southeast Asian workers."}},
+2035:{medianAge:49.0,depRatio:40.5,popChange:-3.0,workAgeChange:-2200000,population:22500000,ageCohorts:[6.5,7.2,9.2,11.0,12.5,14.0,15.0,13.5,11.1],totalVacancies:320000,sectors:{healthcare:65000,it:62000,construction:38000,manufacturing:52000,agriculture:12000,hospitality:32000,logistics:22000,education:18000,finance:19000},migration:{skillSplit:{low:25,medium:40,high:35},eduProfile:{vocational:35,bachelor:40,master:25},sourceCountries:["Vietnam","Indonesia","Philippines","India","Thailand"],explanation:"Taiwan's population decline accelerates. Chip industry competes globally for talent."}},
+2040:{medianAge:52.0,depRatio:50.5,popChange:-5.5,workAgeChange:-3500000,population:21500000,ageCohorts:[5.5,6.2,8.0,10.0,11.5,13.0,15.5,15.5,14.8],totalVacancies:440000,sectors:{healthcare:92000,it:78000,construction:48000,manufacturing:65000,agriculture:15000,hospitality:42000,logistics:32000,education:28000,finance:40000},migration:{skillSplit:{low:22,medium:38,high:40},eduProfile:{vocational:32,bachelor:40,master:28},sourceCountries:["Vietnam","India","Indonesia","Philippines","Bangladesh"],explanation:"Taiwan becomes one of Asia's oldest societies alongside Japan and South Korea."}}}},
+"372": {name:"Ireland",iso:"IE",flag:"\u{1F1EE}\u{1F1EA}",id:"372",salary:3500,costOfLiving:1500,years:{
+2030:{medianAge:39.5,depRatio:26.5,popChange:2.0,workAgeChange:150000,population:5400000,ageCohorts:[10.5,10.8,12.5,14.0,13.5,12.0,10.5,9.5,6.7],totalVacancies:65000,sectors:{healthcare:14000,it:12000,construction:10000,manufacturing:6000,agriculture:3000,hospitality:8000,logistics:4000,education:4000,finance:4000},migration:{skillSplit:{low:18,medium:35,high:47},eduProfile:{vocational:25,bachelor:42,master:33},sourceCountries:["Brazil","India","Poland","Romania","Philippines"],explanation:"Ireland's tech boom drives high-skilled migration. Construction shortage from housing crisis."}},
+2035:{medianAge:41.0,depRatio:30.0,popChange:1.5,workAgeChange:50000,population:5550000,ageCohorts:[10.0,10.5,11.8,13.2,13.2,12.2,11.2,10.5,7.4],totalVacancies:85000,sectors:{healthcare:18000,it:16000,construction:12000,manufacturing:8000,agriculture:3000,hospitality:10000,logistics:6000,education:6000,finance:6000},migration:{skillSplit:{low:16,medium:35,high:49},eduProfile:{vocational:22,bachelor:42,master:36},sourceCountries:["India","Brazil","Philippines","Poland","Nigeria"],explanation:"Ireland's younger demographics give it an advantage but healthcare still faces growing gaps."}},
+2040:{medianAge:42.5,depRatio:34.0,popChange:1.0,workAgeChange:-50000,population:5650000,ageCohorts:[9.5,10.0,11.2,12.5,13.0,12.5,11.5,11.0,8.8],totalVacancies:108000,sectors:{healthcare:24000,it:20000,construction:14000,manufacturing:10000,agriculture:4000,hospitality:12000,logistics:8000,education:8000,finance:8000},migration:{skillSplit:{low:15,medium:34,high:51},eduProfile:{vocational:20,bachelor:42,master:38},sourceCountries:["India","Brazil","Nigeria","Philippines","South Africa"],explanation:"Ireland maintains relatively favorable demographics but healthcare and housing remain persistent challenges."}}}},
+"554": {name:"New Zealand",iso:"NZ",flag:"\u{1F1F3}\u{1F1FF}",id:"554",salary:2800,costOfLiving:1200,years:{
+2030:{medianAge:39.0,depRatio:26.8,popChange:1.5,workAgeChange:80000,population:5400000,ageCohorts:[10.5,10.8,12.2,13.5,13.0,12.2,11.0,10.0,6.8],totalVacancies:55000,sectors:{healthcare:12000,it:8000,construction:8000,manufacturing:5000,agriculture:5000,hospitality:7000,logistics:4000,education:3000,finance:3000},migration:{skillSplit:{low:20,medium:38,high:42},eduProfile:{vocational:30,bachelor:42,master:28},sourceCountries:["India","Philippines","China","Fiji","South Africa"],explanation:"New Zealand's geographical isolation limits migration options."}},
+2035:{medianAge:40.5,depRatio:30.5,popChange:1.2,workAgeChange:30000,population:5500000,ageCohorts:[10.0,10.5,11.5,13.0,12.8,12.2,11.5,10.8,7.7],totalVacancies:72000,sectors:{healthcare:16000,it:12000,construction:10000,manufacturing:6000,agriculture:6000,hospitality:8000,logistics:5000,education:4000,finance:5000},migration:{skillSplit:{low:18,medium:37,high:45},eduProfile:{vocational:28,bachelor:42,master:30},sourceCountries:["India","Philippines","South Africa","Fiji","China"],explanation:"Healthcare and construction gaps grow. New Zealand competes with Australia."}},
+2040:{medianAge:42.0,depRatio:34.5,popChange:1.0,workAgeChange:-20000,population:5550000,ageCohorts:[9.5,10.0,11.0,12.5,12.5,12.0,12.0,11.5,9.0],totalVacancies:90000,sectors:{healthcare:20000,it:15000,construction:12000,manufacturing:7000,agriculture:7000,hospitality:10000,logistics:6000,education:6000,finance:7000},migration:{skillSplit:{low:17,medium:36,high:47},eduProfile:{vocational:25,bachelor:42,master:33},sourceCountries:["India","Philippines","South Africa","Fiji","Kenya"],explanation:"New Zealand's aging population increases elder care demand."}}}},
+"348": {name:"Hungary",iso:"HU",flag:"\u{1F1ED}\u{1F1FA}",id:"348",salary:1200,costOfLiving:650,years:{
+2030:{medianAge:45.5,depRatio:33.8,popChange:-2.0,workAgeChange:-350000,population:9600000,ageCohorts:[8.0,8.5,10.5,12.0,13.0,14.2,14.0,11.8,8.0],totalVacancies:95000,sectors:{healthcare:18000,it:14000,construction:14000,manufacturing:18000,agriculture:6000,hospitality:10000,logistics:6000,education:5000,finance:4000},migration:{skillSplit:{low:28,medium:42,high:30},eduProfile:{vocational:45,bachelor:35,master:20},sourceCountries:["Ukraine","Serbia","Romania","Philippines","Vietnam"],explanation:"Hungary's manufacturing sector desperately needs workers."}},
+2035:{medianAge:47.8,depRatio:40.0,popChange:-3.5,workAgeChange:-600000,population:9350000,ageCohorts:[7.2,7.8,9.5,11.2,12.2,13.5,14.8,13.2,10.6],totalVacancies:140000,sectors:{healthcare:28000,it:20000,construction:18000,manufacturing:25000,agriculture:8000,hospitality:14000,logistics:10000,education:8000,finance:9000},migration:{skillSplit:{low:25,medium:42,high:33},eduProfile:{vocational:42,bachelor:38,master:20},sourceCountries:["Ukraine","Philippines","Vietnam","Serbia","India"],explanation:"Economic reality forces immigration policy liberalization."}},
+2040:{medianAge:49.8,depRatio:47.5,popChange:-5.2,workAgeChange:-900000,population:9000000,ageCohorts:[6.5,7.0,8.5,10.2,11.5,13.0,15.0,14.8,13.5],totalVacancies:190000,sectors:{healthcare:38000,it:25000,construction:25000,manufacturing:32000,agriculture:10000,hospitality:18000,logistics:14000,education:12000,finance:16000},migration:{skillSplit:{low:22,medium:42,high:36},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["India","Philippines","Ukraine","Vietnam","Bangladesh"],explanation:"Hungary faces severe population decline dropping below 9M."}}}},
+"191": {name:"Croatia",iso:"HR",flag:"\u{1F1ED}\u{1F1F7}",id:"191",salary:1200,costOfLiving:700,years:{
+2030:{medianAge:46.2,depRatio:35.5,popChange:-3.0,workAgeChange:-200000,population:3800000,ageCohorts:[7.8,8.0,10.0,11.5,13.0,14.5,14.2,12.5,8.5],totalVacancies:52000,sectors:{healthcare:10000,it:6000,construction:8000,manufacturing:7000,agriculture:4000,hospitality:10000,logistics:3000,education:2000,finance:2000},migration:{skillSplit:{low:30,medium:42,high:28},eduProfile:{vocational:45,bachelor:35,master:20},sourceCountries:["Bosnia","Serbia","Nepal","Philippines","India"],explanation:"Croatia loses workers to Western EU while its tourism industry booms."}},
+2035:{medianAge:48.5,depRatio:42.0,popChange:-4.5,workAgeChange:-320000,population:3650000,ageCohorts:[7.0,7.5,9.0,10.8,12.0,14.0,15.0,13.8,10.9],totalVacancies:72000,sectors:{healthcare:14000,it:8000,construction:10000,manufacturing:10000,agriculture:5000,hospitality:12000,logistics:5000,education:4000,finance:4000},migration:{skillSplit:{low:28,medium:42,high:30},eduProfile:{vocational:42,bachelor:38,master:20},sourceCountries:["Nepal","Philippines","Bosnia","Serbia","India"],explanation:"Nepal becomes a major worker source for tourism and construction."}},
+2040:{medianAge:50.5,depRatio:49.5,popChange:-6.5,workAgeChange:-450000,population:3450000,ageCohorts:[6.2,6.8,8.2,10.0,11.2,13.2,15.2,15.2,14.0],totalVacancies:95000,sectors:{healthcare:20000,it:12000,construction:14000,manufacturing:12000,agriculture:6000,hospitality:14000,logistics:6000,education:5000,finance:6000},migration:{skillSplit:{low:25,medium:42,high:33},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["Nepal","India","Philippines","Bosnia","Bangladesh"],explanation:"Croatia's population falls below 3.5M. Tourism-dependent economy cannot function without massive immigration."}}}},
+"642": {name:"Romania",iso:"RO",flag:"\u{1F1F7}\u{1F1F4}",id:"642",salary:1100,costOfLiving:600,years:{
+2030:{medianAge:45.0,depRatio:32.5,popChange:-3.5,workAgeChange:-800000,population:18500000,ageCohorts:[8.0,8.2,10.2,12.0,13.0,14.5,14.0,12.0,8.1],totalVacancies:150000,sectors:{healthcare:28000,it:22000,construction:22000,manufacturing:25000,agriculture:12000,hospitality:16000,logistics:10000,education:8000,finance:7000},migration:{skillSplit:{low:28,medium:42,high:30},eduProfile:{vocational:42,bachelor:38,master:20},sourceCountries:["Moldova","Vietnam","Nepal","Philippines","Sri Lanka"],explanation:"Romania transitions from emigration source to destination. Asian workers fill manufacturing and construction."}},
+2035:{medianAge:47.5,depRatio:39.0,popChange:-5.0,workAgeChange:-1300000,population:17500000,ageCohorts:[7.2,7.5,9.2,11.0,12.2,14.0,15.0,13.5,10.4],totalVacancies:210000,sectors:{healthcare:38000,it:30000,construction:28000,manufacturing:35000,agriculture:15000,hospitality:22000,logistics:16000,education:12000,finance:14000},migration:{skillSplit:{low:25,medium:42,high:33},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["Vietnam","Nepal","Philippines","Sri Lanka","India"],explanation:"Romania's population drops below 18M. The country actively recruits Asian workers for factories."}},
+2040:{medianAge:49.8,depRatio:46.0,popChange:-7.0,workAgeChange:-1800000,population:16200000,ageCohorts:[6.5,6.8,8.2,10.0,11.5,13.0,15.0,15.0,14.0],totalVacancies:280000,sectors:{healthcare:52000,it:38000,construction:35000,manufacturing:45000,agriculture:18000,hospitality:28000,logistics:22000,education:18000,finance:24000},migration:{skillSplit:{low:22,medium:42,high:36},eduProfile:{vocational:38,bachelor:38,master:24},sourceCountries:["India","Vietnam","Philippines","Nepal","Bangladesh"],explanation:"Romania faces demographic catastrophe. India and Southeast Asia are critical to keeping the economy running."}}}},
+"100": {name:"Bulgaria",iso:"BG",flag:"\u{1F1E7}\u{1F1EC}",id:"100",salary:950,costOfLiving:550,years:{
+2030:{medianAge:47.0,depRatio:37.0,popChange:-4.5,workAgeChange:-350000,population:6300000,ageCohorts:[7.5,7.8,10.0,11.5,13.0,14.8,14.5,12.5,8.4],totalVacancies:65000,sectors:{healthcare:12000,it:8000,construction:10000,manufacturing:10000,agriculture:6000,hospitality:8000,logistics:4000,education:3000,finance:4000},migration:{skillSplit:{low:30,medium:42,high:28},eduProfile:{vocational:45,bachelor:35,master:20},sourceCountries:["Turkey","Ukraine","Moldova","Nepal","Uzbekistan"],explanation:"Bulgaria is Europe's fastest-shrinking country. Low wages limit migration attractiveness."}},
+2035:{medianAge:49.5,depRatio:44.0,popChange:-6.5,workAgeChange:-520000,population:5800000,ageCohorts:[6.8,7.2,9.0,10.5,12.0,14.0,15.5,14.0,11.0],totalVacancies:88000,sectors:{healthcare:18000,it:12000,construction:12000,manufacturing:14000,agriculture:8000,hospitality:10000,logistics:5000,education:4000,finance:5000},migration:{skillSplit:{low:28,medium:42,high:30},eduProfile:{vocational:42,bachelor:38,master:20},sourceCountries:["Turkey","Nepal","India","Ukraine","Uzbekistan"],explanation:"Bulgaria's population crashes below 6M."}},
+2040:{medianAge:51.8,depRatio:52.0,popChange:-8.5,workAgeChange:-700000,population:5200000,ageCohorts:[6.0,6.5,8.0,9.5,11.0,13.0,15.5,15.5,15.0],totalVacancies:115000,sectors:{healthcare:24000,it:15000,construction:15000,manufacturing:18000,agriculture:10000,hospitality:14000,logistics:7000,education:6000,finance:6000},migration:{skillSplit:{low:25,medium:42,high:33},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["India","Nepal","Bangladesh","Turkey","Uzbekistan"],explanation:"Bulgaria faces existential demographic crisis. Population halved since 1990."}}}},
+"440": {name:"Lithuania",iso:"LT",flag:"\u{1F1F1}\u{1F1F9}",id:"440",salary:1300,costOfLiving:650,years:{
+2030:{medianAge:45.5,depRatio:34.0,popChange:-3.0,workAgeChange:-120000,population:2650000,ageCohorts:[8.0,8.2,10.5,11.8,13.0,14.5,14.0,12.0,8.0],totalVacancies:38000,sectors:{healthcare:7000,it:5500,construction:5500,manufacturing:6000,agriculture:3000,hospitality:4500,logistics:3000,education:2000,finance:1500},migration:{skillSplit:{low:28,medium:42,high:30},eduProfile:{vocational:42,bachelor:38,master:20},sourceCountries:["Ukraine","Belarus","India","Philippines","Uzbekistan"],explanation:"Lithuania loses population to Western EU but attracts some Ukrainian workers."}},
+2035:{medianAge:48.0,depRatio:41.0,popChange:-5.0,workAgeChange:-180000,population:2500000,ageCohorts:[7.2,7.5,9.2,11.0,12.0,14.0,15.0,13.5,10.6],totalVacancies:52000,sectors:{healthcare:10000,it:8000,construction:7000,manufacturing:8000,agriculture:4000,hospitality:6000,logistics:4000,education:3000,finance:2000},migration:{skillSplit:{low:25,medium:42,high:33},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["Ukraine","India","Belarus","Philippines","Vietnam"],explanation:"Lithuania's fintech hub attracts some skilled workers but overall decline continues."}},
+2040:{medianAge:50.5,depRatio:49.0,popChange:-7.0,workAgeChange:-260000,population:2300000,ageCohorts:[6.5,6.8,8.0,10.0,11.0,13.0,15.5,15.0,14.2],totalVacancies:68000,sectors:{healthcare:14000,it:10000,construction:9000,manufacturing:10000,agriculture:5000,hospitality:8000,logistics:5000,education:4000,finance:3000},migration:{skillSplit:{low:22,medium:42,high:36},eduProfile:{vocational:38,bachelor:38,master:24},sourceCountries:["India","Ukraine","Philippines","Vietnam","Bangladesh"],explanation:"Lithuania's population drops to 2.3M — down 40% from independence."}}}},
+"428": {name:"Latvia",iso:"LV",flag:"\u{1F1F1}\u{1F1FB}",id:"428",salary:1200,costOfLiving:650,years:{
+2030:{medianAge:45.8,depRatio:35.0,popChange:-3.5,workAgeChange:-90000,population:1800000,ageCohorts:[7.8,8.0,10.2,11.5,13.0,14.8,14.2,12.2,8.3],totalVacancies:28000,sectors:{healthcare:5500,it:4000,construction:4000,manufacturing:4500,agriculture:2000,hospitality:3500,logistics:2000,education:1500,finance:1000},migration:{skillSplit:{low:28,medium:42,high:30},eduProfile:{vocational:42,bachelor:38,master:20},sourceCountries:["Ukraine","Belarus","India","Uzbekistan","Georgia"],explanation:"Latvia's small economy faces severe depopulation."}},
+2035:{medianAge:48.2,depRatio:42.0,popChange:-5.5,workAgeChange:-140000,population:1700000,ageCohorts:[7.0,7.2,9.0,10.8,12.0,14.0,15.2,14.0,10.8],totalVacancies:38000,sectors:{healthcare:8000,it:5500,construction:5000,manufacturing:6000,agriculture:3000,hospitality:5000,logistics:2500,education:2000,finance:1000},migration:{skillSplit:{low:25,medium:42,high:33},eduProfile:{vocational:40,bachelor:38,master:22},sourceCountries:["Ukraine","India","Uzbekistan","Philippines","Belarus"],explanation:"Latvia's workforce shrinks faster than the economy."}},
+2040:{medianAge:50.8,depRatio:50.0,popChange:-7.5,workAgeChange:-200000,population:1580000,ageCohorts:[6.2,6.5,8.0,9.8,11.0,13.2,15.5,15.5,14.3],totalVacancies:48000,sectors:{healthcare:10000,it:7000,construction:6500,manufacturing:7500,agriculture:3500,hospitality:6000,logistics:3000,education:2500,finance:2000},migration:{skillSplit:{low:22,medium:42,high:36},eduProfile:{vocational:38,bachelor:38,master:24},sourceCountries:["India","Ukraine","Philippines","Uzbekistan","Bangladesh"],explanation:"Latvia drops below 1.6M people."}}}},
+"233": {name:"Estonia",iso:"EE",flag:"\u{1F1EA}\u{1F1EA}",id:"233",salary:1600,costOfLiving:750,years:{
+2030:{medianAge:43.8,depRatio:32.5,popChange:-1.5,workAgeChange:-50000,population:1320000,ageCohorts:[8.5,8.8,11.0,12.2,13.0,14.0,13.5,11.5,7.5],totalVacancies:22000,sectors:{healthcare:4000,it:4500,construction:3000,manufacturing:3000,agriculture:1500,hospitality:2500,logistics:1500,education:1000,finance:1000},migration:{skillSplit:{low:22,medium:38,high:40},eduProfile:{vocational:35,bachelor:40,master:25},sourceCountries:["Ukraine","Finland","Russia","India","Latvia"],explanation:"Estonia's e-Residency and digital society attract tech workers."}},
+2035:{medianAge:45.5,depRatio:38.0,popChange:-2.5,workAgeChange:-80000,population:1290000,ageCohorts:[7.8,8.2,10.0,11.5,12.5,13.5,14.0,12.8,9.7],totalVacancies:30000,sectors:{healthcare:6000,it:6000,construction:4000,manufacturing:4000,agriculture:2000,hospitality:3500,logistics:2000,education:1500,finance:1000},migration:{skillSplit:{low:20,medium:38,high:42},eduProfile:{vocational:32,bachelor:42,master:26},sourceCountries:["Ukraine","India","Finland","Nigeria","Latvia"],explanation:"Estonia's tech ecosystem attracts Indian and Nigerian developers."}},
+2040:{medianAge:47.2,depRatio:44.0,popChange:-3.5,workAgeChange:-120000,population:1240000,ageCohorts:[7.0,7.5,9.2,10.8,11.5,13.0,14.5,14.0,12.5],totalVacancies:38000,sectors:{healthcare:8000,it:7500,construction:5000,manufacturing:5000,agriculture:2500,hospitality:4000,logistics:2500,education:2000,finance:1500},migration:{skillSplit:{low:18,medium:37,high:45},eduProfile:{vocational:28,bachelor:42,master:30},sourceCountries:["India","Ukraine","Nigeria","Philippines","Vietnam"],explanation:"Estonia doubles down on being a digital hub. India becomes top source for tech talent."}}}},
 };
 
 // Migration corridors data per year
@@ -358,12 +488,7 @@ const MIGRATION_CORRIDORS = {
 ]};
 
 const SECTORS = ['healthcare','it','construction','manufacturing','agriculture','hospitality','logistics','education','finance'];
-const SECTOR_LABELS = {healthcare:'Healthcare',it:'IT & Digital',construction:'Construction',manufacturing:'Manufacturing',agriculture:'Agriculture',hospitality:'Hospitality',logistics:'Logistics',education:'Education',finance:'Finance'};
 const FLAG_MAP = {"India":"\u{1F1EE}\u{1F1F3}","Mexico":"\u{1F1F2}\u{1F1FD}","Philippines":"\u{1F1F5}\u{1F1ED}","Turkey":"\u{1F1F9}\u{1F1F7}","Morocco":"\u{1F1F2}\u{1F1E6}","Vietnam":"\u{1F1FB}\u{1F1F3}","Ukraine":"\u{1F1FA}\u{1F1E6}","Romania":"\u{1F1F7}\u{1F1F4}","China":"\u{1F1E8}\u{1F1F3}","Nigeria":"\u{1F1F3}\u{1F1EC}","Pakistan":"\u{1F1F5}\u{1F1F0}","Brazil":"\u{1F1E7}\u{1F1F7}","Indonesia":"\u{1F1EE}\u{1F1E9}","Nepal":"\u{1F1F3}\u{1F1F5}","Bangladesh":"\u{1F1E7}\u{1F1E9}","Syria":"\u{1F1F8}\u{1F1FE}","Colombia":"\u{1F1E8}\u{1F1F4}","Albania":"\u{1F1E6}\u{1F1F1}","Serbia":"\u{1F1F7}\u{1F1F8}","Poland":"\u{1F1F5}\u{1F1F1}","Algeria":"\u{1F1E9}\u{1F1FF}","Tunisia":"\u{1F1F9}\u{1F1F3}","Senegal":"\u{1F1F8}\u{1F1F3}","Egypt":"\u{1F1EA}\u{1F1EC}","Kenya":"\u{1F1F0}\u{1F1EA}","Ghana":"\u{1F1EC}\u{1F1ED}","South Africa":"\u{1F1FF}\u{1F1E6}","Cambodia":"\u{1F1F0}\u{1F1ED}","Myanmar":"\u{1F1F2}\u{1F1F2}","Thailand":"\u{1F1F9}\u{1F1ED}","Sri Lanka":"\u{1F1F1}\u{1F1F0}","Uzbekistan":"\u{1F1FA}\u{1F1FF}","Georgia":"\u{1F1EC}\u{1F1EA}","Belarus":"\u{1F1E7}\u{1F1FE}","Moldova":"\u{1F1F2}\u{1F1E9}","Fiji":"\u{1F1EB}\u{1F1EF}","Venezuela":"\u{1F1FB}\u{1F1EA}","Ecuador":"\u{1F1EA}\u{1F1E8}","Peru":"\u{1F1F5}\u{1F1EA}","Cape Verde":"\u{1F1E8}\u{1F1FB}","Angola":"\u{1F1E6}\u{1F1F4}","Mozambique":"\u{1F1F2}\u{1F1FF}","DR Congo":"\u{1F1E8}\u{1F1E9}","Côte d'Ivoire":"\u{1F1E8}\u{1F1EE}","Cameroon":"\u{1F1E8}\u{1F1F2}","El Salvador":"\u{1F1F8}\u{1F1FB}","Guatemala":"\u{1F1EC}\u{1F1F9}","Bosnia":"\u{1F1E7}\u{1F1E6}","Mongolia":"\u{1F1F2}\u{1F1F3}","Afghanistan":"\u{1F1E6}\u{1F1EB}","Iraq":"\u{1F1EE}\u{1F1F6}","Somalia":"\u{1F1F8}\u{1F1F4}","Eritrea":"\u{1F1EA}\u{1F1F7}","Zimbabwe":"\u{1F1FF}\u{1F1FC}","Slovakia":"\u{1F1F8}\u{1F1F0}","Finland":"\u{1F1EB}\u{1F1EE}","Russia":"\u{1F1F7}\u{1F1FA}","Malaysia":"\u{1F1F2}\u{1F1FE}","Germany":"\u{1F1E9}\u{1F1EA}","Italy":"\u{1F1EE}\u{1F1F9}","France":"\u{1F1EB}\u{1F1F7}","Portugal":"\u{1F1F5}\u{1F1F9}","Sweden":"\u{1F1F8}\u{1F1EA}","UK":"\u{1F1EC}\u{1F1E7}"};
-
-// Country ID to TopoJSON ID mapping
-const ID_MAP = {};
-Object.keys(COUNTRY_DATA).forEach(k => ID_MAP[k] = COUNTRY_DATA[k]);
 
 // ===================== APP STATE =====================
 let currentYear = 2030;
@@ -376,6 +501,7 @@ function fmt(n) {
   if (n >= 1000) return (n/1000).toFixed(0)+'K';
   return n.toString();
 }
+function fmtUSD(n) { return '$'+n.toLocaleString(); }
 
 function getAgingColor(medianAge) {
   if (medianAge < 40) return '#2ecc71';
@@ -388,29 +514,36 @@ function getAgingColor(medianAge) {
 }
 
 function getAgingSeverity(medianAge) {
-  if (medianAge < 40) return 'Mild';
-  if (medianAge < 45) return 'Moderate';
-  if (medianAge < 48) return 'Serious';
-  return 'Critical';
+  if (medianAge < 40) return t('mild');
+  if (medianAge < 45) return t('moderate');
+  if (medianAge < 48) return t('serious');
+  return t('critical');
 }
 
 function getHeatColor(value, max) {
-  const t = Math.min(value / max, 1);
-  if (t < 0.25) return `rgba(46,204,113,${0.3+t*2})`;
-  if (t < 0.5) return `rgba(241,196,15,${0.4+t})`;
-  if (t < 0.75) return `rgba(230,126,34,${0.5+t*0.6})`;
-  return `rgba(231,76,60,${0.6+t*0.4})`;
+  const tt = Math.min(value / max, 1);
+  if (tt < 0.25) return `rgba(46,204,113,${0.3+tt*2})`;
+  if (tt < 0.5) return `rgba(241,196,15,${0.4+tt})`;
+  if (tt < 0.75) return `rgba(230,126,34,${0.5+tt*0.6})`;
+  return `rgba(231,76,60,${0.6+tt*0.4})`;
 }
 
 function getAllCountries() {
-  return Object.values(COUNTRY_DATA).sort((a,b) => {
-    const av = a.years[currentYear].totalVacancies;
-    const bv = b.years[currentYear].totalVacancies;
-    return bv - av;
-  });
+  return Object.values(COUNTRY_DATA).sort((a,b) => b.years[currentYear].totalVacancies - a.years[currentYear].totalVacancies);
 }
 
-function getCountryYear(c) { return c.years[currentYear]; }
+// Collar classification for sectors
+function getCollarSplit(sectors) {
+  const blue = (sectors.construction||0) + (sectors.manufacturing||0) + (sectors.agriculture||0) + (sectors.logistics||0);
+  const grey = (sectors.healthcare||0) + (sectors.hospitality||0) + (sectors.education||0);
+  const white = (sectors.it||0) + (sectors.finance||0);
+  const total = blue + grey + white;
+  return {
+    blue: Math.round(blue/total*100),
+    grey: Math.round(grey/total*100),
+    white: Math.round(white/total*100)
+  };
+}
 
 
 // ===================== MAP RENDERING =====================
@@ -423,29 +556,31 @@ async function loadMap() {
   try {
     const response = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json');
     const world = await response.json();
-    worldData = topojson.feature(world, world.objects.countries);
+    // Remove Antarctica (id "010") and filter small/irrelevant features
+    const features = topojson.feature(world, world.objects.countries).features.filter(f => f.id !== '010');
+    worldData = {type:'FeatureCollection', features};
     renderMap();
     renderDashboard();
     document.getElementById('loading').classList.add('hidden');
   } catch(e) {
     document.getElementById('loading').innerHTML = '<p style="color:#e74c3c">Failed to load map. Please refresh.</p>';
-    console.error(e);
   }
 }
 
 function renderMap() {
   const w = mapSvg.node().clientWidth;
   const h = mapSvg.node().clientHeight;
-  
+
+  // Use Mercator-like projection cropped to exclude Antarctica, zoom into populated areas
   const projection = d3.geoNaturalEarth1()
-    .fitSize([w - 40, h - 40], worldData)
-    .translate([w/2, h/2]);
-  
+    .fitExtent([[10, -20],[w - 10, h + 40]], worldData)
+    .clipExtent([[0,0],[w,h]]);
+
   const path = d3.geoPath().projection(projection);
-  
+
   mapG.selectAll('path').remove();
   mapG.selectAll('circle').remove();
-  
+
   mapG.selectAll('path')
     .data(worldData.features)
     .join('path')
@@ -455,18 +590,14 @@ function renderMap() {
       const isTracked = COUNTRY_DATA[id];
       let cls = 'country-path';
       if (isTracked) cls += ' tracked';
-      if (searchTerm && isTracked) {
-        const name = isTracked.name.toLowerCase();
-        if (!name.includes(searchTerm.toLowerCase())) cls += ' dimmed';
-      }
+      if (searchTerm && isTracked && !isTracked.name.toLowerCase().includes(searchTerm.toLowerCase())) cls += ' dimmed';
       return cls;
     })
     .attr('fill', d => {
       const id = d.id || d.properties?.id;
       const country = COUNTRY_DATA[id];
       if (!country) return '#1e1e3a';
-      const yr = country.years[currentYear];
-      return getAgingColor(yr.medianAge);
+      return getAgingColor(country.years[currentYear].medianAge);
     })
     .on('mouseover', function(event, d) {
       const id = d.id || d.properties?.id;
@@ -476,10 +607,10 @@ function renderMap() {
       const yr = country.years[currentYear];
       tooltip.html(`
         <h3>${country.flag} ${country.name}</h3>
-        <div class="stat"><span>Median Age</span><span>${yr.medianAge}</span></div>
-        <div class="stat"><span>Dependency Ratio</span><span>${yr.depRatio}%</span></div>
-        <div class="stat"><span>Job Vacancies</span><span>${fmt(yr.totalVacancies)}/yr</span></div>
-        <div class="stat"><span>Severity</span><span style="color:${getAgingColor(yr.medianAge)}">${getAgingSeverity(yr.medianAge)}</span></div>
+        <div class="stat"><span>${t('medianAge')}</span><span>${yr.medianAge}</span></div>
+        <div class="stat"><span>${t('depRatio')}</span><span>${yr.depRatio}%</span></div>
+        <div class="stat"><span>${t('annualVacancies')}</span><span>${fmt(yr.totalVacancies)}${t('perYear')}</span></div>
+        <div class="stat"><span>${t('avgSalary')}</span><span>${fmtUSD(country.salary)}/mo</span></div>
       `).classed('visible', true);
     })
     .on('mousemove', function(event) {
@@ -495,40 +626,32 @@ function renderMap() {
       if (country) openDetailPanel(country);
     });
 
-  // Add circle markers for Singapore and Taiwan (too small on map)
+  // Circle markers for Singapore and Taiwan
   const smallCountries = [COUNTRY_DATA["702"], COUNTRY_DATA["158"]].filter(Boolean);
   const coords = {"702": [103.8, 1.35], "158": [121.0, 23.5]};
-  
   smallCountries.forEach(c => {
     const [lon, lat] = coords[c.id];
-    const [x, y] = projection([lon, lat]);
-    if (!x || !y) return;
+    const [x, y] = projection([lon, lat]) || [0,0];
+    if (!x && !y) return;
     mapG.append('circle')
-      .attr('cx', x).attr('cy', y).attr('r', 6)
+      .attr('cx', x).attr('cy', y).attr('r', 7)
       .attr('fill', getAgingColor(c.years[currentYear].medianAge))
-      .attr('stroke', '#fff').attr('stroke-width', 1)
+      .attr('stroke', '#fff').attr('stroke-width', 1.5)
       .attr('cursor', 'pointer')
       .on('mouseover', function(event) {
         const yr = c.years[currentYear];
-        tooltip.html(`
-          <h3>${c.flag} ${c.name}</h3>
-          <div class="stat"><span>Median Age</span><span>${yr.medianAge}</span></div>
-          <div class="stat"><span>Dependency Ratio</span><span>${yr.depRatio}%</span></div>
-          <div class="stat"><span>Job Vacancies</span><span>${fmt(yr.totalVacancies)}/yr</span></div>
-          <div class="stat"><span>Severity</span><span style="color:${getAgingColor(yr.medianAge)}">${getAgingSeverity(yr.medianAge)}</span></div>
+        tooltip.html(`<h3>${c.flag} ${c.name}</h3>
+          <div class="stat"><span>${t('medianAge')}</span><span>${yr.medianAge}</span></div>
+          <div class="stat"><span>${t('depRatio')}</span><span>${yr.depRatio}%</span></div>
+          <div class="stat"><span>${t('annualVacancies')}</span><span>${fmt(yr.totalVacancies)}${t('perYear')}</span></div>
         `).classed('visible', true);
       })
-      .on('mousemove', function(event) {
-        tooltip.style('left', (event.clientX + 15) + 'px').style('top', (event.clientY - 10) + 'px');
-      })
+      .on('mousemove', function(event) { tooltip.style('left',(event.clientX+15)+'px').style('top',(event.clientY-10)+'px'); })
       .on('mouseout', () => tooltip.classed('visible', false))
       .on('click', () => openDetailPanel(c));
   });
 
-  // Zoom
-  const zoom = d3.zoom().scaleExtent([1, 8]).on('zoom', (event) => {
-    mapG.attr('transform', event.transform);
-  });
+  const zoom = d3.zoom().scaleExtent([1, 8]).on('zoom', e => mapG.attr('transform', e.transform));
   mapSvg.call(zoom);
 }
 
@@ -537,9 +660,12 @@ function renderMap() {
 function renderDashboard() {
   renderSummaryCards();
   renderBarChart();
+  renderBarChart2();
   renderHeatmap();
   renderFlowDiagram();
+  renderCorridorGrowth();
   renderSkillChart();
+  renderProfessionChart();
 }
 
 function renderSummaryCards() {
@@ -547,9 +673,8 @@ function renderSummaryCards() {
   const totalGap = countries.reduce((s, c) => s + c.years[currentYear].totalVacancies, 0);
   const critical = countries.filter(c => c.years[currentYear].medianAge >= 48).length;
   const largest = countries[0];
-  
-  let fastestAging = countries[0];
-  let maxAgeDiff = 0;
+
+  let fastestAging = countries[0], maxAgeDiff = 0;
   countries.forEach(c => {
     const diff = c.years[2040].medianAge - c.years[2030].medianAge;
     if (diff > maxAgeDiff) { maxAgeDiff = diff; fastestAging = c; }
@@ -557,32 +682,33 @@ function renderSummaryCards() {
 
   document.getElementById('summary-cards').innerHTML = `
     <div class="summary-card">
-      <div class="label">Total Projected Job Gap</div>
+      <div class="label">${t('summaryTotalGap')}</div>
       <div class="value">${fmt(totalGap)}</div>
-      <div class="sub">Annual across ${countries.length} countries</div>
+      <div class="sub">${t('summaryTotalGapSub')}</div>
     </div>
     <div class="summary-card">
-      <div class="label">Critical Aging Zone</div>
+      <div class="label">${t('summaryCritical')}</div>
       <div class="value">${critical}</div>
-      <div class="sub">Countries with median age ≥ 48</div>
+      <div class="sub">${critical} ${t('summaryCriticalSub')}</div>
     </div>
     <div class="summary-card">
-      <div class="label">Largest Single-Country Gap</div>
+      <div class="label">${t('summaryLargest')}</div>
       <div class="value">${fmt(largest.years[currentYear].totalVacancies)}</div>
-      <div class="sub">${largest.flag} ${largest.name}</div>
+      <div class="sub">${largest.flag} ${largest.name} — ${t('summaryLargestSub')}</div>
     </div>
     <div class="summary-card">
-      <div class="label">Fastest Aging</div>
+      <div class="label">${t('summaryFastest')}</div>
       <div class="value">+${maxAgeDiff.toFixed(1)}</div>
-      <div class="sub">${fastestAging.flag} ${fastestAging.name} (2030→2040)</div>
+      <div class="sub">${fastestAging.flag} ${fastestAging.name} (2030→2040) — ${t('summaryFastestSub')}</div>
     </div>
   `;
 }
 
-function renderBarChart() {
-  const container = document.getElementById('bar-chart');
-  const countries = getAllCountries().slice(0, 15);
-  const maxVal = countries[0].years[currentYear].totalVacancies;
+function renderBarChartGeneric(containerId, startIdx, count) {
+  const container = document.getElementById(containerId);
+  const countries = getAllCountries().slice(startIdx, startIdx + count);
+  if (!countries.length) { container.innerHTML = ''; return; }
+  const maxVal = getAllCountries()[0].years[currentYear].totalVacancies; // global max for consistency
   
   container.innerHTML = countries.map(c => {
     const yr = c.years[currentYear];
@@ -596,31 +722,25 @@ function renderBarChart() {
   }).join('');
 }
 
+function renderBarChart() { renderBarChartGeneric('bar-chart', 0, 15); }
+function renderBarChart2() { renderBarChartGeneric('bar-chart-2', 15, 15); }
+
 function renderHeatmap() {
   const container = document.getElementById('heatmap');
   const countries = getAllCountries().slice(0, 20);
-  
   let maxSector = 0;
-  countries.forEach(c => {
-    SECTORS.forEach(s => {
-      const v = c.years[currentYear].sectors[s];
-      if (v > maxSector) maxSector = v;
-    });
-  });
+  countries.forEach(c => SECTORS.forEach(s => { const v = c.years[currentYear].sectors[s]; if (v > maxSector) maxSector = v; }));
 
   let html = '<table class="heatmap-table"><thead><tr><th></th>';
-  SECTORS.forEach(s => {
-    html += `<th class="sector-th">${SECTOR_LABELS[s]}</th>`;
-  });
+  SECTORS.forEach(s => html += `<th class="sector-th">${sectorLabel(s)}</th>`);
   html += '</tr></thead><tbody>';
-  
   countries.forEach(c => {
     const yr = c.years[currentYear];
     html += `<tr><td class="country-name">${c.flag} ${c.name}</td>`;
     SECTORS.forEach(s => {
       const v = yr.sectors[s];
       const bg = getHeatColor(v, maxSector);
-      html += `<td class="heatmap-cell" style="background:${bg}" title="${c.name}: ${SECTOR_LABELS[s]} — ${fmt(v)} vacancies" onclick="openDetailPanel(COUNTRY_DATA['${c.id}'])">${fmt(v)}</td>`;
+      html += `<td class="heatmap-cell" style="background:${bg}" title="${c.name}: ${sectorLabel(s)} — ${fmt(v)}" onclick="openDetailPanel(COUNTRY_DATA['${c.id}'])">${fmt(v)}</td>`;
     });
     html += '</tr>';
   });
@@ -632,76 +752,120 @@ function renderFlowDiagram() {
   const container = document.getElementById('flow-chart');
   const corridors = MIGRATION_CORRIDORS[currentYear];
   const maxFlow = Math.max(...corridors.map(c => c.flow));
-  
   const width = container.clientWidth - 40 || 500;
-  const height = 350;
+  const height = 380;
   const padding = 20;
-  
-  // Get unique sources and targets
+
   const sources = [...new Set(corridors.map(c => c.source))];
   const targets = [...new Set(corridors.map(c => c.target))];
-  
   const sourceScale = d3.scalePoint().domain(sources).range([padding + 30, height - padding - 10]);
   const targetScale = d3.scalePoint().domain(targets).range([padding + 30, height - padding - 10]);
-  
+
   let svg = `<svg width="100%" height="${height}" viewBox="0 0 ${width} ${height}">`;
-  
-  // Draw flows
   corridors.forEach((cor, i) => {
     const sy = sourceScale(cor.source);
     const ty = targetScale(cor.target);
     const thickness = Math.max(2, (cor.flow / maxFlow) * 18);
     const hue = (i * 36) % 360;
-    
-    svg += `<path class="flow-path" d="M 120 ${sy} C ${width/2} ${sy}, ${width/2} ${ty}, ${width - 120} ${ty}" 
-      stroke="hsl(${hue},70%,55%)" stroke-width="${thickness}" 
+    svg += `<path class="flow-path" d="M 130 ${sy} C ${width/2} ${sy}, ${width/2} ${ty}, ${width - 130} ${ty}"
+      stroke="hsl(${hue},70%,55%)" stroke-width="${thickness}"
       onmouseover="this.style.strokeOpacity=0.9" onmouseout="this.style.strokeOpacity=0.4">
-      <title>${cor.source} → ${cor.target}: ${fmt(cor.flow)}/yr</title></path>`;
+      <title>${cor.source} → ${cor.target}: ${fmt(cor.flow)}${t('perYear')}</title></path>`;
+    // Add flow number in the middle
+    const mx = width/2, my = (sy+ty)/2;
+    svg += `<text x="${mx}" y="${my-5}" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">${fmt(cor.flow)}</text>`;
   });
-  
-  // Source labels
   sources.forEach(s => {
     const y = sourceScale(s);
-    const flag = FLAG_MAP[s] || '';
-    svg += `<text x="10" y="${y+4}" class="flow-label" text-anchor="start" font-size="11">${flag} ${s}</text>`;
+    svg += `<text x="10" y="${y+4}" class="flow-label" text-anchor="start" font-size="11">${FLAG_MAP[s]||''} ${s}</text>`;
   });
-  
-  // Target labels
-  targets.forEach(t => {
-    const y = targetScale(t);
-    const cd = Object.values(COUNTRY_DATA).find(c => c.name === t);
-    const flag = cd ? cd.flag : '';
-    svg += `<text x="${width-10}" y="${y+4}" class="flow-label" text-anchor="end" font-size="11">${flag} ${t}</text>`;
+  targets.forEach(tgt => {
+    const y = targetScale(tgt);
+    const cd = Object.values(COUNTRY_DATA).find(c => c.name === tgt);
+    svg += `<text x="${width-10}" y="${y+4}" class="flow-label" text-anchor="end" font-size="11">${cd?cd.flag:''} ${tgt}</text>`;
   });
-  
   svg += '</svg>';
   container.innerHTML = svg;
+}
+
+function renderCorridorGrowth() {
+  const container = document.getElementById('corridor-growth');
+  // Get all unique corridors across years
+  const corridorMap = {};
+  [2030,2035,2040].forEach(yr => {
+    MIGRATION_CORRIDORS[yr].forEach(c => {
+      const key = c.source + ' → ' + c.target;
+      if (!corridorMap[key]) corridorMap[key] = {source:c.source,target:c.target,2030:0,2035:0,2040:0};
+      corridorMap[key][yr] = c.flow;
+    });
+  });
+  const corridors = Object.values(corridorMap).sort((a,b) => b[2040] - a[2040]).slice(0,10);
+  const maxFlow = Math.max(...corridors.map(c => Math.max(c[2030],c[2035],c[2040])));
+
+  const colors = {2030:'#3498db',2035:'#f1c40f',2040:'#e74c3c'};
+  let html = `<div style="display:flex;gap:16px;margin-bottom:12px;font-size:12px">`;
+  [2030,2035,2040].forEach(yr => {
+    html += `<span><span style="display:inline-block;width:12px;height:12px;background:${colors[yr]};border-radius:2px;margin-right:4px"></span>${yr}</span>`;
+  });
+  html += '</div>';
+
+  corridors.forEach(c => {
+    const sf = FLAG_MAP[c.source]||'';
+    const cd = Object.values(COUNTRY_DATA).find(x => x.name === c.target);
+    const tf = cd?cd.flag:'';
+    html += `<div class="corridor-row">
+      <div class="corridor-label">${sf} ${c.source} → ${tf} ${c.target}</div>
+      <div class="corridor-bars">`;
+    [2030,2035,2040].forEach(yr => {
+      const w = Math.max(5, c[yr]/maxFlow*100);
+      html += `<div class="corridor-bar" style="width:${w}%;background:${colors[yr]}">${fmt(c[yr])}</div>`;
+    });
+    html += `</div></div>`;
+  });
+  container.innerHTML = html;
 }
 
 function renderSkillChart() {
   const container = document.getElementById('skill-chart');
   const countries = getAllCountries().slice(0, 15);
-  
-  const colors = {low: '#3498db', medium: '#f1c40f', high: '#2ecc71'};
-  
+  const colors = {blue:'#3498db',grey:'#9b59b6',white:'#2ecc71'};
+
   let html = '<div style="display:flex;gap:16px;margin-bottom:12px;font-size:12px;">';
-  html += `<span><span style="display:inline-block;width:12px;height:12px;background:${colors.low};border-radius:2px;margin-right:4px"></span>Low-skilled</span>`;
-  html += `<span><span style="display:inline-block;width:12px;height:12px;background:${colors.medium};border-radius:2px;margin-right:4px"></span>Medium-skilled</span>`;
-  html += `<span><span style="display:inline-block;width:12px;height:12px;background:${colors.high};border-radius:2px;margin-right:4px"></span>High-skilled</span>`;
+  html += `<span><span style="display:inline-block;width:12px;height:12px;background:${colors.blue};border-radius:2px;margin-right:4px"></span>${t('blueCollarFull')}</span>`;
+  html += `<span><span style="display:inline-block;width:12px;height:12px;background:${colors.grey};border-radius:2px;margin-right:4px"></span>${t('greyCollarFull')}</span>`;
+  html += `<span><span style="display:inline-block;width:12px;height:12px;background:${colors.white};border-radius:2px;margin-right:4px"></span>${t('whiteCollarFull')}</span>`;
   html += '</div>';
-  
+
   countries.forEach(c => {
     const yr = c.years[currentYear];
-    const sk = yr.migration.skillSplit;
+    const cs = getCollarSplit(yr.sectors);
     html += `<div class="stacked-bar-row">
       <div class="stacked-bar-label">${c.flag} ${c.name}</div>
       <div class="stacked-bar-track">
-        <div class="stacked-segment" style="width:${sk.low}%;background:${colors.low}">${sk.low}%</div>
-        <div class="stacked-segment" style="width:${sk.medium}%;background:${colors.medium}">${sk.medium}%</div>
-        <div class="stacked-segment" style="width:${sk.high}%;background:${colors.high}">${sk.high}%</div>
+        <div class="stacked-segment" style="width:${cs.blue}%;background:${colors.blue}">${cs.blue}%</div>
+        <div class="stacked-segment" style="width:${cs.grey}%;background:${colors.grey}">${cs.grey}%</div>
+        <div class="stacked-segment" style="width:${cs.white}%;background:${colors.white}">${cs.white}%</div>
       </div>
     </div>`;
   });
+  container.innerHTML = html;
+}
+
+function renderProfessionChart() {
+  const container = document.getElementById('profession-chart');
+  const categories = [
+    {title: t('profBlueTitle'), jobs: t('profBlueJobs'), color:'#3498db'},
+    {title: t('profGreyTitle'), jobs: t('profGreyJobs'), color:'#9b59b6'},
+    {title: t('profWhiteTitle'), jobs: t('profWhiteJobs'), color:'#2ecc71'}
+  ];
+  let html = '<div class="profession-grid">';
+  categories.forEach(cat => {
+    html += `<div class="profession-card" style="border-left:3px solid ${cat.color}">
+      <h4>${cat.title}</h4><ul>`;
+    cat.jobs.forEach(j => html += `<li>${j}</li>`);
+    html += '</ul></div>';
+  });
+  html += '</div>';
   container.innerHTML = html;
 }
 
@@ -711,15 +875,13 @@ function openDetailPanel(country) {
   selectedCountry = country;
   const panel = document.getElementById('detail-panel');
   const overlay = document.getElementById('overlay');
-  
   document.getElementById('panel-flag').textContent = country.flag;
   document.getElementById('panel-name').textContent = country.name;
-  
+
   const yr = country.years[currentYear];
   const cohortLabels = ['0-9','10-19','20-29','30-39','40-49','50-59','60-69','70-79','80+'];
   const maxCohort = Math.max(...yr.ageCohorts);
-  
-  // Build pyramid
+
   let pyramidHtml = '<div class="pyramid-container">';
   for (let i = cohortLabels.length - 1; i >= 0; i--) {
     const pct = (yr.ageCohorts[i] / maxCohort * 100).toFixed(0);
@@ -731,107 +893,87 @@ function openDetailPanel(country) {
     </div>`;
   }
   pyramidHtml += '</div>';
-  
-  // Build sector bars
-  const sortedSectors = SECTORS.map(s => ({key:s, val:yr.sectors[s]})).sort((a,b) => b.val - a.val).slice(0,5);
+
+  const sortedSectors = SECTORS.map(s => ({key:s,val:yr.sectors[s]})).sort((a,b)=>b.val-a.val).slice(0,5);
   const maxSec = sortedSectors[0].val;
   let sectorHtml = '<div class="mini-bar-chart">';
   sortedSectors.forEach(s => {
     const pct = (s.val / maxSec * 100).toFixed(0);
-    const color = s.key === 'healthcare' ? '#e74c3c' : s.key === 'it' ? '#3498db' : s.key === 'construction' ? '#e67e22' : s.key === 'manufacturing' ? '#9b59b6' : '#2ecc71';
-    sectorHtml += `<div class="mb-row">
-      <div class="mb-label">${SECTOR_LABELS[s.key]}</div>
-      <div class="mb-track"><div class="mb-fill" style="width:${pct}%;background:${color}"></div></div>
-      <div class="mb-val">${fmt(s.val)}</div>
-    </div>`;
+    const color = s.key==='healthcare'?'#e74c3c':s.key==='it'?'#3498db':s.key==='construction'?'#e67e22':s.key==='manufacturing'?'#9b59b6':'#2ecc71';
+    sectorHtml += `<div class="mb-row"><div class="mb-label">${sectorLabel(s.key)}</div><div class="mb-track"><div class="mb-fill" style="width:${pct}%;background:${color}"></div></div><div class="mb-val">${fmt(s.val)}</div></div>`;
   });
   sectorHtml += '</div>';
 
-  // Donut chart for skills
   const sk = yr.migration.skillSplit;
-  const donutSize = 80;
-  const r = 35, ir = 20;
+  const donutSize = 80, r = 35, ir = 20;
   let angle = 0;
   const slices = [
-    {pct: sk.low, color: '#3498db', label: 'Low-skilled'},
-    {pct: sk.medium, color: '#f1c40f', label: 'Medium-skilled'},
-    {pct: sk.high, color: '#2ecc71', label: 'High-skilled'}
+    {pct:sk.low,color:'#3498db',label:t('blueCollar')},
+    {pct:sk.medium,color:'#f1c40f',label:t('greyCollar')},
+    {pct:sk.high,color:'#2ecc71',label:t('whiteCollar')}
   ];
   let donutSvg = `<svg width="${donutSize}" height="${donutSize}" viewBox="0 0 100 100">`;
   slices.forEach(slice => {
-    const startAngle = angle * Math.PI / 180;
-    angle += slice.pct * 3.6;
-    const endAngle = angle * Math.PI / 180;
-    const largeArc = slice.pct > 50 ? 1 : 0;
-    const x1 = 50 + r * Math.sin(startAngle);
-    const y1 = 50 - r * Math.cos(startAngle);
-    const x2 = 50 + r * Math.sin(endAngle);
-    const y2 = 50 - r * Math.cos(endAngle);
-    const ix1 = 50 + ir * Math.sin(endAngle);
-    const iy1 = 50 - ir * Math.cos(endAngle);
-    const ix2 = 50 + ir * Math.sin(startAngle);
-    const iy2 = 50 - ir * Math.cos(startAngle);
-    donutSvg += `<path d="M${x1},${y1} A${r},${r} 0 ${largeArc},1 ${x2},${y2} L${ix1},${iy1} A${ir},${ir} 0 ${largeArc},0 ${ix2},${iy2} Z" fill="${slice.color}"/>`;
+    const sa = angle * Math.PI / 180; angle += slice.pct * 3.6;
+    const ea = angle * Math.PI / 180;
+    const la = slice.pct > 50 ? 1 : 0;
+    donutSvg += `<path d="M${50+r*Math.sin(sa)},${50-r*Math.cos(sa)} A${r},${r} 0 ${la},1 ${50+r*Math.sin(ea)},${50-r*Math.cos(ea)} L${50+ir*Math.sin(ea)},${50-ir*Math.cos(ea)} A${ir},${ir} 0 ${la},0 ${50+ir*Math.sin(sa)},${50-ir*Math.cos(sa)} Z" fill="${slice.color}"/>`;
   });
   donutSvg += '</svg>';
 
-  // Education profile
   const edu = yr.migration.eduProfile;
   let eduHtml = '<div class="mini-bar-chart">';
-  [['Vocational', edu.vocational, '#e67e22'],['Bachelor', edu.bachelor, '#3498db'],['Master+', edu.master, '#9b59b6']].forEach(([label, val, color]) => {
-    eduHtml += `<div class="mb-row">
-      <div class="mb-label">${label}</div>
-      <div class="mb-track"><div class="mb-fill" style="width:${val}%;background:${color}"></div></div>
-      <div class="mb-val">${val}%</div>
-    </div>`;
+  [['Vocational',edu.vocational,'#e67e22'],['Bachelor',edu.bachelor,'#3498db'],['Master+',edu.master,'#9b59b6']].forEach(([label,val,color]) => {
+    eduHtml += `<div class="mb-row"><div class="mb-label">${label}</div><div class="mb-track"><div class="mb-fill" style="width:${val}%;background:${color}"></div></div><div class="mb-val">${val}%</div></div>`;
   });
   eduHtml += '</div>';
 
-  // Source countries
   let sourceHtml = '<ul class="source-list">';
-  yr.migration.sourceCountries.forEach((sc, i) => {
-    const flag = FLAG_MAP[sc] || '';
-    sourceHtml += `<li>${flag} <strong>${sc}</strong></li>`;
+  yr.migration.sourceCountries.forEach(sc => {
+    sourceHtml += `<li>${FLAG_MAP[sc]||''} <strong>${sc}</strong></li>`;
   });
   sourceHtml += '</ul>';
 
   document.getElementById('panel-content').innerHTML = `
     <div class="panel-section">
-      <h3>Demographics (${currentYear})</h3>
+      <h3>${t('demographics')} (${currentYear})</h3>
       ${pyramidHtml}
       <div class="stat-grid">
-        <div class="stat-item"><div class="s-label">Median Age</div><div class="s-value" style="color:${getAgingColor(yr.medianAge)}">${yr.medianAge}</div></div>
-        <div class="stat-item"><div class="s-label">Dependency Ratio</div><div class="s-value">${yr.depRatio}%</div></div>
-        <div class="stat-item"><div class="s-label">Pop. Change</div><div class="s-value" style="color:${yr.popChange>=0?'#2ecc71':'#e74c3c'}">${yr.popChange>0?'+':''}${yr.popChange}%</div></div>
-        <div class="stat-item"><div class="s-label">Working Age Δ</div><div class="s-value" style="color:${yr.workAgeChange>=0?'#2ecc71':'#e74c3c'}">${yr.workAgeChange>0?'+':''}${fmt(yr.workAgeChange)}</div></div>
+        <div class="stat-item"><div class="s-label">${t('medianAge')}</div><div class="s-value" style="color:${getAgingColor(yr.medianAge)}">${yr.medianAge}</div></div>
+        <div class="stat-item"><div class="s-label">${t('depRatio')}</div><div class="s-value">${yr.depRatio}%</div></div>
+        <div class="stat-item"><div class="s-label">${t('popChange')}</div><div class="s-value" style="color:${yr.popChange>=0?'#2ecc71':'#e74c3c'}">${yr.popChange>0?'+':''}${yr.popChange}%</div></div>
+        <div class="stat-item"><div class="s-label">${t('workingAgeDelta')}</div><div class="s-value" style="color:${yr.workAgeChange>=0?'#2ecc71':'#e74c3c'}">${yr.workAgeChange>0?'+':''}${fmt(yr.workAgeChange)}</div></div>
+      </div>
+      <div class="salary-block">
+        <div class="salary-item"><div class="s-label">${t('avgSalary')}</div><div class="s-value" style="color:#2ecc71">${fmtUSD(country.salary)}</div><div style="font-size:9px;color:var(--text-dim)">${t('salaryNote')}</div></div>
+        <div class="salary-item"><div class="s-label">${t('costOfLiving')}</div><div class="s-value" style="color:#e67e22">${fmtUSD(country.costOfLiving)}</div><div style="font-size:9px;color:var(--text-dim)">${t('costNote')}</div></div>
       </div>
     </div>
     <div class="panel-section">
-      <h3>Labor Gap (${currentYear})</h3>
+      <h3>${t('laborGap')} (${currentYear})</h3>
       <div style="text-align:center;margin-bottom:12px">
         <div style="font-size:32px;font-weight:700;color:var(--highlight)">${fmt(yr.totalVacancies)}</div>
-        <div style="font-size:11px;color:var(--text-dim)">Annual job vacancies</div>
+        <div style="font-size:11px;color:var(--text-dim)">${t('annualVacancies')}</div>
       </div>
-      <div style="font-size:12px;color:var(--text-dim);margin-bottom:8px">Top 5 sectors with biggest shortages:</div>
+      <div style="font-size:12px;color:var(--text-dim);margin-bottom:8px">${t('topSectors')}</div>
       ${sectorHtml}
     </div>
     <div class="panel-section">
-      <h3>Migration Demand</h3>
-      <div style="font-size:12px;color:var(--text-dim);margin-bottom:8px">Skill level needed:</div>
+      <h3>${t('migrationDemand')}</h3>
+      <div style="font-size:12px;color:var(--text-dim);margin-bottom:8px">${t('skillLevelNeeded')}</div>
       <div class="donut-container">
         ${donutSvg}
         <div class="donut-legend">
-          ${slices.map(s => `<div><span class="dot" style="background:${s.color}"></span>${s.label}: ${s.pct}%</div>`).join('')}
+          ${slices.map(s=>`<div><span class="dot" style="background:${s.color}"></span>${s.label}: ${s.pct}%</div>`).join('')}
         </div>
       </div>
-      <div style="font-size:12px;color:var(--text-dim);margin:12px 0 8px">Education profile in demand:</div>
+      <div style="font-size:12px;color:var(--text-dim);margin:12px 0 8px">${t('educationProfile')}</div>
       ${eduHtml}
-      <div style="font-size:12px;color:var(--text-dim);margin:12px 0 8px">Top source countries:</div>
+      <div style="font-size:12px;color:var(--text-dim);margin:12px 0 8px">${t('topSourceCountries')}</div>
       ${sourceHtml}
       <div class="migration-text">${yr.migration.explanation}</div>
     </div>
   `;
-  
   panel.classList.add('open');
   overlay.classList.add('visible');
 }
@@ -842,11 +984,34 @@ function closeDetailPanel() {
   selectedCountry = null;
 }
 
+// ===================== LANGUAGE SWITCHING =====================
+function updateUILanguage() {
+  document.getElementById('main-title').textContent = t('mainTitle');
+  document.getElementById('search').placeholder = t('searchPlaceholder');
+  document.getElementById('tier1-title').textContent = t('tier1Title');
+  document.getElementById('tier1-desc').textContent = t('tier1Desc');
+  document.getElementById('tier2-title').textContent = t('tier2Title');
+  document.getElementById('tier2-desc').textContent = t('tier2Desc');
+  document.getElementById('heatmap-title').textContent = t('heatmapTitle');
+  document.getElementById('heatmap-desc').textContent = t('heatmapDesc');
+  document.getElementById('flow-title').textContent = t('flowTitle');
+  document.getElementById('flow-desc').textContent = t('flowDesc');
+  document.getElementById('corridor-growth-title').textContent = t('corridorGrowthTitle');
+  document.getElementById('corridor-growth-desc').textContent = t('corridorGrowthDesc');
+  document.getElementById('skill-title').textContent = t('skillTitle');
+  document.getElementById('skill-desc').textContent = t('skillDesc');
+  document.getElementById('prof-title').textContent = t('profTitle');
+  document.getElementById('prof-desc').textContent = t('profDesc');
+  document.querySelector('.legend-title').textContent = t('legendTitle');
+  document.title = t('mainTitle') + ' | 2030-2040';
+  renderDashboard();
+  if (selectedCountry) openDetailPanel(selectedCountry);
+}
+
 // ===================== EVENT HANDLERS =====================
 document.getElementById('panel-close').addEventListener('click', closeDetailPanel);
 document.getElementById('overlay').addEventListener('click', closeDetailPanel);
 
-// Year toggle
 document.querySelectorAll('.year-btn').forEach(btn => {
   btn.addEventListener('click', function() {
     document.querySelectorAll('.year-btn').forEach(b => b.classList.remove('active'));
@@ -858,14 +1023,21 @@ document.querySelectorAll('.year-btn').forEach(btn => {
   });
 });
 
-// Search
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    currentLang = this.dataset.lang;
+    updateUILanguage();
+  });
+});
+
 let searchTimeout;
 document.getElementById('search').addEventListener('input', function(e) {
   clearTimeout(searchTimeout);
   searchTimeout = setTimeout(() => {
     searchTerm = e.target.value.trim();
     renderMap();
-    // Also filter dashboard
     document.querySelectorAll('.bar-row').forEach(row => {
       const label = row.querySelector('.bar-label')?.textContent.toLowerCase() || '';
       row.style.opacity = !searchTerm || label.includes(searchTerm.toLowerCase()) ? '1' : '0.2';
@@ -873,10 +1045,7 @@ document.getElementById('search').addEventListener('input', function(e) {
   }, 200);
 });
 
-// Window resize
 window.addEventListener('resize', () => { if (worldData) renderMap(); });
-
-// Keyboard
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDetailPanel(); });
 
 // ===================== INIT =====================
