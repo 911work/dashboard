@@ -686,7 +686,133 @@ const CORRIDOR_DATA = [
    note_ru:"Быстрорастущий. Непальские студенты конвертируют в рабочие визы. Гостеприимство, здравоохранение, строительство."},
   {source:"Vietnam",target:"Australia",y2024:8000,y2030:12000,y2035:16000,y2040:20000,
    note_en:"Growing corridor. Vietnamese community established. Agriculture, food processing, and hospitality workers.",
-   note_ru:"Растущий коридор. Вьетнамская община устоялась. С/х, пищевое производство, гостеприимство."}
+   note_ru:"Растущий коридор. Вьетнамская община устоялась. С/х, пищевое производство, гостеприимство."},
+
+  // === ADDITIONAL CORRIDORS to ensure 5+ destinations per major source ===
+
+  // Bangladesh → 5 destinations (was only Italy)
+  {source:"Bangladesh",target:"United Kingdom",y2024:18000,y2030:25000,y2035:35000,y2040:45000,
+   note_en:"Growing corridor. Bangladeshi restaurant workers (Brick Lane legacy), NHS care workers. English-speaking, Commonwealth ties.",
+   note_ru:"Растущий коридор. Бангладешские работники ресторанов, сиделки NHS. Англоязычные, связи Содружества."},
+  {source:"Bangladesh",target:"Portugal",y2024:8000,y2030:14000,y2035:20000,y2040:28000,
+   note_en:"Emerging corridor. Bangladesh is now Portugal's fastest-growing migrant community. Construction, agriculture, hospitality. Low wage threshold attracts workers.",
+   note_ru:"Развивающийся коридор. Бангладеш — самая быстрорастущая община мигрантов в Португалии. Строительство, с/х, гостеприимство."},
+  {source:"Bangladesh",target:"Japan",y2024:6000,y2030:12000,y2035:20000,y2040:30000,
+   note_en:"Growing under SSW program. Manufacturing and food processing. Bangladesh's 170M people with median age 28 provides large labor pool.",
+   note_ru:"Рост по программе SSW. Производство и пищепром. 170M населения Бангладеш с медианой 28 — большой пул."},
+  {source:"Bangladesh",target:"South Korea",y2024:5000,y2030:10000,y2035:16000,y2040:22000,
+   note_en:"E-9 visa program corridor. Manufacturing and agriculture. South Korea's rapid aging drives expansion of bilateral labor programs.",
+   note_ru:"Коридор программы E-9. Производство и с/х. Быстрое старение Кореи расширяет двусторонние программы."},
+
+  // Nigeria → 5 destinations (was only Canada + UK)
+  {source:"Nigeria",target:"United States",y2024:15000,y2030:22000,y2035:32000,y2040:42000,
+   note_en:"Diversity visa + skilled migration. Nigerian professionals in healthcare, IT, finance. Fastest-growing African source for US.",
+   note_ru:"Визовая лотерея + квалифицированная миграция. Нигерийские профессионалы в медицине, IT, финансах."},
+  {source:"Nigeria",target:"Germany",y2024:5000,y2030:10000,y2035:18000,y2040:28000,
+   note_en:"Emerging corridor. German Opportunity Card opens doors. Young English-speaking professionals in IT and healthcare. Fastest-growing non-traditional source.",
+   note_ru:"Развивающийся коридор. Opportunity Card открывает двери. Молодые англоязычные профессионалы в IT и медицине."},
+  {source:"Nigeria",target:"Ireland",y2024:4000,y2030:8000,y2035:12000,y2040:18000,
+   note_en:"Growing corridor. English-speaking, ties through education. Nigerian community in Ireland growing via healthcare and tech recruitment.",
+   note_ru:"Растущий коридор. Англоязычные, связи через образование. Нигерийская община растёт через рекрутинг медиков и IT."},
+
+  // Vietnam → 5 destinations (was only Japan + Australia)
+  {source:"Vietnam",target:"South Korea",y2024:22000,y2030:30000,y2035:38000,y2040:42000,
+   note_en:"Major E-9 visa corridor. Vietnam is South Korea's #1 source of migrant workers. Manufacturing, construction, agriculture.",
+   note_ru:"Крупный коридор виз E-9. Вьетнам — источник №1 трудовых мигрантов Кореи. Производство, строительство, с/х."},
+  {source:"Vietnam",target:"Germany",y2024:5000,y2030:10000,y2035:18000,y2040:25000,
+   note_en:"Growing corridor. Historical Vietnamese community in eastern Germany (30K+). New nursing and IT recruitment programs expanding rapidly.",
+   note_ru:"Растущий коридор. Историческая вьетнамская община в восточной Германии (30K+). Новые программы медсестёр и IT."},
+  {source:"Vietnam",target:"Taiwan",y2024:35000,y2030:42000,y2035:48000,y2040:50000,
+   note_en:"Taiwan's #1 source of migrant workers. Factory workers, caregivers, fishery workers. Bilateral labor agreement since 1999. Stabilizing as Vietnam develops.",
+   note_ru:"Источник №1 трудовых мигрантов Тайваня. Фабричные рабочие, сиделки, рыбаки. Двустороннее соглашение с 1999."},
+
+  // China → 5 destinations (was only US, Canada, Japan, Australia)
+  {source:"China",target:"United Kingdom",y2024:18000,y2030:22000,y2035:20000,y2040:18000,
+   note_en:"Student and professional migration. Plateauing due to geopolitical tensions and China's own development. Finance and STEM sectors.",
+   note_ru:"Студенческая и профессиональная миграция. Выходит на плато из-за геополитики и развития Китая. Финансы и STEM."},
+
+  // Nepal → 5 destinations (was only Japan, Poland, Australia)
+  {source:"Nepal",target:"South Korea",y2024:8000,y2030:14000,y2035:20000,y2040:26000,
+   note_en:"E-9 visa program. Manufacturing and agriculture. Nepal's very young population (median 25) and limited domestic opportunities.",
+   note_ru:"Программа виз E-9. Производство и с/х. Молодое население Непала (медиана 25) и ограниченные возможности дома."},
+  {source:"Nepal",target:"United Kingdom",y2024:10000,y2030:15000,y2035:20000,y2040:25000,
+   note_en:"Gurkha legacy + healthcare recruitment. British Army ties create established community. Growing rapidly in care sector.",
+   note_ru:"Наследие гуркхов + рекрутинг медиков. Связи с британской армией. Быстрый рост в секторе ухода."},
+
+  // Morocco → 5 destinations (was only France + Italy)
+  {source:"Morocco",target:"Spain",y2024:35000,y2030:42000,y2035:48000,y2040:52000,
+   note_en:"Proximity corridor (14km across Strait of Gibraltar). Agriculture, construction, tourism. Spain's 2nd-largest foreign community.",
+   note_ru:"Коридор близости (14км через Гибралтарский пролив). С/х, строительство, туризм. 2-я по величине иностранная община Испании."},
+  {source:"Morocco",target:"Belgium",y2024:10000,y2030:12000,y2035:14000,y2040:15000,
+   note_en:"Francophone corridor to Brussels/Wallonia. Established diaspora (500K+). Family reunification and skilled workers. Stabilizing.",
+   note_ru:"Франкоязычный коридор в Брюссель/Валлонию. Устоявшаяся диаспора (500K+). Воссоединение семей, стабилизируется."},
+  {source:"Morocco",target:"Netherlands",y2024:8000,y2030:10000,y2035:11000,y2040:12000,
+   note_en:"Legacy guest worker corridor (1960s). Large Moroccan-Dutch community (400K+). Family reunification dominant. Stable but not growing fast.",
+   note_ru:"Наследие гастарбайтерского коридора (1960-е). Большая марокканско-нидерландская община (400K+). Стабильный."},
+
+  // Pakistan → 5 destinations (was only Canada + UK)
+  {source:"Pakistan",target:"United States",y2024:12000,y2030:16000,y2035:20000,y2040:25000,
+   note_en:"Diversity visa + skilled workers. Pakistani IT and medical professionals. Growing but smaller than Indian corridor.",
+   note_ru:"Визовая лотерея + специалисты. Пакистанские IT и медики. Растёт, но меньше индийского коридора."},
+  {source:"Pakistan",target:"Germany",y2024:5000,y2030:8000,y2035:14000,y2040:20000,
+   note_en:"Emerging. Opportunity Card expands access. Engineering and IT graduates. Small but fast-growing corridor.",
+   note_ru:"Развивающийся. Opportunity Card расширяет доступ. Инженеры и IT-выпускники. Маленький, но быстрорастущий."},
+  {source:"Pakistan",target:"Italy",y2024:8000,y2030:12000,y2035:16000,y2040:20000,
+   note_en:"Established community (150K+ in Italy). Restaurant, retail, and small business workers. Family reunification adds steady volume.",
+   note_ru:"Устоявшаяся община (150K+ в Италии). Рестораны, розничная торговля, малый бизнес. Воссоединение семей."},
+
+  // Indonesia → 5 destinations (was only Japan)
+  {source:"Indonesia",target:"South Korea",y2024:12000,y2030:18000,y2035:25000,y2040:32000,
+   note_en:"E-9 visa corridor. Manufacturing and fishery. Indonesia's 270M population with median age 30 — enormous labor reserve.",
+   note_ru:"Коридор виз E-9. Производство и рыболовство. 270M населения Индонезии с медианой 30 — огромный резерв."},
+  {source:"Indonesia",target:"Taiwan",y2024:28000,y2030:32000,y2035:35000,y2040:38000,
+   note_en:"Taiwan's #2 source (after Vietnam). Caregivers and factory workers. Bilateral agreement. Stabilizing as Indonesia develops.",
+   note_ru:"Источник №2 для Тайваня (после Вьетнама). Сиделки и фабричные рабочие. Стабилизируется по мере развития."},
+  {source:"Indonesia",target:"Australia",y2024:5000,y2030:8000,y2035:12000,y2040:16000,
+   note_en:"Growing. Student-to-skilled pathway. Hospitality, agriculture, aged care. Geographic proximity drives corridor growth.",
+   note_ru:"Растущий. Путь студент→специалист. Гостеприимство, с/х, уход за пожилыми. Географическая близость."},
+  {source:"Indonesia",target:"Singapore",y2024:18000,y2030:22000,y2035:25000,y2040:28000,
+   note_en:"Proximity corridor. Domestic workers, construction, services. Malay language proximity. Singapore's largest foreign workforce.",
+   note_ru:"Коридор близости. Домработницы, строительство, сервис. Языковая близость (малайский). Крупнейшая иностранная рабсила Сингапура."},
+
+  // Ukraine → additional destinations (was only Poland)
+  {source:"Ukraine",target:"Czech Republic",y2024:25000,y2030:22000,y2035:18000,y2040:15000,
+   note_en:"War-driven spike, now DECLINING. Czech Republic was a major refugee destination. Manufacturing and construction. Demographic collapse reduces supply.",
+   note_ru:"Всплеск из-за войны, теперь СНИЖАЕТСЯ. Чехия была крупным направлением беженцев. Производство и строительство."},
+  {source:"Ukraine",target:"Germany",y2024:40000,y2030:35000,y2035:28000,y2040:22000,
+   note_en:"Post-2022 refugee corridor. DECLINING as Ukraine's population collapses. Many refugees integrating permanently but new flows slow.",
+   note_ru:"Беженский коридор после 2022. СНИЖАЕТСЯ по мере коллапса населения Украины. Многие интегрируются, но новые потоки падают."},
+  {source:"Ukraine",target:"Canada",y2024:12000,y2030:10000,y2035:8000,y2040:6000,
+   note_en:"CUAET program (2022) brought 180K+ Ukrainians. Now DECLINING sharply as program closed and Ukraine's population shrinks.",
+   note_ru:"Программа CUAET (2022) привезла 180K+ украинцев. РЕЗКО СНИЖАЕТСЯ — программа закрыта, население Украины сокращается."},
+  {source:"Ukraine",target:"Italy",y2024:15000,y2030:12000,y2035:10000,y2040:8000,
+   note_en:"Established pre-war community (240K+). Domestic work and care sector. DECLINING as Ukraine's working-age population shrinks.",
+   note_ru:"Устоявшаяся довоенная община (240K+). Домашняя работа и уход. СНИЖАЕТСЯ по мере сокращения трудоспособного населения."},
+
+  // Turkey → additional destinations (was only Germany)
+  {source:"Turkey",target:"Netherlands",y2024:8000,y2030:7000,y2035:6000,y2040:5000,
+   note_en:"Legacy guest worker corridor (1960s). 400K+ Turkish-Dutch community. DECLINING — Turkey's fertility below replacement.",
+   note_ru:"Наследие гастарбайтерского коридора (1960-е). 400K+ турко-нидерландская община. СНИЖАЕТСЯ."},
+  {source:"Turkey",target:"United Kingdom",y2024:6000,y2030:7000,y2035:8000,y2040:9000,
+   note_en:"Small but growing. Student and professional migration. Turkish Cypriot community provides network. IT and hospitality sectors.",
+   note_ru:"Маленький, но растущий. Студенты и профессионалы. Кипрско-турецкая община. IT и гостеприимство."},
+  {source:"Turkey",target:"Austria",y2024:12000,y2030:10000,y2035:8000,y2040:7000,
+   note_en:"Historic corridor (300K+ Turkish community in Austria). DECLINING same as Germany — Turkey's aging population reduces emigration pressure.",
+   note_ru:"Исторический коридор (300K+ турок в Австрии). СНИЖАЕТСЯ как и в Германии — старение Турции снижает давление."},
+  {source:"Turkey",target:"France",y2024:5000,y2030:5000,y2035:4000,y2040:4000,
+   note_en:"Small stable corridor. Turkish community concentrated in Alsace/Lyon. Family reunification. Flat trajectory.",
+   note_ru:"Маленький стабильный коридор. Турецкая община в Эльзасе/Лионе. Воссоединение семей. Плоская траектория."},
+
+  // Romania → additional destinations (was only Germany + Italy)
+  {source:"Romania",target:"Spain",y2024:20000,y2030:18000,y2035:15000,y2040:12000,
+   note_en:"Major EU free movement corridor. 700K+ Romanians in Spain. DECLINING as Romania's population shrinks and wages converge.",
+   note_ru:"Крупный коридор свободного перемещения ЕС. 700K+ румын в Испании. СНИЖАЕТСЯ по мере конвергенции зарплат."},
+  {source:"Romania",target:"United Kingdom",y2024:12000,y2030:10000,y2035:8000,y2040:6000,
+   note_en:"Post-Brexit decline. Was major corridor pre-2021. Now requires visa/points. DECLINING as Romania ages and Brexit adds barriers.",
+   note_ru:"Спад после Brexit. Был крупным коридором до 2021. Теперь нужна виза. СНИЖАЕТСЯ из-за старения Румынии и барьеров Brexit."},
+  {source:"Romania",target:"Austria",y2024:8000,y2030:7000,y2035:5000,y2040:4000,
+   note_en:"EU free movement. Construction and healthcare. Small, DECLINING as Romania's youth population shrinks.",
+   note_ru:"Свободное перемещение ЕС. Строительство и здравоохранение. Маленький, СНИЖАЕТСЯ."}
 ];
 
 // Convert to per-year format for backward compatibility
