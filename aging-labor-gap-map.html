@@ -169,14 +169,22 @@ header h1{font-size:18px;font-weight:600;white-space:nowrap;background:linear-gr
 </div>
 </div>
 <h3 class="section-title" id="wave-title">Migration Demand Dynamics: 2024 → 2040</h3>
-<p class="section-desc" id="wave-desc">How annual migration demand grows over time. Select a country to highlight it, or view all countries together. The area shows the total volume across all tracked economies.</p>
+<p class="section-desc" id="wave-desc">Wave chart showing migration demand growth. Switch between total demand, education pathway only, or by destination. Right panel explains policy changes driving trends.</p>
 <div class="chart-container" style="position:relative">
 <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center;flex-wrap:wrap">
+<div style="display:flex;gap:3px;background:var(--accent);border-radius:8px;padding:2px">
+<button class="year-btn active" id="wave-mode-total" onclick="setWaveMode('total')">Total</button>
+<button class="year-btn" id="wave-mode-edu" onclick="setWaveMode('edu')">Education</button>
+<button class="year-btn" id="wave-mode-dest" onclick="setWaveMode('dest')">By destination</button>
+</div>
 <select id="wave-country-select" onchange="renderWaveChart()" style="padding:6px 12px;background:var(--accent);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;font-family:inherit;cursor:pointer;min-width:180px">
 <option value="all">All countries (total)</option>
 </select>
 </div>
-<div id="wave-chart"></div>
+<div style="display:flex;gap:16px">
+<div style="flex:7" id="wave-chart"></div>
+<div style="flex:3;font-size:10px;color:var(--text-dim);line-height:1.6;max-height:400px;overflow-y:auto" id="wave-policy"></div>
+</div>
 </div>
 <h3 class="section-title" id="flow-title">Top Migration Corridors</h3>
 <p class="section-desc" id="flow-desc">Each bar is split by migration channel. Click any corridor for details.</p>
@@ -196,9 +204,6 @@ header h1{font-size:18px;font-weight:600;white-space:nowrap;background:linear-gr
 <h3 class="section-title" id="corridor-growth-title">Migration Corridor Growth: 2030 → 2035 → 2040</h3>
 <p class="section-desc" id="corridor-growth-desc">How projected migration demand changes over time along each corridor. Most corridors show 40-80% growth over the decade.</p>
 <div class="chart-container" id="corridor-growth"></div>
-<h3 class="section-title" id="edu-dashboard-title">Education Migration Dashboard: Top 10 Destinations</h3>
-<p class="section-desc" id="edu-dashboard-desc">How many students-turned-workers each country attracts via education pathway, where they come from, and why the numbers change (policy shifts, visa reforms, quota changes).</p>
-<div id="edu-migration-dashboard"></div>
 <div id="migration-economics-block"></div>
 <h3 class="section-title" id="skill-title">Skill &amp; Profession Demand by Country</h3>
 <p class="section-desc" id="skill-desc">Breakdown of workforce needs: blue-collar (manual/technical trades), grey-collar (healthcare, services), and white-collar (office/professional) roles. Percentages show the share of total demand.</p>
@@ -1067,7 +1072,6 @@ function renderDashboard() {
   renderHeatmap();
   renderFlowDiagram();
   renderCorridorGrowth();
-  renderEduDashboard();
   renderMigrationEconomics();
   renderSkillChart();
   renderProfessionChart();
@@ -1769,6 +1773,18 @@ function renderProfessionChart() {
 
 
 // ===================== WAVE CHART =====================
+let waveMode = 'total'; // 'total', 'edu', 'dest'
+
+function setWaveMode(mode) {
+  waveMode = mode;
+  document.querySelectorAll('#wave-mode-total,#wave-mode-edu,#wave-mode-dest').forEach(b => b.classList.remove('active'));
+  document.getElementById('wave-mode-' + mode).classList.add('active');
+  // Show/hide country select based on mode
+  const sel = document.getElementById('wave-country-select');
+  sel.style.display = (mode === 'dest') ? 'none' : 'block';
+  renderWaveChart();
+}
+
 function initWaveSelect() {
   const sel = document.getElementById('wave-country-select');
   const allLabel = currentLang==='ru' ? 'Все страны (общий)' : 'All countries (total)';
@@ -1780,108 +1796,172 @@ function initWaveSelect() {
 
 function renderWaveChart() {
   const container = document.getElementById('wave-chart');
+  const policyPanel = document.getElementById('wave-policy');
   const sel = document.getElementById('wave-country-select');
   const selectedId = sel.value;
+  const isRu = currentLang === 'ru';
   const years = [2024, 2030, 2035, 2040];
-  const countries = getAllCountries();
 
-  const w = container.clientWidth || 700;
-  const h = 320;
-  const pad = {top:20, right:30, bottom:40, left:65};
-  const cw = w - pad.left - pad.right;
-  const ch = h - pad.top - pad.bottom;
+  // ==================== MODE: BY DESTINATION (education, multi-line) ====================
+  if (waveMode === 'dest') {
+    const eduCountries = Object.keys(EDU_MIGRATION);
+    const colors = ['#e94560','#3498db','#2ecc71','#f1c40f','#e67e22','#9b59b6','#1abc9c','#e74c3c','#3498db','#f39c12'];
+    const yrs = [2024, 2030, 2035];
+    let allVals = [];
+    eduCountries.forEach(cn => { yrs.forEach(yr => allVals.push(EDU_MIGRATION[cn].total[yr] || 0)); });
+    const maxY = Math.max(...allVals) * 1.15;
 
-  // Compute data
-  let mainData, maxY;
-  if (selectedId === 'all') {
-    mainData = years.map(yr => ({
-      year: yr,
-      value: countries.reduce((s, c) => s + (c.years[yr]?.totalVacancies || 0), 0)
-    }));
-    maxY = Math.max(...mainData.map(d => d.value)) * 1.15;
-  } else {
-    const c = COUNTRY_DATA[selectedId];
-    mainData = years.map(yr => ({
-      year: yr,
-      value: c.years[yr]?.totalVacancies || 0
-    }));
-    maxY = Math.max(...mainData.map(d => d.value)) * 1.15;
-  }
+    const w = container.clientWidth || 500;
+    const h = 380;
+    const pad = {top:20,right:20,bottom:40,left:55};
+    const cw = w-pad.left-pad.right, ch = h-pad.top-pad.bottom;
+    const xScale = yr => pad.left + (yrs.indexOf(yr) / (yrs.length-1)) * cw;
+    const yScale = v => pad.top + ch - (v/maxY)*ch;
 
-  const xScale = (yr) => pad.left + (years.indexOf(yr) / (years.length - 1)) * cw;
-  const yScale = (v) => pad.top + ch - (v / maxY) * ch;
+    let svg = `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}">`;
+    // Grid
+    for (let i=0;i<=5;i++) { const v=(maxY/5)*i,y=yScale(v); svg+=`<line x1="${pad.left}" y1="${y}" x2="${w-pad.right}" y2="${y}" stroke="rgba(255,255,255,.06)"/><text x="${pad.left-6}" y="${y+4}" text-anchor="end" font-size="9" fill="#8892a0">${fmt(Math.round(v))}</text>`; }
+    yrs.forEach(yr => { svg+=`<text x="${xScale(yr)}" y="${h-10}" text-anchor="middle" font-size="11" fill="#e0e0e0">${yr}</text>`; });
+    // Divider
+    const divX = (xScale(2024)+xScale(2030))/2;
+    svg+=`<line x1="${divX}" y1="${pad.top}" x2="${divX}" y2="${pad.top+ch}" stroke="rgba(255,255,255,.15)" stroke-dasharray="4,4"/>`;
 
-  // SVG
-  let svg = `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}">`;
-
-  // Grid lines
-  const gridSteps = 5;
-  for (let i = 0; i <= gridSteps; i++) {
-    const val = (maxY / gridSteps) * i;
-    const y = yScale(val);
-    svg += `<line x1="${pad.left}" y1="${y}" x2="${w-pad.right}" y2="${y}" stroke="rgba(255,255,255,.07)" stroke-width="1"/>`;
-    svg += `<text x="${pad.left-8}" y="${y+4}" text-anchor="end" font-size="10" fill="#8892a0">${fmt(Math.round(val))}</text>`;
-  }
-
-  // X axis labels
-  years.forEach(yr => {
-    const x = xScale(yr);
-    svg += `<text x="${x}" y="${h-10}" text-anchor="middle" font-size="12" fill="#e0e0e0" font-weight="${yr<=2025?'700':'400'}">${yr}${yr<=2025?' ●':''}</text>`;
-  });
-
-  // If "all" mode, draw individual country lines faintly behind
-  if (selectedId === 'all') {
-    const top10 = countries.slice(0, 10);
-    top10.forEach((c, ci) => {
-      const pts = years.map(yr => {
-        const v = c.years[yr]?.totalVacancies || 0;
-        // Scale to total view (use total maxY)
-        return `${xScale(yr)},${yScale(v * countries.length / 3)}`;
+    // Lines per country
+    eduCountries.forEach((cn, ci) => {
+      const d = EDU_MIGRATION[cn];
+      const col = colors[ci % colors.length];
+      let line = '';
+      yrs.forEach((yr,i) => { line += `${i===0?'M':'L'} ${xScale(yr)},${yScale(d.total[yr]||0)}`; });
+      svg += `<path d="${line}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round" opacity="0.8"/>`;
+      // Points
+      yrs.forEach(yr => {
+        const x=xScale(yr), y=yScale(d.total[yr]||0);
+        svg += `<circle cx="${x}" cy="${y}" r="3.5" fill="${col}" stroke="#fff" stroke-width="1"/>`;
       });
-      // Too complex to show individual on total scale, skip
+      // Label at end
+      const lastY = yScale(d.total[2035]||0);
+      const cd = Object.values(COUNTRY_DATA).find(c => c.name === cn);
+      svg += `<text x="${xScale(2035)+8}" y="${lastY+4}" font-size="9" fill="${col}" font-weight="600">${cd?cd.flag:''} ${fmt(d.total[2035])}</text>`;
     });
+    svg += '</svg>';
+    container.innerHTML = svg;
+
+    // Policy panel — show all countries
+    let pol = `<div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:10px">${isRu?'Политика по странам':'Policy by country'}</div>`;
+    eduCountries.forEach((cn, ci) => {
+      const d = EDU_MIGRATION[cn];
+      const cd = Object.values(COUNTRY_DATA).find(c => c.name === cn);
+      const t24=d.total[2024], t35=d.total[2035];
+      const gr = ((t35-t24)/t24*100).toFixed(0);
+      const col = colors[ci%colors.length];
+      pol += `<div style="margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)">
+        <div style="font-weight:600;color:${col};margin-bottom:3px">${cd?cd.flag:''} ${cn} <span style="color:var(--text-dim)">${fmt(t24)}→${fmt(t35)} (${gr>0?'+':''}${gr}%)</span></div>
+        <div style="font-size:9px">${isRu?d.policy_ru:d.policy_en}</div>
+      </div>`;
+    });
+    policyPanel.innerHTML = pol;
+    return;
   }
 
-  // Area fill
-  let areaPath = `M ${xScale(years[0])},${yScale(0)}`;
-  mainData.forEach(d => areaPath += ` L ${xScale(d.year)},${yScale(d.value)}`);
-  areaPath += ` L ${xScale(years[years.length-1])},${yScale(0)} Z`;
+  // ==================== MODE: TOTAL or EDUCATION ====================
+  const countries = getAllCountries();
+  let mainData, maxY, policyText = '';
 
-  const gradId = 'waveGrad' + selectedId;
-  svg += `<defs><linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0%" stop-color="var(--highlight)" stop-opacity="0.4"/>
-    <stop offset="100%" stop-color="var(--highlight)" stop-opacity="0.05"/>
-  </linearGradient></defs>`;
-  svg += `<path d="${areaPath}" fill="url(#${gradId})"/>`;
+  if (waveMode === 'edu') {
+    // Education mode — use EDU_MIGRATION data
+    if (selectedId === 'all') {
+      mainData = years.map(yr => {
+        const yrKey = yr <= 2035 ? yr : 2035; // EDU_MIGRATION only has up to 2035, extrapolate 2040
+        let total = 0;
+        Object.values(EDU_MIGRATION).forEach(d => { total += d.total[yrKey] || 0; });
+        if (yr === 2040) total = Math.round(total * 1.2); // ~20% growth 2035→2040
+        return {year:yr, value:total};
+      });
+      policyText = isRu
+        ? '<b>Образовательная миграция глобально:</b> Канада, UK, Австралия — ужесточают в 2024, спад к 2030, восстановление к 2035. Германия и Япония — либерализуют, сильный рост. Китай как источник снижается ВЕЗДЕ (своя экономика + геополитика). Индия растёт ВЕЗДЕ. Африка — новый фронтир.'
+        : '<b>Education migration globally:</b> Canada, UK, Australia tightening in 2024 → dip by 2030 → recovery by 2035. Germany and Japan liberalizing → strong growth. China declining as source EVERYWHERE (own economy + geopolitics). India growing EVERYWHERE. Africa = new frontier.';
+    } else {
+      const c = COUNTRY_DATA[selectedId];
+      const eduData = EDU_MIGRATION[c?.name];
+      if (eduData) {
+        mainData = years.map(yr => {
+          const yrKey = yr <= 2035 ? yr : 2035;
+          let val = eduData.total[yrKey] || 0;
+          if (yr === 2040) val = Math.round(val * 1.2);
+          return {year:yr, value:val};
+        });
+        policyText = isRu ? eduData.policy_ru : eduData.policy_en;
+        // Add source breakdown
+        policyText += '<br><br><b>' + (isRu?'Откуда едут:':'Sources:') + '</b><br>';
+        eduData.sources.forEach(s => {
+          const sf = FLAG_MAP[s.country] || '';
+          policyText += `${sf} ${s.country}: ${fmt(s[2024])}→${fmt(s[2030])}→${fmt(s[2035])}<br>`;
+        });
+      } else {
+        mainData = years.map(yr => ({year:yr, value:0}));
+        policyText = isRu ? 'Нет данных по образовательной миграции для этой страны' : 'No education migration data for this country';
+      }
+    }
+  } else {
+    // Total mode
+    if (selectedId === 'all') {
+      mainData = years.map(yr => ({
+        year: yr, value: countries.reduce((s, c) => s + (c.years[yr]?.totalVacancies || 0), 0)
+      }));
+      policyText = isRu ? 'Общий спрос на мигрантов по всем 33 отслеживаемым странам. Зелёная точка — фактические данные 2024.' : 'Total migration demand across all 33 tracked countries. Green dot = actual 2024 data.';
+    } else {
+      const c = COUNTRY_DATA[selectedId];
+      mainData = years.map(yr => ({year:yr, value:c.years[yr]?.totalVacancies || 0}));
+      policyText = isRu ? `Динамика миграционного спроса: ${c.name}` : `Migration demand dynamics: ${c.name}`;
+    }
+  }
+
+  maxY = Math.max(...mainData.map(d => d.value)) * 1.15 || 1;
+
+  const w = container.clientWidth || 500;
+  const h = 340;
+  const pad = {top:20,right:20,bottom:40,left:55};
+  const cw = w-pad.left-pad.right, ch = h-pad.top-pad.bottom;
+  const xScale = yr => pad.left + (years.indexOf(yr)/(years.length-1))*cw;
+  const yScale = v => pad.top + ch - (v/maxY)*ch;
+
+  let svg = `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}">`;
+  // Grid
+  for (let i=0;i<=5;i++) { const v=(maxY/5)*i,y=yScale(v); svg+=`<line x1="${pad.left}" y1="${y}" x2="${w-pad.right}" y2="${y}" stroke="rgba(255,255,255,.06)"/><text x="${pad.left-6}" y="${y+4}" text-anchor="end" font-size="9" fill="#8892a0">${fmt(Math.round(v))}</text>`; }
+  years.forEach(yr => { const x=xScale(yr); svg+=`<text x="${x}" y="${h-10}" text-anchor="middle" font-size="11" fill="#e0e0e0" font-weight="${yr<=2025?'700':'400'}">${yr}</text>`; });
+
+  // Divider
+  const divX = (xScale(2024)+xScale(2030))/2;
+  svg+=`<line x1="${divX}" y1="${pad.top}" x2="${divX}" y2="${pad.top+ch}" stroke="rgba(255,255,255,.15)" stroke-dasharray="4,4"/>`;
+  svg+=`<text x="${divX-4}" y="${pad.top+12}" text-anchor="end" font-size="8" fill="#8892a0">${isRu?'факт':'actual'}</text>`;
+  svg+=`<text x="${divX+4}" y="${pad.top+12}" text-anchor="start" font-size="8" fill="#8892a0">${isRu?'прогноз':'projected'}</text>`;
+
+  // Area
+  const areaColor = waveMode==='edu' ? '#e94560' : '#3498db';
+  let area = `M ${xScale(years[0])},${yScale(0)}`;
+  mainData.forEach(d => area += ` L ${xScale(d.year)},${yScale(d.value)}`);
+  area += ` L ${xScale(years[years.length-1])},${yScale(0)} Z`;
+  const gid = 'wg'+waveMode+selectedId;
+  svg += `<defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${areaColor}" stop-opacity="0.35"/><stop offset="100%" stop-color="${areaColor}" stop-opacity="0.03"/></linearGradient></defs>`;
+  svg += `<path d="${area}" fill="url(#${gid})"/>`;
 
   // Line
-  let linePath = '';
-  mainData.forEach((d, i) => {
-    linePath += `${i===0?'M':'L'} ${xScale(d.year)},${yScale(d.value)}`;
-  });
-  svg += `<path d="${linePath}" fill="none" stroke="var(--highlight)" stroke-width="3" stroke-linejoin="round"/>`;
+  let line='';
+  mainData.forEach((d,i) => { line += `${i===0?'M':'L'} ${xScale(d.year)},${yScale(d.value)}`; });
+  svg += `<path d="${line}" fill="none" stroke="${areaColor}" stroke-width="3" stroke-linejoin="round"/>`;
 
   // Points + labels
-  mainData.forEach((d, i) => {
-    const x = xScale(d.year);
-    const y = yScale(d.value);
+  mainData.forEach(d => {
+    const x=xScale(d.year), y=yScale(d.value);
     const isActual = d.year <= 2025;
-    const color = isActual ? '#2ecc71' : 'var(--highlight)';
-    svg += `<circle cx="${x}" cy="${y}" r="${isActual?6:5}" fill="${color}" stroke="#fff" stroke-width="2"/>`;
+    svg += `<circle cx="${x}" cy="${y}" r="${isActual?6:5}" fill="${isActual?'#2ecc71':areaColor}" stroke="#fff" stroke-width="2"/>`;
     svg += `<text x="${x}" y="${y-14}" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">${fmt(d.value)}</text>`;
-    if (isActual) {
-      svg += `<text x="${x}" y="${y-28}" text-anchor="middle" font-size="9" fill="#2ecc71">${currentLang==='ru'?'факт':'actual'}</text>`;
-    }
+    if (isActual) svg += `<text x="${x}" y="${y-28}" text-anchor="middle" font-size="8" fill="#2ecc71">${isRu?'факт':'actual'}</text>`;
   });
-
-  // Vertical line separating actual from projected
-  const divX = (xScale(2024) + xScale(2030)) / 2;
-  svg += `<line x1="${divX}" y1="${pad.top}" x2="${divX}" y2="${pad.top+ch}" stroke="rgba(255,255,255,.2)" stroke-width="1" stroke-dasharray="4,4"/>`;
-  svg += `<text x="${divX-4}" y="${pad.top+12}" text-anchor="end" font-size="9" fill="#8892a0">${currentLang==='ru'?'факт':'actual'}</text>`;
-  svg += `<text x="${divX+4}" y="${pad.top+12}" text-anchor="start" font-size="9" fill="#8892a0">${currentLang==='ru'?'прогноз':'projected'}</text>`;
 
   svg += '</svg>';
   container.innerHTML = svg;
+  policyPanel.innerHTML = `<div style="padding:4px">${policyText}</div>`;
 }
 
 // ===================== DETAIL PANEL =====================
