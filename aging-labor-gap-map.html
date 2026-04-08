@@ -196,6 +196,9 @@ header h1{font-size:18px;font-weight:600;white-space:nowrap;background:linear-gr
 <h3 class="section-title" id="corridor-growth-title">Migration Corridor Growth: 2030 → 2035 → 2040</h3>
 <p class="section-desc" id="corridor-growth-desc">How projected migration demand changes over time along each corridor. Most corridors show 40-80% growth over the decade.</p>
 <div class="chart-container" id="corridor-growth"></div>
+<h3 class="section-title" id="edu-dashboard-title">Education Migration Dashboard: Top 10 Destinations</h3>
+<p class="section-desc" id="edu-dashboard-desc">How many students-turned-workers each country attracts via education pathway, where they come from, and why the numbers change (policy shifts, visa reforms, quota changes).</p>
+<div id="edu-migration-dashboard"></div>
 <div id="migration-economics-block"></div>
 <h3 class="section-title" id="skill-title">Skill &amp; Profession Demand by Country</h3>
 <p class="section-desc" id="skill-desc">Breakdown of workforce needs: blue-collar (manual/technical trades), grey-collar (healthcare, services), and white-collar (office/professional) roles. Percentages show the share of total demand.</p>
@@ -1064,6 +1067,7 @@ function renderDashboard() {
   renderHeatmap();
   renderFlowDiagram();
   renderCorridorGrowth();
+  renderEduDashboard();
   renderMigrationEconomics();
   renderSkillChart();
   renderProfessionChart();
@@ -1429,6 +1433,197 @@ function renderCorridorGrowth() {
       <div style="width:60px;text-align:right;font-size:10px;font-weight:600;color:${growthColor}">${c.y2040>c.y2024?'+':''}${totalGrowth}%</div>
     </div>`;
   });
+  container.innerHTML = html;
+}
+
+// ===================== EDUCATION MIGRATION DASHBOARD =====================
+const EDU_MIGRATION = {
+"United States": {
+  total:{2024:170000,2030:250000,2035:290000},
+  sources:[
+    {country:"India",2024:75000,2030:110000,2035:130000},
+    {country:"China",2024:55000,2030:50000,2035:42000},
+    {country:"South Korea",2024:8000,2030:10000,2035:11000},
+    {country:"Nigeria",2024:6000,2030:14000,2035:22000},
+    {country:"Vietnam",2024:5000,2030:9000,2035:12000}
+  ],
+  policy_en:"OPT STEM extension (3yr) is the key bridge — ~100K graduates/yr want to stay. H-1B lottery (~25% success) creates bottleneck. CHIPS Act (2022) boosts semiconductor/STEM demand. No major liberalization expected — political gridlock on immigration reform. China declining due to geopolitics; India and Africa growing fast.",
+  policy_ru:"OPT STEM (3 года) — ключевой мост, ~100K выпускников/год хотят остаться. Лотерея H-1B (~25% успех) создаёт узкое горлышко. CHIPS Act (2022) усиливает спрос на STEM. Либерализации не ожидается — политический тупик. Китай снижается из-за геополитики; Индия и Африка растут."},
+"Canada": {
+  total:{2024:145000,2030:120000,2035:140000},
+  sources:[
+    {country:"India",2024:85000,2030:65000,2035:78000},
+    {country:"Philippines",2024:12000,2030:15000,2035:18000},
+    {country:"China",2024:15000,2030:10000,2035:9000},
+    {country:"Nigeria",2024:10000,2030:12000,2035:16000},
+    {country:"Pakistan",2024:8000,2030:8000,2035:10000}
+  ],
+  policy_en:"MAJOR SHIFT: Canada cut student permits 35% in 2024 (from 900K to 600K cap). PGWP restricted — only master's/PhD or shortage-field diplomas qualify. Explains 2024→2030 DIP then recovery by 2035 as new rules stabilize. Indian share drops from 60% to 55%. Nigeria grows as English-speaking alternative.",
+  policy_ru:"РЕЗКИЙ РАЗВОРОТ: Канада сократила студенческие визы на 35% в 2024 (лимит с 900K до 600K). PGWP ограничен — только магистры/PhD или дипломы дефицитных специальностей. Объясняет СПАД 2024→2030, затем восстановление к 2035. Доля Индии падает с 60% до 55%. Нигерия растёт."},
+"United Kingdom": {
+  total:{2024:155000,2030:130000,2035:150000},
+  sources:[
+    {country:"India",2024:65000,2030:55000,2035:65000},
+    {country:"Nigeria",2024:30000,2030:22000,2035:28000},
+    {country:"China",2024:20000,2030:16000,2035:14000},
+    {country:"Pakistan",2024:12000,2030:12000,2035:15000},
+    {country:"Bangladesh",2024:8000,2030:8000,2035:10000}
+  ],
+  policy_en:"TIGHTENING: Graduate Route (2yr post-study) under review — may be cut to 1yr. Dependant ban for students (2024) slashed family visas 81%. Salary threshold raised £26K→£38.7K. Explains 2024→2030 dip. Recovery by 2035 as NHS healthcare recruitment exemptions expand. China declining (geopolitics + HK route).",
+  policy_ru:"УЖЕСТОЧЕНИЕ: Graduate Route (2 года) под пересмотром — могут сократить до 1 года. Запрет иждивенцев студентов (2024) обрушил семейные визы на 81%. Порог зарплаты £26K→£38.7K. Спад 2024→2030. Восстановление к 2035 за счёт исключений для NHS. Китай снижается (геополитика + маршрут HK)."},
+"Australia": {
+  total:{2024:95000,2030:80000,2035:100000},
+  sources:[
+    {country:"India",2024:38000,2030:32000,2035:42000},
+    {country:"China",2024:18000,2030:13000,2035:11000},
+    {country:"Nepal",2024:12000,2030:12000,2035:15000},
+    {country:"Philippines",2024:8000,2030:8000,2035:12000},
+    {country:"Vietnam",2024:5000,2030:5000,2035:7000}
+  ],
+  policy_en:"Student visa lodgements dropped from 600K to 427K in 2024-25 — government crackdown on 'ghost colleges.' Genuine Student Test (GST) replaced GTE. Trades pathway growing — electricians, plumbers valued. 485 Graduate visa shortened from 4yr to 2yr for bachelor's. Recovery by 2035 as aged care demand forces re-opening.",
+  policy_ru:"Студенческие заявки упали с 600K до 427K в 2024-25 — борьба с 'колледжами-призраками'. Genuine Student Test (GST) заменил GTE. Путь через ПТУ растёт — электрики, сантехники. Виза 485 сокращена с 4 до 2 лет для бакалавров. Восстановление к 2035 — спрос на уход за пожилыми."},
+"Germany": {
+  total:{2024:75000,2030:110000,2035:150000},
+  sources:[
+    {country:"India",2024:22000,2030:42000,2035:58000},
+    {country:"China",2024:12000,2030:11000,2035:10000},
+    {country:"Vietnam",2024:5000,2030:10000,2035:15000},
+    {country:"Turkey",2024:8000,2030:8000,2035:7000},
+    {country:"Nigeria",2024:3000,2030:8000,2035:14000}
+  ],
+  policy_en:"LIBERALIZING: Opportunity Card (Chancenkarte, 2024) — come for 1yr to find work without job offer. 18-month post-study job search visa. Bilateral deal with India: target 90K skilled visas/yr. Blue Card threshold lowered to €41K for shortage occupations. German language remains barrier but English-track programs growing 15%/yr. STRONG GROWTH trajectory.",
+  policy_ru:"ЛИБЕРАЛИЗАЦИЯ: Opportunity Card (Chancenkarte, 2024) — приезжай на год искать работу без оффера. 18 мес. поиска работы после учёбы. Соглашение с Индией: цель 90K рабочих виз/год. Blue Card порог снижен до €41K для дефицитных профессий. Немецкий язык — барьер, но англоязычные программы растут на 15%/год. СИЛЬНЫЙ РОСТ."},
+"France": {
+  total:{2024:105000,2030:95000,2035:110000},
+  sources:[
+    {country:"Morocco",2024:25000,2030:24000,2035:26000},
+    {country:"Algeria",2024:18000,2030:16000,2035:17000},
+    {country:"China",2024:12000,2030:10000,2035:9000},
+    {country:"Tunisia",2024:10000,2030:11000,2035:13000},
+    {country:"Senegal",2024:6000,2030:8000,2035:12000}
+  ],
+  policy_en:"Passeport Talent for qualified graduates. APS (1yr post-study job search). Low stay rate (~30%) — salaries uncompetitive vs anglophone countries. Francophone Africa is captive market: shared language, cheaper tuition (€3K vs €30K in UK). Maghreb stable, sub-Saharan Africa growing. 'Bienvenue en France' strategy (2019) targets doubling African students by 2030.",
+  policy_ru:"Passeport Talent для квалифицированных выпускников. APS (1 год поиска работы). Низкий уровень удержания (~30%) — зарплаты неконкурентоспособны. Франкоязычная Африка — естественный рынок: общий язык, дешёвое обучение (€3K vs €30K в UK). Магриб стабилен, суб-Сахара растёт. Стратегия 'Bienvenue en France' (2019) — удвоить африканских студентов к 2030."},
+"Japan": {
+  total:{2024:100000,2030:130000,2035:165000},
+  sources:[
+    {country:"Vietnam",2024:28000,2030:35000,2035:42000},
+    {country:"China",2024:25000,2030:24000,2035:22000},
+    {country:"Nepal",2024:18000,2030:25000,2035:32000},
+    {country:"Indonesia",2024:8000,2030:14000,2035:22000},
+    {country:"Bangladesh",2024:5000,2030:10000,2035:16000}
+  ],
+  policy_en:"Vocational schools (専門学校) bigger pipeline than universities — 45% of conversions. Japanese language schools are the entry point (2yr). New 'Employment for Skill Development' program replaces TITP in 2027 — clearer path to SSW→permanent residence. SSW cap raised to 805K. STRONG GROWTH especially from South/Southeast Asia. China declining as its own economy develops.",
+  policy_ru:"Профтехшколы (専門学校) — больший конвейер чем университеты (45% конверсий). Языковые школы — точка входа (2 года). Новая программа 'Employment for Skill Development' заменяет TITP в 2027 — более чёткий путь к SSW→ПМЖ. Лимит SSW — 805K. СИЛЬНЫЙ РОСТ из Южной/ЮВ Азии. Китай снижается."},
+"South Korea": {
+  total:{2024:48000,2030:62000,2035:80000},
+  sources:[
+    {country:"Vietnam",2024:12000,2030:15000,2035:18000},
+    {country:"China",2024:14000,2030:12000,2035:10000},
+    {country:"Uzbekistan",2024:5000,2030:8000,2035:12000},
+    {country:"Nepal",2024:4000,2030:7000,2035:10000},
+    {country:"Bangladesh",2024:3000,2030:5000,2035:8000}
+  ],
+  policy_en:"D-2 student visa → D-10 job search (6mo) → E-7 professional. Korean language proficiency (TOPIK) required. Government targets 300K international students by 2027 (from 180K in 2023). K-culture soft power attracts Central/South Asian students. China declining; Central Asia and South Asia growing. Stay rate low (~25%) — language barrier.",
+  policy_ru:"D-2 студенческая → D-10 поиск работы (6 мес) → E-7 специалист. Требуется знание корейского (TOPIK). Цель правительства: 300K иностранных студентов к 2027 (с 180K в 2023). K-culture привлекает студентов из Центральной/Южной Азии. Китай снижается; ЦА и ЮА растут. Уровень удержания ~25% — языковой барьер."},
+"Netherlands": {
+  total:{2024:42000,2030:48000,2035:55000},
+  sources:[
+    {country:"Germany",2024:10000,2030:9000,2035:8000},
+    {country:"India",2024:7000,2030:12000,2035:16000},
+    {country:"China",2024:6000,2030:5000,2035:4000},
+    {country:"Italy",2024:4000,2030:4000,2035:4000},
+    {country:"Indonesia",2024:3000,2030:4000,2035:5000}
+  ],
+  policy_en:"'Orientation year' visa (1yr post-study job search) for non-EU graduates. English widely spoken — nearly all master's programs in English. Coalition government (2024) proposed restricting English-language bachelor's to reduce 'overtourism' of students. If enacted, could cap growth. Germany declining (why leave for similar salary?). India growing fast.",
+  policy_ru:"'Ориентационный год' (1 год поиска работы) для не-EU выпускников. Почти все магистратуры на английском. Коалиция (2024) предложила ограничить англоязычные бакалавриаты. Германия снижается (зачем уезжать при схожих зарплатах?). Индия быстро растёт."},
+"Ireland": {
+  total:{2024:22000,2030:28000,2035:35000},
+  sources:[
+    {country:"India",2024:7000,2030:10000,2035:14000},
+    {country:"Brazil",2024:4000,2030:5000,2035:6000},
+    {country:"Nigeria",2024:3000,2030:4000,2035:6000},
+    {country:"China",2024:3000,2030:3000,2035:2000},
+    {country:"Pakistan",2024:2000,2030:3000,2035:4000}
+  ],
+  policy_en:"Third Level Graduate Programme (2yr stay-back for master's, 1yr for bachelor's). Tech multinationals (Google, Meta, Apple) create pull. Stamp 1G visa for graduates. Small but fast-growing. English-speaking + EU access = attractive combination. Housing crisis is the main deterrent — not policy.",
+  policy_ru:"Third Level Graduate Programme (2 года для магистров, 1 год для бакалавров). Технологические гиганты (Google, Meta, Apple) создают тягу. Виза Stamp 1G. Маленький, но быстрорастущий. Английский + доступ к ЕС = привлекательная комбинация. Жилищный кризис — главный сдерживающий фактор, не политика."}
+};
+
+function renderEduDashboard() {
+  const container = document.getElementById('edu-migration-dashboard');
+  const isRu = currentLang === 'ru';
+  let html = '';
+
+  Object.entries(EDU_MIGRATION).forEach(([country, data]) => {
+    const cd = Object.values(COUNTRY_DATA).find(c => c.name === country);
+    const flag = cd ? cd.flag : '';
+    const t24 = data.total[2024], t30 = data.total[2030], t35 = data.total[2035];
+    const growth30 = ((t30-t24)/t24*100).toFixed(0);
+    const growth35 = ((t35-t24)/t24*100).toFixed(0);
+    const trend30 = t30>t24 ? '↗' : '↘';
+    const trend35 = t35>t30 ? '↗' : '↘';
+    const color30 = t30>t24 ? '#2ecc71' : '#e74c3c';
+    const color35 = t35>t30 ? '#2ecc71' : '#e74c3c';
+    const policy = isRu ? data.policy_ru : data.policy_en;
+    const maxSrc = Math.max(...data.sources.map(s => Math.max(s[2024],s[2030],s[2035])));
+
+    html += `<div style="display:flex;gap:16px;margin-bottom:16px;background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden">`;
+
+    // LEFT: 70% — dynamics
+    html += `<div style="flex:7;padding:16px 20px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <span style="font-size:22px">${flag}</span>
+        <span style="font-size:15px;font-weight:700">${country}</span>
+        <span style="font-size:11px;color:var(--text-dim);margin-left:auto">${isRu?'Через образование':'Via education'}</span>
+      </div>
+      <div style="display:flex;gap:12px;margin-bottom:14px">
+        <div style="flex:1;text-align:center;padding:8px;background:rgba(255,255,255,.03);border-radius:8px">
+          <div style="font-size:9px;color:var(--text-dim)">2024</div>
+          <div style="font-size:20px;font-weight:700;color:#8892a0">${fmt(t24)}</div>
+          <div style="font-size:9px;color:var(--text-dim)">${isRu?'факт':'actual'}</div>
+        </div>
+        <div style="flex:1;text-align:center;padding:8px;background:rgba(255,255,255,.03);border-radius:8px">
+          <div style="font-size:9px;color:var(--text-dim)">2030</div>
+          <div style="font-size:20px;font-weight:700;color:${color30}">${fmt(t30)}</div>
+          <div style="font-size:9px;font-weight:600;color:${color30}">${trend30} ${growth30>0?'+':''}${growth30}%</div>
+        </div>
+        <div style="flex:1;text-align:center;padding:8px;background:rgba(255,255,255,.03);border-radius:8px">
+          <div style="font-size:9px;color:var(--text-dim)">2035</div>
+          <div style="font-size:20px;font-weight:700;color:${color35}">${fmt(t35)}</div>
+          <div style="font-size:9px;font-weight:600;color:${color35}">${trend35} ${((t35-t24)/t24*100).toFixed(0)>0?'+':''}${growth35}%</div>
+        </div>
+      </div>`;
+
+    // Source countries mini-chart
+    html += `<div style="font-size:10px;color:var(--text-dim);margin-bottom:6px">${isRu?'Откуда едут учиться:':'Where education migrants come from:'}</div>`;
+    data.sources.forEach(s => {
+      const sf = FLAG_MAP[s.country] || '';
+      html += `<div style="display:flex;align-items:center;gap:4px;margin-bottom:3px;font-size:10px">
+        <div style="width:80px;white-space:nowrap">${sf} ${s.country}</div>
+        <div style="flex:1;display:flex;gap:2px;height:14px">
+          <div style="width:${s[2024]/maxSrc*100}%;background:#8892a0;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#fff;font-weight:600;min-width:20px">${fmt(s[2024])}</div>
+          <div style="width:${s[2030]/maxSrc*100}%;background:#3498db;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#fff;font-weight:600;min-width:20px">${fmt(s[2030])}</div>
+          <div style="width:${s[2035]/maxSrc*100}%;background:var(--highlight);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#fff;font-weight:600;min-width:20px">${fmt(s[2035])}</div>
+        </div>
+      </div>`;
+    });
+    html += `<div style="display:flex;gap:12px;margin-top:6px;font-size:9px;color:var(--text-dim)">
+      <span><span style="display:inline-block;width:8px;height:8px;background:#8892a0;border-radius:1px;margin-right:3px"></span>2024</span>
+      <span><span style="display:inline-block;width:8px;height:8px;background:#3498db;border-radius:1px;margin-right:3px"></span>2030</span>
+      <span><span style="display:inline-block;width:8px;height:8px;background:var(--highlight);border-radius:1px;margin-right:3px"></span>2035</span>
+    </div>`;
+    html += `</div>`;
+
+    // RIGHT: 30% — policy explanation
+    html += `<div style="flex:3;padding:16px;background:rgba(255,255,255,.02);border-left:1px solid var(--border);font-size:10px;color:var(--text-dim);line-height:1.6;overflow-y:auto">
+      <div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:8px">${isRu?'Почему меняется динамика':'Why dynamics change'}</div>
+      ${policy}
+    </div>`;
+
+    html += `</div>`;
+  });
+
   container.innerHTML = html;
 }
 
