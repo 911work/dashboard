@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OKR — Task Management</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Auth screen ------------------------------------------------ -->
+<section id="auth-view" class="auth-view hidden">
+  <div class="auth-card">
+    <h1>OKR</h1>
+    <p class="auth-sub">Цели команды, ключевые результаты, задачи и чек-ины.</p>
+    <form id="auth-form">
+      <input type="email" id="auth-email" placeholder="you@company.com" required>
+      <button type="submit" class="btn btn-primary">Получить ссылку для входа</button>
+    </form>
+    <p id="auth-message" class="auth-msg"></p>
+    <p class="auth-back"><a href="../index.html">← к дашборду</a></p>
+  </div>
+</section>
+
+<!-- App shell -------------------------------------------------- -->
+<div id="app-view" class="hidden">
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-mark">◈</span>
+      <span class="brand-name">OKR</span>
+    </div>
+    <nav class="tabs">
+      <a href="#objectives" class="tab" data-tab="objectives">Objectives</a>
+      <a href="#tasks" class="tab" data-tab="tasks">Tasks</a>
+      <a href="#checkins" class="tab" data-tab="checkins">Check-ins</a>
+      <a href="#team" class="tab" data-tab="team">Team</a>
+    </nav>
+    <div class="user-area">
+      <span id="user-name" class="user-name"></span>
+      <div id="user-avatar" class="avatar"></div>
+      <button id="sign-out" class="btn btn-ghost">Выйти</button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Objectives tab ------------------------------------------- -->
+    <section id="tab-objectives" class="tab-panel">
+      <div class="panel-head">
+        <div class="period-picker">
+          <label>Период:</label>
+          <select id="period-quarter">
+            <option value="1">Q1</option><option value="2">Q2</option>
+            <option value="3">Q3</option><option value="4">Q4</option>
+          </select>
+          <select id="period-year"></select>
+        </div>
+        <button id="new-objective" class="btn btn-primary">+ Objective</button>
+      </div>
+      <div id="objectives-list" class="objectives-list"></div>
+    </section>
+
+    <!-- Tasks tab ----------------------------------------------- -->
+    <section id="tab-tasks" class="tab-panel hidden">
+      <div class="panel-head">
+        <div class="filters">
+          <select id="task-filter-kr">
+            <option value="">Все Key Results</option>
+          </select>
+          <select id="task-filter-assignee">
+            <option value="">Все исполнители</option>
+            <option value="__me">Только мои</option>
+          </select>
+        </div>
+        <button id="new-task" class="btn btn-primary">+ Задача</button>
+      </div>
+      <div class="kanban">
+        <div class="kanban-col" data-status="todo">
+          <h3>To Do <span class="count" data-count="todo">0</span></h3>
+          <div class="kanban-cards" data-drop="todo"></div>
+        </div>
+        <div class="kanban-col" data-status="in_progress">
+          <h3>In Progress <span class="count" data-count="in_progress">0</span></h3>
+          <div class="kanban-cards" data-drop="in_progress"></div>
+        </div>
+        <div class="kanban-col" data-status="done">
+          <h3>Done <span class="count" data-count="done">0</span></h3>
+          <div class="kanban-cards" data-drop="done"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Check-ins tab ------------------------------------------- -->
+    <section id="tab-checkins" class="tab-panel hidden">
+      <div class="panel-head">
+        <h2>Чек-ин на неделю <span id="checkin-week"></span></h2>
+        <button id="prev-week" class="btn btn-ghost">← пред.</button>
+        <button id="next-week" class="btn btn-ghost">след. →</button>
+      </div>
+      <div id="checkins-list" class="checkins-list"></div>
+    </section>
+
+    <!-- Team tab ------------------------------------------------ -->
+    <section id="tab-team" class="tab-panel hidden">
+      <div class="panel-head">
+        <h2>Команды</h2>
+        <button id="new-team" class="btn btn-primary">+ Команда</button>
+      </div>
+      <div id="team-list" class="team-list"></div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Modal: Objective ------------------------------------------- -->
+<div id="modal-objective" class="modal hidden">
+  <div class="modal-card">
+    <h3 id="objective-modal-title">Новый Objective</h3>
+    <form id="objective-form">
+      <input type="hidden" id="objective-id">
+      <label>Название
+        <input id="objective-title" required maxlength="200">
+      </label>
+      <label>Описание
+        <textarea id="objective-description" rows="3"></textarea>
+      </label>
+      <div class="row">
+        <label>Команда
+          <select id="objective-team"></select>
+        </label>
+        <label>Квартал
+          <select id="objective-quarter">
+            <option value="1">Q1</option><option value="2">Q2</option>
+            <option value="3">Q3</option><option value="4">Q4</option>
+          </select>
+        </label>
+        <label>Год
+          <input id="objective-year" type="number" min="2000" max="2100">
+        </label>
+      </div>
+      <label>Статус
+        <select id="objective-status">
+          <option value="active">Active</option>
+          <option value="achieved">Achieved</option>
+          <option value="missed">Missed</option>
+          <option value="archived">Archived</option>
+        </select>
+      </label>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close-modal>Отмена</button>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Key Result ------------------------------------------ -->
+<div id="modal-kr" class="modal hidden">
+  <div class="modal-card">
+    <h3 id="kr-modal-title">Новый Key Result</h3>
+    <form id="kr-form">
+      <input type="hidden" id="kr-id">
+      <input type="hidden" id="kr-objective-id">
+      <label>Название
+        <input id="kr-title" required maxlength="200">
+      </label>
+      <div class="row">
+        <label>Тип метрики
+          <select id="kr-metric">
+            <option value="number">Число</option>
+            <option value="percent">Процент</option>
+            <option value="currency">Валюта</option>
+            <option value="boolean">Да/Нет</option>
+          </select>
+        </label>
+        <label>Старт
+          <input id="kr-start" type="number" step="any" value="0">
+        </label>
+        <label>Цель
+          <input id="kr-target" type="number" step="any" required>
+        </label>
+        <label>Текущее
+          <input id="kr-current" type="number" step="any" value="0">
+        </label>
+        <label>Единица
+          <input id="kr-unit" placeholder="ms / users / %">
+        </label>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close-modal>Отмена</button>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Task ------------------------------------------------ -->
+<div id="modal-task" class="modal hidden">
+  <div class="modal-card">
+    <h3 id="task-modal-title">Новая задача</h3>
+    <form id="task-form">
+      <input type="hidden" id="task-id">
+      <label>Название
+        <input id="task-title" required maxlength="200">
+      </label>
+      <div class="row">
+        <label>Key Result
+          <select id="task-kr" required></select>
+        </label>
+        <label>Статус
+          <select id="task-status">
+            <option value="todo">To Do</option>
+            <option value="in_progress">In Progress</option>
+            <option value="done">Done</option>
+          </select>
+        </label>
+      </div>
+      <div class="row">
+        <label>Исполнитель
+          <select id="task-assignee">
+            <option value="">— не назначен —</option>
+          </select>
+        </label>
+        <label>Дедлайн
+          <input id="task-due" type="date">
+        </label>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-danger" id="task-delete" hidden>Удалить</button>
+        <span style="flex:1"></span>
+        <button type="button" class="btn btn-ghost" data-close-modal>Отмена</button>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Team ------------------------------------------------ -->
+<div id="modal-team" class="modal hidden">
+  <div class="modal-card">
+    <h3>Новая команда</h3>
+    <form id="team-form">
+      <label>Название
+        <input id="team-name" required maxlength="100">
+      </label>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close-modal>Отмена</button>
+        <button type="submit" class="btn btn-primary">Создать</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Toasts ----------------------------------------------------- -->
+<div id="toast"></div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
